@@ -53,7 +53,7 @@ const {
    Prototype v1.0 — shared storage, role-gated UI
    ============================================================ */
 
-const APP_VERSION = "2.44";
+const APP_VERSION = "2.45";
 const STORE_KEY = "flowline:data:v1"; // key kept for data continuity
 const NF_MARK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAMsUlEQVR42u2deYxddRXHP+ctnZm20AaKQGFwaQEpiQYQxAUjEbBsKQ0FAlpCREGBKkhQ/kBRiUYEUYS4gNQUQWPqwhZIoVIJshQREGlBU3ZoKRS00mk7M+/d4x+/8+P9cpmZd+9b76Xvl7x0m777u/f7+579nCuqqkAV2AxsBNYDLwBrgNXAk8AaEXkdW6paBiYBYv9X6fwqiMhmVb0LOMz2USRnq2S/FoHt7LM7cEDwM1VgraquBh4E7gMeFZENBkYJ6At+tlNLunDNtgHw1uEOPv4mi8CgfT5tf/+Kqt4L3Ar8WUTWGhj99p2dZMVQngEojHGqCvbQi8G/ezFVASJgF+AE4HrgH6q6RFWPACIR2WQ/WwpOaTsZ8L9gj7kHYKKbLdpDLQSAVIEZwKnAMuB+VT0TmGxARGOwrNVrwzuJAaQEpBiAEZnu+DnwsKqeC/QZEIUmrlVvrd0WARgLjIKBUAVmAT8CHlLVhcAWEdncYjZ4kfNCTCRtcwDEv68YALG36Yk7VXV/Y4O06LoegOfs98UeAOMDcZjph4uAUWBLC9igZgK/CLyRV0Vc6MD3Fw2EPuAS4C5glrGh1CQDyqaE19jfRT0Axl5eWVeATwIPqOqxBkKxCfldFJEIeKTHgGTKuhSYrreo6vkiMmT/1owSfSCvirjQhWt63RABl6vqFWYhNfIAI1UtACuB4YBpPQASXFdMJJ2nqteKyJYGQIhMtzwNPJ5HPVDo4rW9SBoFPq+qvzQQ0oqjoohUgTvyqAcKGdhD2UA4XVV/bOIozb4iVRVcYDDKmz9QyMg+PAhfUdULTDEnNVEjoB94DHiUWo6iB0DKVTKd8ANVnZfSTyiKSAW4IW9iSCwjlpUV2QneCBwEPGNKtp5iFWPQu3BZvO3zYpYWMrifCJiOiyF5s7Leg1Sg3xJDv82TGCpkcE9FE0UHA98wyyiJYo1UtQhcDYxQy1v0AGgQhCpwoaoehEs71gMhMhasAn5n95Z5FmRNB4TLVzmsBD5ulpImOFDDwF64+NCkFoQ5tkkGhCz4MHC6iaJSAhYMiMiTuMxc5lmQZQaEVtE64APAm9SP93gFPM3CEzvbzxd6DGhsf1VgJnC2iIwk0AUKTBKR14CvGSBRjwHNs+AVYA6ugi9J1LMoIkOqegtwLBmtnMs6A0LfYFdgYUIWgEtZloGzgFeD7+kxoAkWvGC6YDihnV8SkU2qOg+4yfyLZjJw2yQDQha8GzhHRIYTsqCiqlNF5Gbge9TiTT0GNLB8zeqbwAdxBVllksWJxCqp/wQcZyCUegxIeVgMgGnApSIymlCUqCmEPmAh8FCWmJAnAELn7CRVPS5F3sAnarYC84CnsgJCnkRQXCGvBfbDha5LCS2copmxewDLgdndFkfe0YmCj5LtKKJXyLsBPzWzNKlVU8VVbj+Pq9Zb3W0m+Mq1QvCRQN76noBKAE5WRFEFWKCq55goKicFQVWnmEn7KVxNUddAEFVdics69QNTcG1KUycw86JADBS6aFMrtdrTQ0XkflWdmuJBep3QDywGTgzEWKGTAITNF3328Kfj0nuDuFLz9+Mqnd9nAI0FSIHOK3V/3RdxCZxX7R6qKSRARURGVPVi4Fvef+iUXhBVHYifKKuzifv1ZVxQbB9ciPhjuIaMHWIPRDvMDB/jecBEird4koYdQj/haOBndvCqtK6UfkIA+mObIdADEoBTBUZDcFR1poFxJHA48J7Yg5EOscKf2D+KyPGxQ5V0+bDFTOBy4OTgu9sWvogDkOS0+NMdASNWDoKqTsNlrk4AjgF2jLGi2CEQrhWRM1R1cgMWXQnYKiIVVT3Rwhez2glEWgAmAmTETEJUdTdgPnAatZ5jpf2Vax6EK0Xk3AZBEFwT+JCq7gCcBywyD7zlQDQLwFhgAAzbKZqE6y0+m1qPcbstjTgIAzSWlCn5Q6Wqs4Fzcd2g2wUilmb1XSsBiINRNAtjq7HiUOAC0xf+BtqlrD0I14jImRYHKpE+P+zvY7OIRKq6J3A68FlzBMPrNWSWtwuAuL2tvgdAVY8CvmnKO7Ri2gXCUju5o8BAgw6XN7E9EDvhsmynAIfgqi/G8pPixkxXAHgbEGbSfgG42PyNdrHBg3AvcJKIrFPV7QwMmgBi2KKxqOocYK59DjQfaix/ZUxdJOY9juVlhv9BWwxEJCJbVHUQuDQw+drBBg/CM8ApIrLS7rmZeRYS3MfmwCzfHdjfnMIDcPVJM2MMedsXje/ru/afMrW5D9rCmFAJ18BdVdVTgSvt9LTDC/XAbgEWich1ZiCUab5uqBAECIdjftL2uFz2IG4KzUxcf9w0C/sURVWvt00MAf/FtX2uA14GXgLWB+1D4XgaCeRdM5sXM/n2sZjMwW0SSVFgeV0HnC8iG1vAhon8pIo5rzqRDpjowkMGwlPAw7gywcdFZH3AkIGYnGuIDeaF9gNXAF8KRGArzdXQF1mFqzW6pwkrKVGYYxxFrB6A0TpIxterBsTtwHIRWWNgTDJZ1+hpKlocaquqngX8JIjptNpn8GIuAi4Dvisib1qYGjpYzliPARr7xCOeQ8AK4DfA7UbporGiESAEV1C1SVXn4mr9p7dJOYem4irgQhG5zQ7T5ECMaDcBmIjGxB7KM8ASYImIPN8kEGU7kfsBNwfRyXb6CwB/MA/6XgOij1rlRZQVAOqB8YYpuatE5MUm5KsHYZaJu73aCEIUk9PLgWuAO6xXzbOiQIvHsbUyKe9PiT9NG3Azg64K5GtaSnvlPAjciUsMtbPGM259/dvE61IRWW1AFHFZtJZMjGxHVYTPHXggVpt8vTUYd1ltEIS7cZUM7S60jecyhu3aS4E7ReTlwArsp1YmmVpntLMsJQ7EYuDrIrIhZe42BGE28BcLhLXDOqrHai9iVwC3AfeIyLOBj1Q2nVEYw4DpOADhTXin62ngDBG5uwGR5EE4wB7AVDrXeDGe4bHJ/KMVFm96wvoSiDmuJcbJIXSyMCu0vS8UkctMQafJ33rFfKxZRxGdr8wYDwxwU4efAP6O69z/l0UU3vDBu24CELc2lgBnUpumVU0JwleBH9LdyrZQ7o+XJQtDO+vtzxtNr1S7UZoY6oYVwAKLQQ2kAMF3v/walxzJSrVzCIgkMRS6WRs6agrrUeBoOx1JQfCR2TJunvWcDinlRkEZVxl3uzjXn9xVwBEGQn9CEDwLDgT+Sq3EMldjy7p9YnxN5r7m7U6nNmagrq1u3S9/A76dUplnZmWlPD1MHR4REzP1RJEYaPfhJqzk6j0CWZGZfnTZIcBiq6RIsjcNQgKLAudOewCkX35q1smqelGK7pcqMEVEHgKuzZsoylqHTGiizhWRZeYx11PKfgLjDOCf1AqGewOb0h6III6yWFV3NlYUEgDXJyLrcJk0yQsLChndk58PcXWKFqSqBcN+AbxOb2BTS8zTBap6YkJ94FmwHlfjn4uxZVnukvRxo5dwjdmbE5xq/9C3N12Q6VE1WWZAKIoGcdHTJOMJ/KiaDcB3EvoSPQYkiKNsNRY8h8uoJRlPUAHuBz6UZecs653y3pqZbCyoJNxzwQBYFOgB7QHQ2PLDmT6jqnvj6jvr7ds7Zw/icgbFrCrkPADgFWs/cJYVvyYN1g3gSuAfoT2lh+94HUBMfPwHF/t/nWRjLH1F9BxcG6uveOsNbGpQF+wAHG+6IIlS9bMhngC+SAbHWOZtXI0CC604KumD9FOzbgS+Ty3y2hNBDQIQ4VqBHsOlMKOEDPLd8Dfiert8SrTHgBTL2/PHWNNDIQVwav0Hp+Fed1LOAhPyBoBXnkdaWWCUkj0+Z7wA90K5roOQNwD8fvcD3msecqr3zVAL9M3DlReW6fLAprwxwPsEB9lb9FK/eyzwCeYDvwr+HPUASO4TfDQmlhoBoSQin8M1jhe7YabmEQD/wPe3YVONntrIrMDJInKJseE1auPQtAfAxHveEzcSZ4TGPVvFvfpkqojchGuRXUatL7raA2B8BswABs0rbja0ULGehedww0S+bGGP8JXtPQBi/oDgZklDa2I7FVPuAyJylTl7NxCMJWgHEHkFwMvnPVoIgNcLkbHhWRFZiHv/8TJqIz5ppY7IKwB+zWzT91aAflWdIiL3iMhcXMnkLdTqlryOaKpRL+8A7NTG746wIa9mKd0lIvNwc46uxI3KLFJrzPCzIVIBksfZ0f6EloDfi8gJCavnml3xwVM74sZkzjcxtcs4IPr6VRlLXOYVAB+Uu0NEjuoQAKHUiA9tmoGbD/QJ4CO4BNDO72QGeACWi8jh1sXe6TBC2Ec8EjbhqequuEnD+9pnNm5e0E64mqW3Bjj9Hz+mfBNtN017AAAAAElFTkSuQmCC";
 
@@ -691,19 +691,12 @@ function CashChart({ curve, height, zeroLine, gran, mode }) {
           {zeroLine && <ReferenceLine yAxisId="cum" y={0} stroke="#C0392B" strokeDasharray="2 3" />}
           {qLines.map((ql) => <ReferenceLine key={ql.label + ql.q} yAxisId="cum" x={ql.label} stroke="#B9C2CB" strokeDasharray="4 4" label={{ value: ql.q, fontSize: 9, fill: "#8A97A5", position: "insideTopLeft" }} />)}
           <ReferenceLine yAxisId="cum" x={fmtWk(CUR_WK)} stroke="#E89B00" strokeWidth={2} label={{ value: "now", fontSize: 10, fill: "#8A5C00", position: "top" }} />
-          {split ? (
-            <>
-              {showPlan && <Bar yAxisId="per" stackId="plan" dataKey="projPlan" fill="#1E5AA8" fillOpacity={0.35} name="projPlan" />}
-              {showPlan && <Bar yAxisId="per" stackId="plan" dataKey="ohPlan" fill="#8A97A5" fillOpacity={0.5} name="ohPlan" />}
-              {showAct && <Bar yAxisId="per" stackId="act" dataKey="projAct" fill="#E8A33D" fillOpacity={0.6} name="projAct" />}
-              {showAct && <Bar yAxisId="per" stackId="act" dataKey="ohAct" fill="#B3402E" fillOpacity={0.55} name="ohAct" />}
-            </>
-          ) : (
-            <>
-              {showPlan && <Bar yAxisId="per" dataKey="netPlan" fill="#1E5AA8" fillOpacity={0.35} name="netPlan" />}
-              {showAct && <Bar yAxisId="per" dataKey="netAct" fill="#E8A33D" fillOpacity={0.6} name="netAct" />}
-            </>
-          )}
+          {split && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="projPlan" fill="#1E5AA8" fillOpacity={0.35} name="projPlan" />}
+          {split && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="ohPlan" fill="#8A97A5" fillOpacity={0.5} name="ohPlan" />}
+          {split && showAct && <Bar yAxisId="per" stackId="act" dataKey="projAct" fill="#E8A33D" fillOpacity={0.6} name="projAct" />}
+          {split && showAct && <Bar yAxisId="per" stackId="act" dataKey="ohAct" fill="#B3402E" fillOpacity={0.55} name="ohAct" />}
+          {!split && showPlan && <Bar yAxisId="per" dataKey="netPlan" fill="#1E5AA8" fillOpacity={0.35} name="netPlan" />}
+          {!split && showAct && <Bar yAxisId="per" dataKey="netAct" fill="#E8A33D" fillOpacity={0.6} name="netAct" />}
           {showPlan && <Line yAxisId="cum" type="monotone" dataKey="forecast" stroke="#1E5AA8" strokeDasharray="6 4" dot={false} strokeWidth={1.6} name="forecast" />}
           {md === "both" && <Line yAxisId="cum" type="monotone" dataKey="projected" stroke="#8A97A5" strokeDasharray="3 3" dot={false} strokeWidth={1.4} name="projected" />}
           {showAct && <Area yAxisId="cum" type="monotone" dataKey="actual" stroke="#0A235B" fill="#0A235B22" dot={false} strokeWidth={2.4} name="actual" connectNulls={false} />}
@@ -1239,7 +1232,6 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
   const [mode, setMode] = useState("both");
-  const [mDetail, setMDetail] = useState(null);
   const nowYr = new Date().getFullYear();
   const HZS = [[4, "1 mo"], [13, "3 mo"], [26, "6 mo"], [52, "12 mo"], ["ytd", "YTD"], [0, "All"]];
   const range = periodRange(yr, per) || (yr !== nowYr ? { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) }
@@ -2564,6 +2556,7 @@ function Dashboard({ data, projects, openProject, scope }) {
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
   const [agedMin, setAgedMin] = useState(0);
+  const [mDetail, setMDetail] = useState(null);
   const [mode, setMode] = useState("both");
   const nowYr = new Date().getFullYear();
   const isYtd = hz === "ytd";
