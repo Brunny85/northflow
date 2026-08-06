@@ -42,8 +42,8 @@
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useMemo } = React;
 const {
-  ComposedChart, Line, Area, Bar, XAxis, YAxis, Tooltip, ReferenceLine,
-  ResponsiveContainer, CartesianGrid,
+  ComposedChart, Line, Area, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ReferenceArea,
+  ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell,
 } = Recharts;
 /* XLSX provided by xlsx.full.min.js global */
 
@@ -53,7 +53,7 @@ const {
    Prototype v1.0 — shared storage, role-gated UI
    ============================================================ */
 
-const APP_VERSION = "2.45";
+const APP_VERSION = "2.49";
 const STORE_KEY = "flowline:data:v1"; // key kept for data continuity
 const NF_MARK = "data:image/png;base64,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";
 
@@ -72,7 +72,7 @@ function fmtWk(key) {
   const d = new Date(key + "T12:00:00");
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 }
-const YEAR_WK = wkKey(new Date(new Date().getFullYear(), 0, 1));
+const YEAR_WK = (() => { const d = new Date(new Date().getFullYear(), 0, 1); const day = (d.getDay() + 6) % 7; if (day !== 0) d.setDate(d.getDate() + (7 - day)); return wkKey(d); })();
 const CUR_WK = wkKey(new Date());
 
 /* ---------------- money ---------------- */
@@ -213,7 +213,9 @@ function seriesToCurve(agg) {
     cf += a.fcIn - a.fcOut; cp += a.prIn - a.prOut;
     let actual = null;
     if (k <= CUR_WK) { ca += a.acIn - a.acOut; actual = ca; }
-    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null, netMove: a.prIn - a.prOut, netProj: a.prIn - a.prOut };
+    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual,
+      inPlan: a.fcIn, outPlan: -a.fcOut, inAct: k <= CUR_WK ? a.acIn : null, outAct: k <= CUR_WK ? -a.acOut : null,
+      netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null, netMove: a.prIn - a.prOut, netProj: a.prIn - a.prOut };
   });
 }
 
@@ -401,8 +403,8 @@ function corporateCurve(data, curWk, scope = "corporate") {
     let actual = null;
     if (k <= CUR_WK) { abal += a.acIn - a.acOut; actual = abal; }
     return { wk: k, label: fmtWk(k), projected: bal, forecast: fbal, actual, netMove: a.prIn - a.prOut,
-      projPlan: a.fcIn - (a.fcOut - a.ohFc), projAct: k <= CUR_WK ? a.acIn - (a.acOut - a.ohAc) : null,
-      ohPlan: -a.ohFc, ohAct: k <= CUR_WK ? -a.ohAc : null,
+      inPlan: a.fcIn, outPlan: -(a.fcOut - a.ohFc), ohOutPlan: -a.ohFc,
+      inAct: k <= CUR_WK ? a.acIn : null, outAct: k <= CUR_WK ? -(a.acOut - a.ohAc) : null, ohOutAct: k <= CUR_WK ? -a.ohAc : null,
       netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null };
   });
 }
@@ -584,14 +586,22 @@ function toMonthly(curve) {
     const sumF = (f) => { let any = false, t = 0; pts.forEach((p) => { if (p[f] !== null && p[f] !== undefined) { any = true; t += p[f]; } }); return any ? t : null; };
     const d = new Date(mk + "-01T12:00:00");
     return { wk: last.wk, label: d.toLocaleDateString("en-GB", { month: "short", year: "2-digit" }), forecast: last.forecast, projected: last.projected, actual,
-      netMove: sumF("netMove") || 0, netPlan: sumF("netPlan"), netAct: sumF("netAct"), projPlan: sumF("projPlan"), projAct: sumF("projAct"), ohPlan: sumF("ohPlan"), ohAct: sumF("ohAct") };
+      netMove: sumF("netMove") || 0, netPlan: sumF("netPlan"), netAct: sumF("netAct"),
+      inPlan: sumF("inPlan"), outPlan: sumF("outPlan"), inAct: sumF("inAct"), outAct: sumF("outAct"),
+      ohOutPlan: sumF("ohOutPlan"), ohOutAct: sumF("ohOutAct") };
   });
 }
+function ceilMonday(d) {
+  const x = new Date(d);
+  const day = (x.getDay() + 6) % 7;
+  if (day !== 0) x.setDate(x.getDate() + (7 - day));
+  return wkKey(x);
+}
 function periodRange(yr, per) {
-  const R = { FY: [0, 0, 11, 31], H1: [0, 1, 5, 30], H2: [6, 1, 11, 31], Q1: [0, 1, 2, 31], Q2: [3, 1, 5, 30], Q3: [6, 1, 8, 30], Q4: [9, 1, 11, 31] };
+  const R = { FY: [0, 1, 11, 31], H1: [0, 1, 5, 30], H2: [6, 1, 11, 31], Q1: [0, 1, 2, 31], Q2: [3, 1, 5, 30], Q3: [6, 1, 8, 30], Q4: [9, 1, 11, 31] };
   const r = R[per];
   if (!r) return null;
-  return { from: wkKey(new Date(yr, r[0], r[1] || 1)), to: wkKey(new Date(yr, r[2], r[3])) };
+  return { from: ceilMonday(new Date(yr, r[0], r[1])), to: wkKey(new Date(yr, r[2], r[3])) };
 }
 function PeriodSeg({ per, setPer }) {
   return (
@@ -620,17 +630,15 @@ function GranSeg({ gran, setGran }) {
 }
 function ChartLegend({ split }) {
   return (
-    <div className="legend" style={{ marginTop: 4 }}>
+    <div className="legend" style={{ marginTop: 4, fontFamily: "var(--body)" }}>
       <span><i style={{ background: "#0A235B" }} />Actual cumulative</span>{" "}
       <span><i style={{ background: "#1E5AA8" }} />Planned baseline</span>{" "}
       <span><i style={{ background: "#8A97A5" }} />Re-forecast</span>{" "}
-      {split
-        ? <><span><i style={{ background: "#1E5AA8", opacity: 0.4 }} />Projects planned (bar)</span>{" "}
-            <span><i style={{ background: "#8A97A5", opacity: 0.6 }} />OH planned (bar)</span>{" "}
-            <span><i style={{ background: "#E8A33D" }} />Projects actual (bar)</span>{" "}
-            <span><i style={{ background: "#B3402E" }} />OH actual (bar)</span></>
-        : <><span><i style={{ background: "#1E5AA8", opacity: 0.4 }} />Planned / period (bar)</span>{" "}
-            <span><i style={{ background: "#E8A33D" }} />Actual / period (bar)</span></>}
+      <span><i style={{ background: "#1E5AA8", opacity: 0.45 }} />In planned</span>{" "}
+      <span><i style={{ background: "#5B6770", opacity: 0.45 }} />Out planned</span>{" "}
+      <span><i style={{ background: "#1F7A5C" }} />In actual</span>{" "}
+      <span><i style={{ background: "#E8A33D" }} />Out actual</span>
+      {split && <>{" "}<span><i style={{ background: "#8A97A5" }} />OH planned</span>{" "}<span><i style={{ background: "#B3402E" }} />OH actual</span></>}
     </div>
   );
 }
@@ -652,7 +660,21 @@ function isoWeek(d) {
 }
 function CashChart({ curve, height, zeroLine, gran, mode }) {
   const md = mode || "both";
-  const split = curve.length > 0 && curve[0].ohPlan !== undefined;
+  const hasOH = curve.length > 0 && curve[0].ohOutPlan !== undefined;
+  const hasProj = curve.length > 0 && curve[0].inPlan !== undefined;
+  const showPlan = md !== "act", showAct = md !== "plan";
+  // aligned zero: force both axes to share the zero fraction
+  let cumMin = 0, cumMax = 0, perMin = 0, perMax = 0;
+  curve.forEach((p) => {
+    ["forecast", "projected", "actual"].forEach((f) => { const v = p[f]; if (v !== null && v !== undefined) { cumMin = Math.min(cumMin, v); cumMax = Math.max(cumMax, v); } });
+    const pl = (p.inPlan || 0), plo = (p.outPlan || 0) + (p.ohOutPlan || 0);
+    const ai = (p.inAct || 0), ao = (p.outAct || 0) + (p.ohOutAct || 0);
+    perMax = Math.max(perMax, pl, ai); perMin = Math.min(perMin, plo, ao);
+  });
+  cumMax = Math.max(cumMax, 1); perMax = Math.max(perMax, 1);
+  const frac = Math.max(-cumMin / (cumMax - cumMin || 1), -perMin / (perMax - perMin || 1), 0.0001);
+  const cumDom = [-frac / (1 - frac) * cumMax, cumMax];
+  const perDom = [-frac / (1 - frac) * perMax, perMax];
   const wkOf = {}; curve.forEach((p) => { wkOf[p.label] = p.wk; });
   const CalTick = (props) => {
     const { x, y, payload } = props;
@@ -663,12 +685,11 @@ function CashChart({ curve, height, zeroLine, gran, mode }) {
     const bot = gran === "m" ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
     return (
       <g transform={"translate(" + x + "," + y + ")"}>
-        <text dy={10} textAnchor="middle" fontSize={9.5} fontFamily="Roboto Mono" fill="#5B6770">{top}</text>
-        {bot && <text dy={21} textAnchor="middle" fontSize={9} fontFamily="Roboto Mono" fill="#8A97A5">{bot}</text>}
+        <text dy={10} textAnchor="middle" fontSize={9.5} fontFamily="Roboto" fill="#5B6770">{top}</text>
+        {bot && <text dy={21} textAnchor="middle" fontSize={9} fontFamily="Roboto" fill="#8A97A5">{bot}</text>}
       </g>
     );
   };
-  // quarter boundary markers within window
   const qLines = [];
   let lastQ = null;
   curve.forEach((p) => {
@@ -676,27 +697,30 @@ function CashChart({ curve, height, zeroLine, gran, mode }) {
     const q = d.getFullYear() + "-Q" + (Math.floor(d.getMonth() / 3) + 1);
     if (q !== lastQ) { if (lastQ !== null) qLines.push({ label: p.label, q: "Q" + (Math.floor(d.getMonth() / 3) + 1) + " '" + String(d.getFullYear()).slice(2) }); lastQ = q; }
   });
-  const showPlan = md !== "act", showAct = md !== "plan";
+  const NAME = { inPlan: "Cash in — planned", outPlan: hasOH ? "Project costs — planned" : "Cash out — planned", ohOutPlan: "OH costs — planned",
+    inAct: "Cash in — actual", outAct: hasOH ? "Project costs — actual" : "Cash out — actual", ohOutAct: "OH costs — actual",
+    forecast: "Cumulative — planned", projected: "Cumulative — re-forecast", actual: "Cumulative — actual" };
   return (
     <div style={{ width: "100%", height: height || 260 }}>
       <ResponsiveContainer>
-        <ComposedChart data={curve} margin={{ top: 8, right: 12, left: 8, bottom: gran === "m" ? 4 : 12 }}>
+        <ComposedChart data={curve} margin={{ top: 8, right: 12, left: 8, bottom: gran === "m" ? 4 : 12 }} barGap={1} barCategoryGap="22%">
           <CartesianGrid stroke="#EDEBE3" vertical={false} />
           <XAxis dataKey="label" tick={<CalTick />} interval="preserveStartEnd" minTickGap={gran === "m" ? 18 : 34} height={gran === "m" ? 22 : 32} />
-          <YAxis yAxisId="cum" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} tickFormatter={(v) => moneyK(v)} width={58} tickCount={8}
+          <YAxis yAxisId="cum" domain={cumDom} allowDataOverflow tick={{ fontSize: 10, fontFamily: "Roboto" }} tickFormatter={(v) => moneyK(v)} width={58} tickCount={8}
             label={{ value: "AED — cumulative", angle: -90, position: "insideLeft", style: { fontSize: 10, fontFamily: "Roboto", fill: "#5B6770" } }} />
-          <YAxis yAxisId="per" orientation="right" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} tickFormatter={(v) => moneyK(v)} width={58} tickCount={8}
+          <YAxis yAxisId="per" orientation="right" domain={perDom} allowDataOverflow tick={{ fontSize: 10, fontFamily: "Roboto" }} tickFormatter={(v) => moneyK(v)} width={58} tickCount={8}
             label={{ value: "AED — " + (gran === "m" ? "monthly" : "weekly"), angle: 90, position: "insideRight", style: { fontSize: 10, fontFamily: "Roboto", fill: "#5B6770" } }} />
-          <Tooltip formatter={(v, n) => [money(v), ({ netPlan: "Planned net (period)", netAct: "Actual net (period)", projPlan: "Projects planned (period)", projAct: "Projects actual (period)", ohPlan: "OH planned (period)", ohAct: "OH actual (period)", projected: "Cumulative — re-forecast", actual: "Cumulative — actual", forecast: "Cumulative — planned" })[n] || n]} labelStyle={{ fontFamily: "Roboto Mono", fontSize: 11 }} contentStyle={{ fontFamily: "Roboto Mono", fontSize: 12, borderRadius: 6 }} />
+          <Tooltip shared={false} formatter={(v, n) => [money(v), NAME[n] || n]} labelStyle={{ fontFamily: "Roboto", fontSize: 11, fontWeight: 600 }} contentStyle={{ fontFamily: "Roboto", fontSize: 12, borderRadius: 6 }} />
+          <ReferenceArea yAxisId="cum" y1={cumDom[0]} y2={0} fill="#C0392B" fillOpacity={0.06} />
           {zeroLine && <ReferenceLine yAxisId="cum" y={0} stroke="#C0392B" strokeDasharray="2 3" />}
           {qLines.map((ql) => <ReferenceLine key={ql.label + ql.q} yAxisId="cum" x={ql.label} stroke="#B9C2CB" strokeDasharray="4 4" label={{ value: ql.q, fontSize: 9, fill: "#8A97A5", position: "insideTopLeft" }} />)}
           <ReferenceLine yAxisId="cum" x={fmtWk(CUR_WK)} stroke="#E89B00" strokeWidth={2} label={{ value: "now", fontSize: 10, fill: "#8A5C00", position: "top" }} />
-          {split && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="projPlan" fill="#1E5AA8" fillOpacity={0.35} name="projPlan" />}
-          {split && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="ohPlan" fill="#8A97A5" fillOpacity={0.5} name="ohPlan" />}
-          {split && showAct && <Bar yAxisId="per" stackId="act" dataKey="projAct" fill="#E8A33D" fillOpacity={0.6} name="projAct" />}
-          {split && showAct && <Bar yAxisId="per" stackId="act" dataKey="ohAct" fill="#B3402E" fillOpacity={0.55} name="ohAct" />}
-          {!split && showPlan && <Bar yAxisId="per" dataKey="netPlan" fill="#1E5AA8" fillOpacity={0.35} name="netPlan" />}
-          {!split && showAct && <Bar yAxisId="per" dataKey="netAct" fill="#E8A33D" fillOpacity={0.6} name="netAct" />}
+          {hasProj && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="inPlan" fill="#1E5AA8" fillOpacity={0.4} name="inPlan" />}
+          {hasProj && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="outPlan" fill="#5B6770" fillOpacity={0.4} name="outPlan" />}
+          {hasOH && showPlan && <Bar yAxisId="per" stackId="plan" dataKey="ohOutPlan" fill="#8A97A5" fillOpacity={0.55} name="ohOutPlan" />}
+          {hasProj && showAct && <Bar yAxisId="per" stackId="act" dataKey="inAct" fill="#1F7A5C" fillOpacity={0.7} name="inAct" />}
+          {hasProj && showAct && <Bar yAxisId="per" stackId="act" dataKey="outAct" fill="#E8A33D" fillOpacity={0.75} name="outAct" />}
+          {hasOH && showAct && <Bar yAxisId="per" stackId="act" dataKey="ohOutAct" fill="#B3402E" fillOpacity={0.7} name="ohOutAct" />}
           {showPlan && <Line yAxisId="cum" type="monotone" dataKey="forecast" stroke="#1E5AA8" strokeDasharray="6 4" dot={false} strokeWidth={1.6} name="forecast" />}
           {md === "both" && <Line yAxisId="cum" type="monotone" dataKey="projected" stroke="#8A97A5" strokeDasharray="3 3" dot={false} strokeWidth={1.4} name="projected" />}
           {showAct && <Area yAxisId="cum" type="monotone" dataKey="actual" stroke="#0A235B" fill="#0A235B22" dot={false} strokeWidth={2.4} name="actual" connectNulls={false} />}
@@ -1234,7 +1258,7 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
   const [mode, setMode] = useState("both");
   const nowYr = new Date().getFullYear();
   const HZS = [[4, "1 mo"], [13, "3 mo"], [26, "6 mo"], [52, "12 mo"], ["ytd", "YTD"], [0, "All"]];
-  const range = periodRange(yr, per) || (yr !== nowYr ? { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) }
+  const range = periodRange(yr, per) || (yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) }
     : hz === "ytd" ? { from: YEAR_WK, to: CUR_WK } : hz ? { from: addW(CUR_WK, -4), to: addW(CUR_WK, hz) } : null);
   const agg = projectSeries(project, CUR_WK);
   const curve = seriesToCurve(agg);
@@ -1331,24 +1355,28 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
       </div>
 
 
-      <MarginStrip project={project} ohRate={ohRate} />
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+        <div className="seg"><button className={!per && hz === 0 && yr === nowYr ? "on" : ""} onClick={() => { setPer(null); setHz(0); setYr(nowYr); }}>Whole project</button></div>
+        <YearPager yr={yr} setYr={setYr} />
+        <PeriodSeg per={per} setPer={setPer} />
+        <ModeSeg mode={mode} setMode={setMode} />
+        <GranSeg gran={gran} setGran={setGran} />
+        {yr === nowYr && !per && <div className="seg">{HZS.filter(([w]) => w !== 0).map(([w, l]) => <button key={w} className={hz === w ? "on" : ""} onClick={() => setHz(w)}>{l}</button>)}</div>}
+      </div>
+      <MarginStrip project={project} ohRate={ohRate} range={range} rangeLabel={range ? (per ? per + " " + yr : yr !== nowYr ? "FY" + yr : hz === "ytd" ? "YTD" : null) : null} />
       <div className="panel">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
           <h2>Cumulative project cash — planned vs actual</h2>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <div className="seg"><button className={!per && hz === 0 && yr === nowYr ? "on" : ""} onClick={() => { setPer(null); setHz(0); setYr(nowYr); }}>Whole project</button></div>
-            <YearPager yr={yr} setYr={setYr} />
-            <PeriodSeg per={per} setPer={setPer} />
-            <ModeSeg mode={mode} setMode={setMode} />
-            <GranSeg gran={gran} setGran={setGran} />
-            {yr === nowYr && !per && <div className="seg">{HZS.filter(([w]) => w !== 0).map(([w, l]) => <button key={w} className={hz === w ? "on" : ""} onClick={() => setHz(w)}>{l}</button>)}</div>}
-          </div>
+</div>
         </div>
         <CashChart curve={curveWin} zeroLine gran={gran} mode={mode} />
         <ChartLegend />
       </div>
 
       <CommercialPanel project={project} canEdit={canEdit} mutate={mutate} ohRate={ohRate} />
+      <div className="mstrip"><AgedDebtTile projects={[project]} range={range} rangeLabel={range ? (per ? per + " " + yr : yr !== nowYr ? "FY" + yr : hz === "ytd" ? "YTD" : null) : null} /></div>
+      <InvoicingPanel projects={[project]} range={range} rangeLabel={range ? (per ? per + " " + yr : yr !== nowYr ? "FY" + yr : hz === "ytd" ? "YTD" : null) : null} />
       <ProjectGrid project={project} range={range} onEditLine={(l) => canEdit && setModal({ type: "spread", line: l })} onInvoices={canEdit ? (pkg) => setModal({ type: "inv", pkgId: pkg.id }) : null} onClientInvoices={canEdit ? () => setModal({ type: "inv", pkgId: null }) : null} />
 
       {modal?.type === "week" && <WeekUpdate project={project} onSave={saveActuals} onClose={() => setModal(null)} />}
@@ -1379,20 +1407,50 @@ function Section({ title, children, defaultOpen = true }) {
     </div>
   );
 }
-function invoiceSplit(projects) {
+function AgedDebtTile({ projects, range, rangeLabel }) {
+  const [agedMin, setAgedMin] = useState(0);
+  const unpaidAR = projects.flatMap((p) => filterInvs(p.clientInvoices, range).filter((i) => i.status !== "paid"));
+  const unpaidAP = projects.flatMap((p) => p.packages.flatMap((pk) => filterInvs(pk.invoices, range).filter((i) => i.status !== "paid")));
+  const ageOf = (i) => Math.floor((new Date(CUR_WK) - new Date(i.date)) / 86400000);
+  const arSum = unpaidAR.filter((i) => ageOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
+  const apSum = unpaidAP.filter((i) => ageOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
+  return (
+    <div className="mtile" style={{ borderTopColor: arSum - apSum >= 0 ? "var(--green)" : "var(--red)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+        <div className="mk">Aged debt{rangeLabel ? " · " + rangeLabel : ""}</div>
+        <div className="seg" style={{ transform: "scale(.85)", transformOrigin: "right center" }}>
+          {[[0, "Total"], [30, "1m+"], [60, "2m+"], [90, "3m+"], [180, "6m+"]].map(([d, l]) => (
+            <button key={d} className={agedMin === d ? "on" : ""} onClick={() => setAgedMin(d)}>{l}</button>
+          ))}
+        </div>
+      </div>
+      <div className="mv" style={{ color: "var(--green)" }}>{money(arSum)} <span className="ma" style={{ fontSize: 12 }}>due to us</span></div>
+      <div className="mv" style={{ color: "var(--red)", fontSize: 18 }}>{money(apSum)} <span className="ma" style={{ fontSize: 12 }}>due by us</span></div>
+      <div className="ma">unpaid invoices{agedMin ? " outstanding " + agedMin + "+ days" : ""} · net {moneyK(arSum - apSum)}</div>
+    </div>
+  );
+}
+function filterInvs(invs, range) {
+  if (!range) return invs || [];
+  return (invs || []).filter((i) => {
+    const wk = wkKey(new Date(i.date + "T12:00:00"));
+    return wk >= range.from && wk <= range.to;
+  });
+}
+function invoiceSplit(projects, range) {
   const now = new Date(CUR_WK);
   const ageOf = (i) => Math.floor((now - new Date(i.date)) / 86400000);
   const ar = { invoiced: 0, paid: 0, pendDue: 0, pendOver: 0 };
   const ap = { invoiced: 0, paid: 0, pendDue: 0, pendOver: 0 };
   projects.forEach((p) => {
     const terms = p.paymentTerms || 45;
-    (p.clientInvoices || []).forEach((i) => {
+    filterInvs(p.clientInvoices, range).forEach((i) => {
       ar.invoiced += i.amount;
       if (i.status === "paid") ar.paid += i.amount;
       else if (ageOf(i) > terms) ar.pendOver += i.amount;
       else ar.pendDue += i.amount;
     });
-    p.packages.forEach((pk) => (pk.invoices || []).forEach((i) => {
+    p.packages.forEach((pk) => filterInvs(pk.invoices, range).forEach((i) => {
       ap.invoiced += i.amount;
       if (i.status === "paid") ap.paid += i.amount;
       else if (ageOf(i) > 30) ap.pendOver += i.amount;
@@ -1401,31 +1459,45 @@ function invoiceSplit(projects) {
   });
   return { ar, ap };
 }
-function InvoicingPanel({ projects }) {
-  const [openAR, setOpenAR] = useState(false);
-  const [openAP, setOpenAP] = useState(false);
-  const { ar, ap } = invoiceSplit(projects);
-  const Row = ({ label, open, setOpen, t }) => (
-    <div style={{ borderBottom: "1px solid var(--line)", padding: "6px 0" }}>
-      <button onClick={() => setOpen(!open)} style={{ display: "flex", justifyContent: "space-between", width: "100%", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-        <span style={{ fontSize: 13, fontWeight: 600 }}>{open ? "▾ " : "▸ "}{label} — invoiced to date</span>
-        <span className="mono" style={{ fontSize: 14, fontWeight: 700 }}>{money(t.invoiced)}</span>
-      </button>
-      {open && (
-        <div style={{ padding: "6px 0 2px 16px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}><span style={{ fontSize: 12 }}>Paid</span><span className="mono" style={{ fontSize: 12, color: "var(--green)" }}>{money(t.paid)}</span></div>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}><span style={{ fontSize: 12 }}>Pending — within terms</span><span className="mono" style={{ fontSize: 12 }}>{money(t.pendDue)}</span></div>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}><span style={{ fontSize: 12 }}>Pending — overdue</span><span className="mono" style={{ fontSize: 12, color: "var(--red)" }}>{money(t.pendOver)}</span></div>
-        </div>
-      )}
+function InvoiceDonut({ title, t }) {
+  const slices = [
+    { name: "Paid", value: t.paid, fill: "#1F7A5C" },
+    { name: "Pending — within terms", value: t.pendDue, fill: "#E8A33D" },
+    { name: "Pending — overdue", value: t.pendOver, fill: "#B3402E" },
+  ].filter((x) => x.value > 0);
+  return (
+    <div style={{ flex: 1, minWidth: 250, display: "flex", alignItems: "center", gap: 10 }}>
+      <div style={{ width: 110, height: 110, position: "relative" }}>
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie data={slices.length ? slices : [{ name: "None", value: 1, fill: "#EDEBE3" }]} dataKey="value" innerRadius={32} outerRadius={52} strokeWidth={1}>
+              {(slices.length ? slices : [{ fill: "#EDEBE3" }]).map((sl, i) => <Cell key={i} fill={sl.fill} />)}
+            </Pie>
+            <Tooltip formatter={(v, n) => [money(v), n]} contentStyle={{ fontFamily: "Roboto", fontSize: 12, borderRadius: 6 }} />
+          </PieChart>
+        </ResponsiveContainer>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", fontFamily: "var(--disp)", fontWeight: 700, fontSize: 12 }}>{moneyK(t.invoiced)}</div>
+      </div>
+      <div style={{ fontFamily: "var(--body)" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 3 }}>{title}</div>
+        <div style={{ fontSize: 12, padding: "1px 0" }}><i style={{ display: "inline-block", width: 9, height: 9, borderRadius: 2, background: "#1F7A5C", marginRight: 6 }} />Paid <b style={{ marginLeft: 4 }}>{money(t.paid)}</b></div>
+        <div style={{ fontSize: 12, padding: "1px 0" }}><i style={{ display: "inline-block", width: 9, height: 9, borderRadius: 2, background: "#E8A33D", marginRight: 6 }} />Pending — within terms <b style={{ marginLeft: 4 }}>{money(t.pendDue)}</b></div>
+        <div style={{ fontSize: 12, padding: "1px 0" }}><i style={{ display: "inline-block", width: 9, height: 9, borderRadius: 2, background: "#B3402E", marginRight: 6 }} />Pending — overdue <b style={{ marginLeft: 4 }}>{money(t.pendOver)}</b></div>
+        <div style={{ fontSize: 11, color: "var(--ink2)", marginTop: 2 }}>Invoiced to date {money(t.invoiced)}</div>
+      </div>
     </div>
   );
+}
+function InvoicingPanel({ projects, range, rangeLabel }) {
+  const { ar, ap } = invoiceSplit(projects, range);
   return (
     <div className="panel">
-      <h2>Invoicing</h2>
-      <Row label="Receivables (client)" open={openAR} setOpen={setOpenAR} t={ar} />
-      <Row label="Payables (subcontractors & suppliers)" open={openAP} setOpen={setOpenAP} t={ap} />
-      <p className="note">Overdue = unpaid beyond terms (client terms per project; vendors 30 days). Corporate OH payments have no invoice register — actuals are recorded on the Overheads tab.</p>
+      <h2>Invoicing{rangeLabel ? " · " + rangeLabel : ""}</h2>
+      <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
+        <InvoiceDonut title="Receivables — clients" t={ar} />
+        <InvoiceDonut title="Payables — subcontractors & suppliers" t={ap} />
+      </div>
+      <p className="note">Overdue = unpaid beyond terms (client terms per project; vendors 30 days). Corporate OH has no invoice register — actuals live on the Overheads tab.</p>
     </div>
   );
 }
@@ -1454,7 +1526,7 @@ function MarginDetailModal({ projects, title, onClose }) {
   );
 }
 function CompanyMarginStrip({ projects, overheads, ohRate, yr, per, onDetail }) {
-  const win = periodRange(yr, per) || { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) };
+  const win = periodRange(yr, per) || { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) };
   const inWin = (k) => k >= win.from && k <= win.to;
   const ytd = (k) => inWin(k) && k <= CUR_WK;
   const sumW = (m2, f) => Object.entries(m2 || {}).reduce((a2, [k, v]) => a2 + (f(k) ? v : 0), 0);
@@ -1463,8 +1535,9 @@ function CompanyMarginStrip({ projects, overheads, ohRate, yr, per, onDetail }) 
     p.cashIn.forEach((l) => { if ((l.voStatus || "approved") !== "rejected") { revPlan += sumW(l.fc, inWin); recdYtd += sumW(l.ac, ytd); } });
     p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => { costPlan += sumW(l.fc, inWin); paidYtd += sumW(l.ac, ytd); }));
   });
-  const ohBudget = overheads.reduce((a2, l) => a2 + sumW(l.fc, inWin), 0);
-  const ohActYtd = overheads.reduce((a2, l) => a2 + sumW(l.ac, ytd), 0);
+  const hasOH = !!overheads;
+  const ohBudget = hasOH ? overheads.reduce((a2, l) => a2 + sumW(l.fc, inWin), 0) : 0;
+  const ohActYtd = hasOH ? overheads.reduce((a2, l) => a2 + sumW(l.ac, ytd), 0) : 0;
   const alloc = recdYtd * ohRate;
   const recovery = alloc - ohActYtd;
   const planNet = revPlan - costPlan - ohBudget;
@@ -1480,21 +1553,68 @@ function CompanyMarginStrip({ projects, overheads, ohRate, yr, per, onDetail }) 
         <div className="mk">Current contracted margin · {perLabel}</div>
         <div className="mp">{fmt(planNetP)}</div>
         <div className="mv">{money(planNet)}</div>
-        <div className="ma">contracted works & known costs incl forecast · rev {moneyK(revPlan)} − costs {moneyK(costPlan)} − OH {moneyK(ohBudget)} · tap for invoiced/paid detail</div>
+        <div className="ma">contracted works & known costs incl forecast · rev {moneyK(revPlan)} − costs {moneyK(costPlan)}{hasOH ? " − OH " + moneyK(ohBudget) : " · excl corporate OH"} · tap for invoiced/paid detail</div>
       </div>
       <div className={"mtile" + (liveNetP !== null && liveNetP < (planNetP ?? 0) ? " bad" : " good")} style={{ cursor: "pointer" }} onClick={() => onDetail("Current live margin — cash to date")}>
         <div className="mk">Current live margin · cash to date</div>
         <div className="mp">{fmt(liveNetP)}</div>
         <div className="mv">{money(liveNet)}</div>
-        <div className="ma">actual cash · recd {moneyK(recdYtd)} − paid {moneyK(paidYtd)} − actual OH {moneyK(ohActYtd)} · tap for invoiced/paid detail</div>
+        <div className="ma">actual cash · recd {moneyK(recdYtd)} − paid {moneyK(paidYtd)}{hasOH ? " − actual OH " + moneyK(ohActYtd) : " · excl corporate OH"} · tap for invoiced/paid detail</div>
       </div>
-      <div className="mtile" style={{ borderTopColor: recovery >= 0 ? "var(--green)" : "var(--red)" }}>
-        <div className="mk">OH recovery · to date</div>
-        <div className="mp" style={{ color: recovery >= 0 ? "var(--green)" : "var(--red)" }}>{(recovery >= 0 ? "+" : "") + moneyK(recovery)}</div>
-        <div className="mv" style={{ fontSize: 16 }}>allocated {money(alloc)}</div>
-        <div className="ma">{(ohRate * 100).toFixed(0)}% on cash recd vs actual OH {moneyK(ohActYtd)} · budget {moneyK(ohBudget)}</div>
-      </div>
+      {hasOH ? (
+        <div className="mtile" style={{ borderTopColor: recovery >= 0 ? "var(--green)" : "var(--red)" }}>
+          <div className="mk">OH recovery · to date</div>
+          <div className="mp" style={{ color: recovery >= 0 ? "var(--green)" : "var(--red)" }}>{(recovery >= 0 ? "+" : "") + moneyK(recovery)}</div>
+          <div className="mv" style={{ fontSize: 16 }}>allocated {money(alloc)}</div>
+          <div className="ma">{(ohRate * 100).toFixed(0)}% on cash recd vs actual OH {moneyK(ohActYtd)} · budget {moneyK(ohBudget)}</div>
+        </div>
+      ) : (
+        <div className="mtile">
+          <div className="mk">OH allocation · to date</div>
+          <div className="mp">{(ohRate * 100).toFixed(0)}%</div>
+          <div className="mv">{money(alloc)}</div>
+          <div className="ma">allocated to corporate OH on cash received {moneyK(recdYtd)}</div>
+        </div>
+      )}
     </div>
+  );
+}
+function StandardTop({ projects, overheads, ohRate, yr, per, onDetail, cashLabel, cashValue, cashSub, range, rangeLabel, curveWin, gran, mode, split, chartNote }) {
+  const s = aggSummaries(projects, ohRate);
+  const stillToBill = s.head.anticipated - s.invIn;
+  let trough = null;
+  (curveWin || []).forEach((p) => { if (p.projected !== null && p.projected !== undefined) { if (!trough || p.projected < trough.v) trough = { v: p.projected, label: p.label }; } });
+  let netPlan = 0, netAct = 0;
+  (curveWin || []).forEach((p) => { netPlan += p.netPlan || 0; netAct += p.netAct || 0; });
+  return (
+    <>
+      <Section title="Margin">
+        <CompanyMarginStrip projects={projects} overheads={overheads} ohRate={ohRate} yr={yr} per={per} onDetail={onDetail} />
+      </Section>
+      <Section title="Payments">
+        <div className="mstrip">
+          <div className="mtile hero">
+            <div className="mk">{cashLabel}</div>
+            <div className="mv" style={{ fontSize: 30 }}>{money(cashValue)}</div>
+            <div className="ma">{cashSub}</div>
+          </div>
+          <AgedDebtTile projects={projects} range={range} rangeLabel={rangeLabel} />
+        </div>
+        <InvoicingPanel projects={projects} range={range} rangeLabel={rangeLabel} />
+      </Section>
+      <Section title="Forecast">
+        <div className="cards">
+          <div className="card"><div className="k">Still to bill</div><div className="v">{moneyK(stillToBill)}</div><div className="d">anticipated final accounts − invoiced to date</div></div>
+          <div className="card"><div className="k">Forecast trough{rangeLabel ? " · " + rangeLabel : ""}</div><div className={"v " + ((trough?.v ?? 0) >= 0 ? "pos" : "neg")}>{trough ? moneyK(trough.v) : "—"}</div><div className="d">{trough ? "lowest projected position · " + trough.label : "no data in window"}</div></div>
+          <div className="card"><div className="k">Net movement{rangeLabel ? " · " + rangeLabel : ""}</div><div className={"v " + (netAct >= 0 ? "pos" : "neg")}>{moneyK(netAct)}</div><div className="d">actual to date · planned {moneyK(netPlan)}</div></div>
+        </div>
+        <div className="panel">
+          <h2>Cashflow — planned vs actual{chartNote ? " · " + chartNote : ""}{rangeLabel ? " · " + rangeLabel : ""}</h2>
+          <CashChart curve={curveWin} zeroLine height={260} gran={gran} mode={mode} />
+          <ChartLegend split={split} />
+        </div>
+      </Section>
+    </>
   );
 }
 function aggSummaries(projects, ohRate) {
@@ -1511,8 +1631,38 @@ function aggSummaries(projects, ohRate) {
   });
   return t;
 }
-function MarginStrip({ project, ohRate, summary }) {
-  const s = summary || commercialSummary(project, ohRate);
+function windowedSummary(projects, ohRate, range) {
+  const inW = (k) => k >= range.from && k <= range.to;
+  const ytd = (k) => inW(k) && k <= CUR_WK;
+  const sumW = (m, f) => Object.entries(m || {}).reduce((a, [k, v]) => a + (f(k) ? v : 0), 0);
+  let inC = 0, inA = 0, outC = 0, outA = 0, recd = 0, paid = 0;
+  projects.forEach((p) => {
+    p.cashIn.forEach((l) => {
+      const st = l.voStatus || "approved";
+      if (st === "rejected") return;
+      const f = sumW(l.fc, inW);
+      inA += f; if (l.type !== "variation" || st === "approved") inC += f;
+      recd += sumW(l.ac, ytd);
+    });
+    p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => {
+      const st = l.voStatus || "approved";
+      if (l.type === "variation" && st === "rejected") return;
+      const f = sumW(l.fc, inW);
+      outA += f; if (l.type !== "variation" || st === "approved") outC += f;
+      paid += sumW(l.ac, ytd);
+    }));
+  });
+  return {
+    head: { base: inC, anticipated: inA }, sub: { base: outC, anticipated: outA },
+    recd, paidOut: paid,
+    oh: { rate: ohRate, orig: inC * ohRate, afa: inA * ohRate, inv: 0, cash: recd * ohRate },
+    marginOrig: inC - outC, marginAFA: inA - outA, marginCash: recd - paid,
+    netOrig: inC - outC - inC * ohRate, netAFA: inA - outA - inA * ohRate, netCash: recd - paid - recd * ohRate,
+    internalOH: { value: 0, paid: 0 }, windowed: true,
+  };
+}
+function MarginStrip({ project, ohRate, summary, range, rangeLabel }) {
+  const s = range ? windowedSummary(project ? [project] : [], ohRate, range) : (summary || commercialSummary(project, ohRate));
   const pcn = (amt, base) => (base ? (amt / base) * 100 : null);
   const fmt = (p) => (p === null ? "—" : p.toFixed(1) + "%");
   const contractP = pcn(s.marginOrig, s.head.base);
@@ -1527,14 +1677,14 @@ function MarginStrip({ project, ohRate, summary }) {
   return (
     <div className="mstrip">
       <div className="mtile">
-        <div className="mk">Contracted margin</div>
+        <div className="mk">Contracted margin{rangeLabel ? " · " + rangeLabel : ""}</div>
         <div className="mp">{fmt(contractP)}</div>
         <div className="mv">{money(s.marginOrig)}</div>
         <div className="ma">in {moneyK(s.head.base)} / out {moneyK(s.sub.base)}</div>
         <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% OH → <b>profit {fmt(netCP)}</b> ({moneyK(s.netOrig)})</div>
       </div>
       <div className="mtile hero">
-        <div className="mk">Anticipated margin · incl VO's</div>
+        <div className="mk">Anticipated margin · incl VO's{rangeLabel ? " · " + rangeLabel : ""}</div>
         <div className="mp">{fmt(afaP)}
           {drift !== null && Math.abs(drift) >= 0.05 && (
             <span className="mdelta" style={{ background: drift >= 0 ? "#1F7A5C" : "#B3402E", color: "#fff" }}>{(drift >= 0 ? "+" : "") + drift.toFixed(1) + "pt"}</span>
@@ -1545,18 +1695,18 @@ function MarginStrip({ project, ohRate, summary }) {
         <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% OH → <b style={{ color: "#fff" }}>profit {fmt(netAP)}</b> ({moneyK(s.netAFA)})</div>
       </div>
       <div className={"mtile" + liveTone}>
-        <div className="mk">Live margin · cash to date</div>
+        <div className="mk">Live margin · cash to date{rangeLabel ? " (" + rangeLabel + ")" : ""}</div>
         <div className="mp">{fmt(liveP)}</div>
         <div className="mv">{money(s.marginCash)}</div>
         <div className="ma">recd {moneyK(s.recd)} / paid {moneyK(s.paidOut)}</div>
         <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% OH → <b>profit {fmt(netLP)}</b> ({moneyK(s.netCash)})</div>
       </div>
       <div className="mtile" style={{ borderTopColor: "var(--hivis)" }}>
-        <div className="mk">OH allocation</div>
+        <div className="mk">OH allocation{rangeLabel ? " · " + rangeLabel : ""}</div>
         <div className="mp">{ohPct}%</div>
         <div className="mv">{money(s.oh.afa)}</div>
         <div className="ma">on FA · contract {moneyK(s.oh.orig)} · invoiced {moneyK(s.oh.inv)} · cash {moneyK(s.oh.cash)}</div>
-        {s.internalOH.value > 0 && <div className="ma" style={{ marginTop: 3 }}>internal OH pkg on sheet {moneyK(s.internalOH.value)} (excluded from margin costs)</div>}
+        {!s.windowed && s.internalOH.value > 0 && <div className="ma" style={{ marginTop: 3 }}>internal OH pkg on sheet {moneyK(s.internalOH.value)} (excluded from margin costs)</div>}
       </div>
     </div>
   );
@@ -2159,13 +2309,17 @@ function ExcelImport({ projects, onImport, onClose }) {
   );
 }
 
-function ProjectsRollup({ projects, ohRate }) {
+function ProjectsList({ projects, users, openProject, canCreate, canImport, onCreate, onImport, data, onWizardSubmit, isMgmt, role }) {
+  const [imp, setImp] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [mDetail, setMDetail] = useState(null);
   const [gran, setGran] = useState("w");
   const [mode, setMode] = useState("both");
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
   const [all, setAll] = useState(true);
   const nowYr = new Date().getFullYear();
+  const ohRate = data.settings.ohRate ?? 0.12;
   const agg = {};
   projects.forEach((p) => {
     const s = projectSeries(p, CUR_WK);
@@ -2175,16 +2329,20 @@ function ProjectsRollup({ projects, ohRate }) {
     });
   });
   const curve = seriesToCurve(agg);
-  const range = all ? null : (periodRange(yr, per) || { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) });
+  const range = all ? null : (periodRange(yr, per) || { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) });
   const curveW = range ? curve.filter((c) => c.wk >= range.from && c.wk <= range.to) : curve;
   const curveWin = gran === "m" ? toMonthly(curveW) : curveW;
+  const rangeLabel = all ? null : (per ? per + " " + yr : "FY" + yr);
   return (
-    <Section title="All projects — rolled up">
-      <MarginStrip summary={aggSummaries(projects, ohRate)} ohRate={ohRate} />
-      <div className="panel">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-          <h2>Cashflow — all projects, planned vs actual (excl corporate OH)</h2>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+    <div>
+      <div className="pagehead">
+        <div><h1>Projects</h1><div className="sub">{projects.length} live cashflow sheet{projects.length === 1 ? "" : "s"}</div></div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            {canImport && <button className="btn" onClick={() => setImp(true)}>Import Excel</button>}
+            <button className="btn amber" onClick={() => setModal(true)}>+ New project</button>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
             <div className="seg"><button className={all ? "on" : ""} onClick={() => { setAll(true); setPer(null); setYr(nowYr); }}>All time</button></div>
             <YearPager yr={yr} setYr={(y) => { setYr(y); setAll(false); }} />
             <PeriodSeg per={per} setPer={(p) => { setPer(p); setAll(false); }} />
@@ -2192,26 +2350,13 @@ function ProjectsRollup({ projects, ohRate }) {
             <GranSeg gran={gran} setGran={setGran} />
           </div>
         </div>
-        <CashChart curve={curveWin} zeroLine height={260} gran={gran} mode={mode} />
-        <ChartLegend />
-      </div>
-    </Section>
-  );
-}
-function ProjectsList({ projects, users, openProject, canCreate, canImport, onCreate, onImport, data, onWizardSubmit, isMgmt, role }) {
-  const [imp, setImp] = useState(false);
-  const [modal, setModal] = useState(false);
-  return (
-    <div>
-      <div className="pagehead">
-        <div><h1>Projects</h1><div className="sub">{projects.length} live cashflow sheet{projects.length === 1 ? "" : "s"}</div></div>
-        <div style={{ display: "flex", gap: 8 }}>
-          {canImport && <button className="btn" onClick={() => setImp(true)}>Import Excel</button>}
-          <button className="btn amber" onClick={() => setModal(true)}>+ New project</button>
-        </div>
       </div>
       {imp && <ExcelImport projects={projects} onImport={onImport} onClose={() => setImp(false)} />}
-      <ProjectsRollup projects={projects} ohRate={data.settings.ohRate ?? 0.12} />
+      <StandardTop projects={projects} overheads={null} ohRate={ohRate} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
+        cashLabel="Projects — net cash to date" cashValue={(() => { const p2 = curve.filter((c) => c.wk <= CUR_WK); return p2.length ? p2[p2.length - 1].actual : 0; })()} cashSub="cash in − cash out, actuals to date, all projects"
+        range={range} rangeLabel={rangeLabel}
+        curveWin={curveWin} gran={gran} mode={mode} split={false} chartNote="all projects, excl corporate OH" />
+      {mDetail && <MarginDetailModal projects={projects} title={mDetail} onClose={() => setMDetail(null)} />}
       <div className="panel" style={{ padding: 0 }}>
         <table className="tbl">
           <thead><tr><th>Code</th><th>Project</th><th>Client</th><th className="mono">Value in</th><th className="mono">Cash to date</th><th className="mono">Proj. final</th><th>Vs plan</th><th>Team</th></tr></thead>
@@ -2257,7 +2402,7 @@ function overheadsCurve(overheads) {
     cf += fcv; cp += prv;
     let actual = null;
     if (k <= CUR_WK) { ca += acv; actual = ca; }
-    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netMove: prv, netPlan: fcv, netAct: k <= CUR_WK ? acv : null };
+    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netMove: prv, ohOutPlan: -fcv, ohOutAct: k <= CUR_WK ? -acv : null, netPlan: -fcv, netAct: k <= CUR_WK ? -acv : null };
   });
 }
 function OverheadsView({ data, setData, ohRateBtn }) {
@@ -2272,7 +2417,7 @@ function OverheadsView({ data, setData, ohRateBtn }) {
   let winFrom, winTo;
   const pr_ = periodRange(yr, per);
   if (pr_) { winFrom = pr_.from; winTo = pr_.to; }
-  else if (yr !== nowYr) { winFrom = wkKey(new Date(yr, 0, 1)); winTo = wkKey(new Date(yr, 11, 31)); }
+  else if (yr !== nowYr) { winFrom = ceilMonday(new Date(yr, 0, 1)); winTo = wkKey(new Date(yr, 11, 31)); }
   else if (cw === "ytd") { winFrom = YEAR_WK; winTo = CUR_WK; }
   else { winFrom = addW(CUR_WK, -8); winTo = addW(CUR_WK, 26); }
   const wks = curve.map((c) => c.wk).filter((k) => k >= winFrom && k <= winTo);
@@ -2301,20 +2446,26 @@ function OverheadsView({ data, setData, ohRateBtn }) {
     <div>
       <div className="pagehead">
         <div><h1>Overheads</h1><div className="sub">FY{yr} plan {money(planYr)} · actuals {money(acYr)} · project OH allocation {((data.settings.ohRate ?? 0.12) * 100).toFixed(0)}%</div></div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button className="btn ghost" onClick={() => setModal({ type: "ohweek" })}>Record OH actuals</button>
-        </div>
-      </div>
-      <div className="panel">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-          <h2>Overhead spend — planned baseline vs actual{per ? " · " + per + " " + yr : yr !== nowYr ? " · FY" + yr : cw === "ytd" ? " · year to date" : ""}</h2>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button className="btn ghost" onClick={() => setModal({ type: "ohrate" })}>OH rate: {((data.settings.ohRate ?? 0.12) * 100).toFixed(0)}%</button>
+            <button className="btn ghost" onClick={downloadOhTemplate}>Download template</button>
+            <button className="btn" onClick={() => setModal({ type: "ohimport" })}>Import overheads</button>
+            <button className="btn ghost" onClick={() => setModal({ type: "addoh" })}>+ Overhead line</button>
+            <button className="btn amber" onClick={() => setModal({ type: "ohweek" })}>Record OH actuals</button>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
             <YearPager yr={yr} setYr={setYr} />
             <PeriodSeg per={per} setPer={setPer} />
             <ModeSeg mode={mode} setMode={setMode} />
             {yr === nowYr && !per && <div className="seg">{[["out", "Outlook"], ["ytd", "YTD"]].map(([v, l]) => <button key={v} className={cw === v ? "on" : ""} onClick={() => setCw(v)}>{l}</button>)}</div>}
             <GranSeg gran={gran} setGran={setGran} />
           </div>
+        </div>
+      </div>
+      <div className="panel">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+          <h2>Overhead spend — planned baseline vs actual{per ? " · " + per + " " + yr : yr !== nowYr ? " · FY" + yr : cw === "ytd" ? " · year to date" : ""}</h2>
         </div>
         <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} height={260} gran={gran} mode={mode} />
         <ChartLegend />
@@ -2377,12 +2528,13 @@ function CorporateView({ data, setData, me, canProfit }) {
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
   const [mode, setMode] = useState("both");
+  const [mDetail, setMDetail] = useState(null);
   const nowYr = new Date().getFullYear();
   const curve = corporateCurve(data, CUR_WK);
   let winFrom, winTo;
   const pr_ = periodRange(yr, per);
   if (pr_) { winFrom = pr_.from; winTo = pr_.to; }
-  else if (yr !== nowYr) { winFrom = wkKey(new Date(yr, 0, 1)); winTo = wkKey(new Date(yr, 11, 31)); }
+  else if (yr !== nowYr) { winFrom = ceilMonday(new Date(yr, 0, 1)); winTo = wkKey(new Date(yr, 11, 31)); }
   else { winFrom = cw === "ytd" ? YEAR_WK : addW(CUR_WK, -6); winTo = cw === "ytd" ? CUR_WK : addW(CUR_WK, 26); }
   const wks = curve.map((c) => c.wk).filter((k) => k >= winFrom && k <= winTo);
   const projRows = data.projects.map((p) => {
@@ -2416,15 +2568,12 @@ function CorporateView({ data, setData, me, canProfit }) {
     <div>
       <div className="pagehead">
         <div><h1>Corporate cashflow</h1><div className="sub">All projects rolled up + overheads · opening balance {money(data.settings.openingBalance)} (w/c {fmtWk(data.settings.openingWk)})</div></div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button className="btn ghost" onClick={() => setModal({ type: "opening" })}>Opening balance</button>
-          <button className="btn ghost" onClick={() => setModal({ type: "ohweek" })}>Record OH actuals</button>
-        </div>
-      </div>
-      <div className="panel">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-          <h2>Cashflow — planned baseline vs actual{per ? " · " + per + " " + yr : yr !== nowYr ? " · FY" + yr : cw === "ytd" ? " · year to date" : ""}</h2>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button className="btn ghost" onClick={() => setModal({ type: "opening" })}>Opening balance</button>
+            <button className="btn ghost" onClick={() => setModal({ type: "ohweek" })}>Record OH actuals</button>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
             <YearPager yr={yr} setYr={setYr} />
             <PeriodSeg per={per} setPer={setPer} />
             <ModeSeg mode={mode} setMode={setMode} />
@@ -2432,9 +2581,13 @@ function CorporateView({ data, setData, me, canProfit }) {
             <GranSeg gran={gran} setGran={setGran} />
           </div>
         </div>
-        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} zeroLine height={260} gran={gran} mode={mode} />
-        <ChartLegend split />
       </div>
+      <StandardTop projects={data.projects} overheads={data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
+        cashLabel="Current cash position" cashValue={curve.find((c) => c.wk === CUR_WK)?.projected} cashSub="opening balance + actuals to date"
+        range={(per ? periodRange(yr, per) : yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) } : null)} rangeLabel={(per ? per + " " + yr : yr !== nowYr ? "FY" + yr : cw === "ytd" ? "YTD" : null)}
+        curveWin={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} gran={gran} mode={mode} split
+        chartNote="incl corporate OH & opening balance" />
+      {mDetail && <MarginDetailModal projects={data.projects} title={mDetail} onClose={() => setMDetail(null)} />}
       <div className="gridwrap">
         <table className="cg">
           <thead>
@@ -2555,7 +2708,6 @@ function Dashboard({ data, projects, openProject, scope }) {
   const HZS = [[4, "1 mo"], [13, "3 mo"], [26, "6 mo"], [52, "12 mo"], ["ytd", "YTD"]];
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
-  const [agedMin, setAgedMin] = useState(0);
   const [mDetail, setMDetail] = useState(null);
   const [mode, setMode] = useState("both");
   const nowYr = new Date().getFullYear();
@@ -2564,7 +2716,7 @@ function Dashboard({ data, projects, openProject, scope }) {
   let winFrom = isYtd ? YEAR_WK : addW(CUR_WK, -8), winTo = isYtd ? CUR_WK : addW(CUR_WK, hz);
   const pr_ = periodRange(yr, per);
   if (pr_) { winFrom = pr_.from; winTo = pr_.to; }
-  else if (yr !== nowYr) { winFrom = wkKey(new Date(yr, 0, 1)); winTo = wkKey(new Date(yr, 11, 31)); }
+  else if (yr !== nowYr) { winFrom = ceilMonday(new Date(yr, 0, 1)); winTo = wkKey(new Date(yr, 11, 31)); }
   const win = curve.filter((c) => c.wk >= (isYtd ? YEAR_WK : CUR_WK) && c.wk <= winTo);
   const trough = win.reduce((m, p) => Math.min(m, p.projected), Infinity);
   const troughPt = win.find((p) => p.projected === trough);
@@ -2587,7 +2739,7 @@ function Dashboard({ data, projects, openProject, scope }) {
   return (
     <div>
       <div className="pagehead">
-        <div><h1>{scope === "my" ? "My projects" : projOnly ? "Projects roll-up" : "Cash position"}</h1><div className="sub">{data.settings.company} · w/c {fmtWk(CUR_WK)}{scope === "my" ? " · your assigned projects only" : projOnly ? " · all projects, excl. corporate overheads & bank" : ""}</div></div>
+        <div><h1>Dashboard</h1><div className="sub">{data.settings.company} · w/c {fmtWk(CUR_WK)}{scope === "my" ? " · your assigned projects only" : projOnly ? " · all projects, excl. corporate overheads & bank" : ""}</div></div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <YearPager yr={yr} setYr={setYr} />
           <PeriodSeg per={per} setPer={setPer} />
@@ -2596,58 +2748,14 @@ function Dashboard({ data, projects, openProject, scope }) {
           {yr === nowYr && !per && <div className="seg">{HZS.map(([w, l]) => <button key={w} className={hz === w ? "on" : ""} onClick={() => setHz(w)}>{l}</button>)}</div>}
         </div>
       </div>
-      <Section title="Margin">
-        <CompanyMarginStrip projects={projects} overheads={data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} per={per} onDetail={(t) => setMDetail(t)} />
-      </Section>
-      <Section title="Payments">
-      {(() => {
-        const unpaidAR = projects.flatMap((p) => (p.clientInvoices || []).filter((i) => i.status !== "paid"));
-        const unpaidAP = projects.flatMap((p) => p.packages.flatMap((pk) => (pk.invoices || []).filter((i) => i.status !== "paid")));
-        const ageOf = (i) => Math.floor((new Date(CUR_WK) - new Date(i.date)) / 86400000);
-        const arSum = unpaidAR.filter((i) => ageOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
-        const apSum = unpaidAP.filter((i) => ageOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
-        return (
-          <div className="mstrip">
-            <div className="mtile hero">
-              <div className="mk">{scope === "my" ? "My projects — net cash to date" : projOnly ? "Projects — net cash to date" : "Current cash position"}</div>
-              <div className="mv" style={{ fontSize: 30 }}>{money(nowPt?.projected)}</div>
-              <div className="ma">{projOnly ? "cash in − cash out, actuals to date" : "opening balance + actuals to date"}</div>
-            </div>
-            <div className="mtile" style={{ borderTopColor: arSum - apSum >= 0 ? "var(--green)" : "var(--red)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                <div className="mk">Aged debt</div>
-                <div className="seg" style={{ transform: "scale(.85)", transformOrigin: "right center" }}>
-                  {[[0, "Total"], [30, "1m+"], [60, "2m+"], [90, "3m+"], [180, "6m+"]].map(([d, l]) => (
-                    <button key={d} className={agedMin === d ? "on" : ""} onClick={() => setAgedMin(d)}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="mv" style={{ color: "var(--green)" }}>{money(arSum)} <span className="ma" style={{ fontSize: 12 }}>due to us</span></div>
-              <div className="mv" style={{ color: "var(--red)", fontSize: 18 }}>{money(apSum)} <span className="ma" style={{ fontSize: 12 }}>due by us</span></div>
-              <div className="ma">unpaid invoices{agedMin ? " outstanding " + agedMin + "+ days" : ""} · net {moneyK(arSum - apSum)}</div>
-            </div>
-          </div>
-        );
-      })()}
-      <InvoicingPanel projects={projects} />
-      </Section>
+      <StandardTop projects={projects} overheads={projOnly ? null : data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
+        cashLabel={scope === "my" ? "My projects — net cash to date" : projOnly ? "Projects — net cash to date" : "Current cash position"}
+        cashValue={nowPt?.projected} cashSub={projOnly ? "cash in − cash out, actuals to date" : "opening balance + actuals to date"}
+        range={(per ? periodRange(yr, per) : yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) } : null)} rangeLabel={(per ? per + " " + yr : yr !== nowYr ? "FY" + yr : hzLabel)}
+        curveWin={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} gran={gran} mode={mode} split={!projOnly}
+        chartNote={projOnly ? "all projects, excl corporate OH" : "incl corporate OH"} />
       {mDetail && <MarginDetailModal projects={projects} title={mDetail} onClose={() => setMDetail(null)} />}
-      <Section title="Forecast">
-      <div className="cards">
-        <div className="card"><div className="k">Still to bill</div><div className="v">{(() => { const s2 = aggSummaries(projects, data.settings.ohRate ?? 0.12); return moneyK(s2.head.anticipated - s2.invIn); })()}</div><div className="d">anticipated final accounts − invoiced to date</div></div>
-        <div className="card"><div className="k">Invoiced, awaiting receipt</div><div className="v pos">{money(projects.reduce((a, p) => a + clientUnpaid(p), 0))}</div><div className="d">{(() => { const b = projects.reduce((a, p) => addBuckets(a, ageBuckets(p.clientInvoices)), { ...ZERO_B }); return <>30/60/90+: {moneyK(b.b30)} / {moneyK(b.b60)} / <span style={{ color: b.b90 > 0 ? "var(--red)" : undefined }}>{moneyK(b.b90)}</span></>; })()}</div></div>
-        <div className="card"><div className="k">Invoiced, awaiting payment</div><div className="v warn">{money(projects.reduce((a, p) => a + projectUnpaid(p), 0))}</div><div className="d">{(() => { const b = projects.reduce((a, p) => addBuckets(a, p.packages.reduce((x, pk) => addBuckets(x, ageBuckets(pk.invoices)), { ...ZERO_B })), { ...ZERO_B }); return <>30/60/90+: {moneyK(b.b30)} / {moneyK(b.b60)} / <span style={{ color: b.b90 > 0 ? "var(--red)" : undefined }}>{moneyK(b.b90)}</span></>; })()}</div></div>
-        {isYtd
-          ? <div className="card"><div className="k">YTD net movement</div><div className={"v " + (((nowPt?.projected || 0) - (ytdStart?.projected || 0)) >= 0 ? "pos" : "neg")}>{money((nowPt?.projected || 0) - (ytdStart?.projected || 0))}</div><div className="d">1 Jan to date</div></div>
-          : <div className="card"><div className="k">In {hzLabel}</div><div className={"v " + (at(hz) >= 0 ? "" : "neg")}>{money(at(hz))}</div><div className="d">projected</div></div>}
-        <div className="card"><div className="k">{isYtd ? "YTD trough" : hzLabel + " trough"}</div><div className={"v " + (trough >= 0 ? "pos" : "neg")}>{trough === Infinity ? "—" : money(trough)}</div><div className="d">{troughPt ? "w/c " + troughPt.label : ""}</div></div>
-      </div>
-      <div className="panel">
-        <h2>{scope === "my" ? "My projects net position" : projOnly ? "Projects net position" : "Cashflow"} — {per ? per + " " + yr : yr !== nowYr ? "FY" + yr : isYtd ? "year to date" : "next " + hzLabel + " (+8 wks history)"}</h2>
-        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} zeroLine height={260} gran={gran} mode={mode} />
-        <ChartLegend split={!projOnly} />
-      </div>
-      </Section>
+      {mDetail && <MarginDetailModal projects={projects} title={mDetail} onClose={() => setMDetail(null)} />}
       <div className="panel" style={{ padding: 0 }}>
         <h2 style={{ padding: "14px 16px 0" }}>Invoiced vs paid — by project</h2>
         <div className="gridwrap">
@@ -3217,9 +3325,14 @@ function ClientDetail({ data, setData, clientId, onClose, openProject }) {
 }
 function ClientsView({ data, setData, openProject }) {
   const [modal, setModal] = useState(null);
+  const [yr, setYr] = useState(new Date().getFullYear());
+  const [per, setPer] = useState(null);
+  const nowYr = new Date().getFullYear();
+  const range = per ? periodRange(yr, per) : yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) } : null;
+  const rangeLabel = per ? per + " " + yr : yr !== nowYr ? "FY" + yr : null;
   const rows = [...data.clients].sort((a, b) => a.name.localeCompare(b.name)).map((c) => {
     const eng = clientEngagements(data, c.id);
-    const aging = eng.reduce((a, e) => addBuckets(a, ageBuckets(e.project.clientInvoices)), { ...ZERO_B });
+    const aging = eng.reduce((a, e) => addBuckets(a, ageBuckets(filterInvs(e.project.clientInvoices, range))), { ...ZERO_B });
     return { c, eng, aging,
       value: eng.reduce((a, e) => a + e.value, 0),
       received: eng.reduce((a, e) => a + e.received, 0),
@@ -3234,11 +3347,17 @@ function ClientsView({ data, setData, openProject }) {
   return (
     <div>
       <div className="pagehead">
-        <div><h1>Clients</h1><div className="sub">{data.clients.length} on the register</div></div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div><h1>Clients{rangeLabel ? " · " + rangeLabel : ""}</h1><div className="sub">{data.clients.length} on the register</div></div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button className="btn ghost" onClick={downloadRegisterTemplate}>Download template</button>
           <button className="btn" onClick={() => setModal({ type: "bulk" })}>Bulk upload</button>
           <button className="btn amber" onClick={() => setModal({ type: "new" })}>+ Add client</button>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <YearPager yr={yr} setYr={setYr} />
+            <PeriodSeg per={per} setPer={setPer} />
+          </div>
         </div>
       </div>
       <AgeStrip label="Aged debt — receivable" buckets={rows.reduce((a, r) => addBuckets(a, r.aging), { ...ZERO_B })} />
@@ -3273,12 +3392,17 @@ function ClientsView({ data, setData, openProject }) {
   );
 }
 function VendorsView({ data, setData, openProject }) {
-  const [modal, setModal] = useState(null); // {type:'new'|'edit'|'detail', vendor?|id?}
+  const [modal, setModal] = useState(null);
+  const [yr, setYr] = useState(new Date().getFullYear());
+  const [per, setPer] = useState(null);
+  const nowYr = new Date().getFullYear();
+  const range = per ? periodRange(yr, per) : yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) } : null;
+  const rangeLabel = per ? per + " " + yr : yr !== nowYr ? "FY" + yr : null; // {type:'new'|'edit'|'detail', vendor?|id?}
   const rows = [...data.vendors].sort((a, b) => a.name.localeCompare(b.name)).map((v) => {
     const eng = vendorEngagements(data, v.id);
     const stages = {};
     eng.forEach((e) => { stages[e.pkg.stage] = (stages[e.pkg.stage] || 0) + 1; });
-    const aging = ageBuckets(vendorInvoiceList(data, v.id));
+    const aging = ageBuckets(filterInvs(vendorInvoiceList(data, v.id), range));
     return { v, eng, stages, aging,
       committed: eng.reduce((a, e) => a + e.committed, 0),
       paid: eng.reduce((a, e) => a + e.paid, 0),
@@ -3298,11 +3422,17 @@ function VendorsView({ data, setData, openProject }) {
   return (
     <div>
       <div className="pagehead">
-        <div><h1>Vendors</h1><div className="sub">{data.vendors.length} on the register</div></div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div><h1>Vendors{rangeLabel ? " · " + rangeLabel : ""}</h1><div className="sub">{data.vendors.length} on the register</div></div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button className="btn ghost" onClick={downloadRegisterTemplate}>Download template</button>
           <button className="btn" onClick={() => setModal({ type: "bulk" })}>Bulk upload</button>
           <button className="btn amber" onClick={() => setModal({ type: "new" })}>+ Add vendor</button>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <YearPager yr={yr} setYr={setYr} />
+            <PeriodSeg per={per} setPer={setPer} />
+          </div>
         </div>
       </div>
       <AgeStrip label="Aged debt — payable" buckets={rows.reduce((a, r) => addBuckets(a, r.aging), { ...ZERO_B })} />
