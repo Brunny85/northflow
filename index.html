@@ -1,9 +1,52 @@
-import { useState, useEffect, useMemo } from "react";
-import * as XLSX from "xlsx";
-import {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>NorthFlow — Cashflow Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<style>html,body,#root{margin:0;padding:0;min-height:100%}</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ---- storage shim: mimics the Claude artifact storage API on localStorage ---- */
+(function () {
+  if (window.storage) return;
+  const P = "northflow-web:";
+  window.storage = {
+    async get(key) {
+      const v = localStorage.getItem(P + key);
+      if (v === null) throw new Error("key not found: " + key);
+      return { key, value: v };
+    },
+    async set(key, value) { localStorage.setItem(P + key, String(value)); return { key, value }; },
+    async delete(key) { localStorage.removeItem(P + key); return { key, deleted: true }; },
+    async list(prefix) {
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k.startsWith(P) && (!prefix || k.slice(P.length).startsWith(prefix))) keys.push(k.slice(P.length));
+      }
+      return { keys };
+    },
+  };
+})();
+</script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo } = React;
+const {
   ComposedChart, Line, Area, XAxis, YAxis, Tooltip, ReferenceLine,
   ResponsiveContainer, CartesianGrid,
-} from "recharts";
+} = Recharts;
+/* XLSX provided by xlsx.full.min.js global */
+
 
 /* ============================================================
    NORTHFLOW — project & corporate cashflow for fit-out contractors
@@ -3008,7 +3051,7 @@ function SignIn({ users, onAuth, setPassword, loginRequired }) {
 }
 
 /* ---------------- app ---------------- */
-export default function App() {
+function App() {
   const [data, setDataState] = useState(null);
   const [loadErr, setLoadErr] = useState(null);
   const [memMode, setMemMode] = useState(false);
@@ -3154,3 +3197,9 @@ export default function App() {
     </div>
   );
 }
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
