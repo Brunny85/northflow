@@ -40,12 +40,13 @@
 })();
 </script>
 <script type="text/babel" data-presets="react">
-import { useState, useEffect, useMemo } from "react";
-import * as XLSX from "xlsx";
-import {
+const { useState, useEffect, useMemo } = React;
+const {
   ComposedChart, Line, Area, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ReferenceArea,
   ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell,
-} from "recharts";
+} = Recharts;
+/* XLSX provided by xlsx.full.min.js global */
+
 
 /* ============================================================
    NORTHFLOW — project & corporate cashflow for fit-out contractors
@@ -3899,7 +3900,7 @@ function SignIn({ users, onAuth, setPassword, loginRequired }) {
 }
 
 /* ---------------- app ---------------- */
-export default function App() {
+function App() {
   const [data, setDataState] = useState(null);
   const [loadErr, setLoadErr] = useState(null);
   const [memMode, setMemMode] = useState(false);
@@ -4063,6 +4064,8 @@ export default function App() {
   );
 }
 
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
 </html>
