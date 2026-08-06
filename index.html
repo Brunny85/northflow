@@ -53,7 +53,7 @@ const {
    Prototype v1.0 — shared storage, role-gated UI
    ============================================================ */
 
-const APP_VERSION = "2.43";
+const APP_VERSION = "2.44";
 const STORE_KEY = "flowline:data:v1"; // key kept for data continuity
 const NF_MARK = "data:image/png;base64,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";
 
@@ -194,7 +194,7 @@ function projectLines(p) {
 function projectSeries(p, curWk) {
   const { inn, out } = projectLines(p);
   const agg = {}; // wk -> {fcIn, fcOut, acIn, acOut, prIn, prOut}
-  const touch = (k) => (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0 });
+  const touch = (k) => (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0, ohFc: 0, ohAc: 0 });
   const roll = (lines, dir) => lines.forEach((l) => {
     const { proj } = lineProj(l, curWk);
     Object.entries(l.fc || {}).forEach(([k, v]) => { touch(k)[dir === "in" ? "fcIn" : "fcOut"] += v; });
@@ -213,7 +213,7 @@ function seriesToCurve(agg) {
     cf += a.fcIn - a.fcOut; cp += a.prIn - a.prOut;
     let actual = null;
     if (k <= CUR_WK) { ca += a.acIn - a.acOut; actual = ca; }
-    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netMove: a.prIn - a.prOut, netProj: a.prIn - a.prOut };
+    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null, netMove: a.prIn - a.prOut, netProj: a.prIn - a.prOut };
   });
 }
 
@@ -373,7 +373,7 @@ const ACCESS = {
 const accessOf = (role) => ACCESS[role] || ACCESS.qs;
 function corporateAgg(data, curWk, includeOverheads = true) {
   const agg = {}; // wk -> {fcIn, fcOut, acIn, acOut, prIn, prOut}
-  const touch = (k) => (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0 });
+  const touch = (k) => (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0, ohFc: 0, ohAc: 0 });
   data.projects.forEach((p) => {
     const s = projectSeries(p, curWk);
     Object.entries(s).forEach(([k, a]) => {
@@ -383,8 +383,8 @@ function corporateAgg(data, curWk, includeOverheads = true) {
   });
   if (includeOverheads) data.overheads.forEach((l) => {
     const { proj } = lineProj(l, curWk);
-    Object.entries(l.fc || {}).forEach(([k, v]) => { touch(k).fcOut += v; });
-    Object.entries(l.ac || {}).forEach(([k, v]) => { touch(k).acOut += v; });
+    Object.entries(l.fc || {}).forEach(([k, v]) => { const t = touch(k); t.fcOut += v; t.ohFc += v; });
+    Object.entries(l.ac || {}).forEach(([k, v]) => { const t = touch(k); t.acOut += v; t.ohAc += v; });
     Object.entries(proj).forEach(([k, v]) => { touch(k).prOut += v; });
   });
   return agg;
@@ -400,7 +400,10 @@ function corporateCurve(data, curWk, scope = "corporate") {
     bal += a.prIn - a.prOut; fbal += a.fcIn - a.fcOut;
     let actual = null;
     if (k <= CUR_WK) { abal += a.acIn - a.acOut; actual = abal; }
-    return { wk: k, label: fmtWk(k), projected: bal, forecast: fbal, actual, netMove: a.prIn - a.prOut };
+    return { wk: k, label: fmtWk(k), projected: bal, forecast: fbal, actual, netMove: a.prIn - a.prOut,
+      projPlan: a.fcIn - (a.fcOut - a.ohFc), projAct: k <= CUR_WK ? a.acIn - (a.acOut - a.ohAc) : null,
+      ohPlan: -a.ohFc, ohAct: k <= CUR_WK ? -a.ohAc : null,
+      netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null };
   });
 }
 
@@ -419,7 +422,7 @@ const CSS = `
 body,#root{background:var(--paper)}
 .fl{font-family:var(--body);color:var(--ink);background:var(--paper);min-height:100vh;font-size:14px}
 .fl input,.fl select,.fl textarea,.fl button{font-family:var(--body)}
-.fl h1,.fl h2,.fl h3{font-family:var(--disp);text-transform:uppercase;letter-spacing:.03em}
+.fl h1,.fl h2,.fl h3{font-family:var(--disp);letter-spacing:.01em}
 .mono{font-family:var(--mono)}
 .shell{display:flex;min-height:100vh}
 .side{width:210px;background:var(--navy);color:#E8EAED;padding:18px 0;flex-shrink:0;display:flex;flex-direction:column}
@@ -429,7 +432,7 @@ body,#root{background:var(--paper)}
 .logo img{width:26px;height:26px;vertical-align:-6px;margin-right:9px}
 .gatecard .logo img{width:40px;height:40px;vertical-align:-9px;background:var(--navy);border-radius:8px;padding:6px;box-sizing:border-box}
 .nav{margin-top:10px;flex:1}
-.nav button{display:block;width:100%;text-align:left;background:none;border:none;color:#B9C2CB;font-family:var(--disp);font-size:15px;letter-spacing:.04em;text-transform:uppercase;padding:11px 18px;cursor:pointer;border-left:3px solid transparent}
+.nav button{display:block;width:100%;text-align:left;background:none;border:none;color:#B9C2CB;font-family:var(--disp);font-size:15px;letter-spacing:.01em;padding:11px 18px;cursor:pointer;border-left:3px solid transparent}
 .nav button.on{color:#fff;border-left-color:var(--hivis);background:#243140}
 .nav button:hover{color:#fff}
 .side-foot{padding:12px 18px;border-top:1px solid #2C3946;font-size:12px;color:#8A97A5}
@@ -441,13 +444,13 @@ body,#root{background:var(--paper)}
 .pagehead .sub{color:var(--ink2);font-size:13px}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
-.card .k{font-family:var(--disp);text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--ink2)}
+.card .k{font-family:var(--body);font-weight:600;letter-spacing:.02em;font-size:12px;color:var(--ink2)}
 .card .v{font-family:var(--mono);font-size:22px;font-weight:600;margin-top:4px}
 .card .d{font-size:12px;color:var(--ink2);margin-top:2px}
 .pos{color:var(--green)} .neg{color:var(--red)} .warn{color:var(--hivis)}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:18px}
 .panel h2{font-size:16px;margin-bottom:10px;color:var(--ink)}
-.btn{font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;font-size:13px;background:var(--navy);color:#fff;border:none;border-radius:5px;padding:8px 14px;cursor:pointer}
+.btn{font-family:var(--disp);letter-spacing:.02em;font-size:13px;background:var(--navy);color:#fff;border:none;border-radius:5px;padding:8px 14px;cursor:pointer}
 .btn:hover:not(:disabled){background:var(--navy2)}
 .btn.amber{background:var(--hivis);color:#241A00}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
@@ -455,7 +458,7 @@ body,#root{background:var(--paper)}
 .btn:disabled{opacity:.45;cursor:default}
 .mstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
 .mtile{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--blueprint);border-radius:8px;padding:12px 14px}
-.mtile .mk{font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;font-size:11px;color:var(--ink2)}
+.mtile .mk{font-family:var(--body);font-weight:600;letter-spacing:.02em;font-size:11px;color:var(--ink2)}
 .mtile .mp{font-family:var(--disp);font-weight:700;font-size:30px;line-height:1.1;margin:2px 0}
 .mtile .ma{font-family:var(--mono);font-size:12px;color:var(--ink2)}
 .mtile .mv{font-family:var(--disp);font-weight:700;font-size:22px;line-height:1.15;margin:0 0 2px}
@@ -467,10 +470,10 @@ body,#root{background:var(--paper)}
 .mtile.good{border-top-color:var(--green)}
 .mdelta{display:inline-block;font-family:var(--mono);font-size:11px;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
-.seg button{border:none;background:none;padding:6px 12px;font-family:var(--disp);text-transform:uppercase;letter-spacing:.04em;font-size:12px;color:var(--ink2);cursor:pointer}
+.seg button{border:none;background:none;padding:6px 12px;font-family:var(--disp);letter-spacing:.01em;font-size:12px;color:var(--ink2);cursor:pointer}
 .seg button.on{background:var(--navy);color:#fff}
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;font-size:11px;color:var(--ink2);text-align:left;padding:7px 8px;border-bottom:2px solid var(--ink)}
+.tbl th{font-family:var(--body);font-weight:600;letter-spacing:.02em;font-size:11px;color:var(--ink2);text-align:left;padding:7px 8px;border-bottom:2px solid var(--ink)}
 .tbl td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
 .tbl tr.click{cursor:pointer}
 .tbl tr.click:hover td{background:var(--blueprint-soft)}
@@ -482,9 +485,9 @@ body,#root{background:var(--paper)}
 .cg{border-collapse:collapse;font-size:12px;min-width:100%}
 .cg th,.cg td{border-bottom:1px solid var(--line);border-right:1px solid #EFEDE6;padding:5px 8px;white-space:nowrap}
 .cg thead th{font-family:var(--mono);font-size:10.5px;color:var(--ink2);background:#FAF9F5;position:sticky;top:0}
-.cg .rowname{position:sticky;left:0;background:var(--card);text-align:left;min-width:190px;max-width:230px;overflow:hidden;text-overflow:ellipsis;font-weight:500;z-index:2}
+.cg .rowname{font-family:var(--body);position:sticky;left:0;background:var(--card);text-align:left;min-width:190px;max-width:230px;overflow:hidden;text-overflow:ellipsis;font-weight:500;z-index:2}
 .cg thead .rowname{z-index:3;background:#FAF9F5}
-.cg .grp td{background:#F1F0E9;font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;font-size:11px;color:var(--ink2);padding:4px 8px}
+.cg .grp td{background:#F1F0E9;font-family:var(--body);font-weight:600;letter-spacing:.02em;font-size:11px;color:var(--ink2);padding:4px 8px}
 .cg .grp .rowname{background:#F1F0E9}
 .cg .num{font-family:var(--mono);text-align:right;min-width:74px}
 .cg .cur{background:var(--hivis-soft)}
@@ -501,7 +504,7 @@ body,#root{background:var(--paper)}
 .modal h2{font-size:18px;margin-bottom:14px}
 .frow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .field{flex:1;min-width:130px}
-.field label{display:block;font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;font-size:11px;color:var(--ink2);margin-bottom:4px}
+.field label{display:block;font-family:var(--body);font-weight:600;letter-spacing:.02em;font-size:11px;color:var(--ink2);margin-bottom:4px}
 .field input,.field select{width:100%;border:1px solid var(--line);border-radius:5px;padding:8px 9px;font-family:var(--body);font-size:14px;background:#fff;color:var(--ink)}
 .field input:focus,.field select:focus{outline:2px solid var(--blueprint);outline-offset:0}
 .mfoot{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
@@ -578,9 +581,10 @@ function toMonthly(curve) {
     const last = pts[pts.length - 1];
     let actual = null;
     for (let i = pts.length - 1; i >= 0; i--) if (pts[i].actual !== null && pts[i].actual !== undefined) { actual = pts[i].actual; break; }
-    const netMove = pts.reduce((a, p) => a + (p.netMove || 0), 0);
+    const sumF = (f) => { let any = false, t = 0; pts.forEach((p) => { if (p[f] !== null && p[f] !== undefined) { any = true; t += p[f]; } }); return any ? t : null; };
     const d = new Date(mk + "-01T12:00:00");
-    return { wk: last.wk, label: d.toLocaleDateString("en-GB", { month: "short", year: "2-digit" }), forecast: last.forecast, projected: last.projected, actual, netMove };
+    return { wk: last.wk, label: d.toLocaleDateString("en-GB", { month: "short", year: "2-digit" }), forecast: last.forecast, projected: last.projected, actual,
+      netMove: sumF("netMove") || 0, netPlan: sumF("netPlan"), netAct: sumF("netAct"), projPlan: sumF("projPlan"), projAct: sumF("projAct"), ohPlan: sumF("ohPlan"), ohAct: sumF("ohAct") };
   });
 }
 function periodRange(yr, per) {
@@ -614,32 +618,95 @@ function GranSeg({ gran, setGran }) {
     </div>
   );
 }
-function ChartLegend() {
+function ChartLegend({ split }) {
   return (
     <div className="legend" style={{ marginTop: 4 }}>
-      <span><i style={{ background: "#0A235B" }} />Actual to date</span>{" "}
+      <span><i style={{ background: "#0A235B" }} />Actual cumulative</span>{" "}
       <span><i style={{ background: "#1E5AA8" }} />Planned baseline</span>{" "}
       <span><i style={{ background: "#8A97A5" }} />Re-forecast</span>{" "}
-      <span><i style={{ background: "#E8A33D" }} />Net movement / period (right axis)</span>
+      {split
+        ? <><span><i style={{ background: "#1E5AA8", opacity: 0.4 }} />Projects planned (bar)</span>{" "}
+            <span><i style={{ background: "#8A97A5", opacity: 0.6 }} />OH planned (bar)</span>{" "}
+            <span><i style={{ background: "#E8A33D" }} />Projects actual (bar)</span>{" "}
+            <span><i style={{ background: "#B3402E" }} />OH actual (bar)</span></>
+        : <><span><i style={{ background: "#1E5AA8", opacity: 0.4 }} />Planned / period (bar)</span>{" "}
+            <span><i style={{ background: "#E8A33D" }} />Actual / period (bar)</span></>}
     </div>
   );
 }
-function CashChart({ curve, height, zeroLine }) {
+function ModeSeg({ mode, setMode }) {
   return (
-    <div style={{ width: "100%", height: height || 240 }}>
+    <div className="seg">
+      {[["plan", "Planned"], ["act", "Actual"], ["both", "Planned v actual"]].map(([v, l]) => (
+        <button key={v} className={mode === v ? "on" : ""} onClick={() => setMode(v)}>{l}</button>
+      ))}
+    </div>
+  );
+}
+function isoWeek(d) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayn = (t.getUTCDay() + 6) % 7;
+  t.setUTCDate(t.getUTCDate() - dayn + 3);
+  const firstThu = new Date(Date.UTC(t.getUTCFullYear(), 0, 4));
+  return 1 + Math.round(((t - firstThu) / 86400000 - 3 + ((firstThu.getUTCDay() + 6) % 7)) / 7);
+}
+function CashChart({ curve, height, zeroLine, gran, mode }) {
+  const md = mode || "both";
+  const split = curve.length > 0 && curve[0].ohPlan !== undefined;
+  const wkOf = {}; curve.forEach((p) => { wkOf[p.label] = p.wk; });
+  const CalTick = (props) => {
+    const { x, y, payload } = props;
+    const wk = wkOf[payload.value];
+    if (!wk) return null;
+    const d = new Date(wk + "T12:00:00");
+    const top = gran === "m" ? payload.value : "W" + isoWeek(d);
+    const bot = gran === "m" ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    return (
+      <g transform={"translate(" + x + "," + y + ")"}>
+        <text dy={10} textAnchor="middle" fontSize={9.5} fontFamily="Roboto Mono" fill="#5B6770">{top}</text>
+        {bot && <text dy={21} textAnchor="middle" fontSize={9} fontFamily="Roboto Mono" fill="#8A97A5">{bot}</text>}
+      </g>
+    );
+  };
+  // quarter boundary markers within window
+  const qLines = [];
+  let lastQ = null;
+  curve.forEach((p) => {
+    const d = new Date(p.wk + "T12:00:00");
+    const q = d.getFullYear() + "-Q" + (Math.floor(d.getMonth() / 3) + 1);
+    if (q !== lastQ) { if (lastQ !== null) qLines.push({ label: p.label, q: "Q" + (Math.floor(d.getMonth() / 3) + 1) + " '" + String(d.getFullYear()).slice(2) }); lastQ = q; }
+  });
+  const showPlan = md !== "act", showAct = md !== "plan";
+  return (
+    <div style={{ width: "100%", height: height || 260 }}>
       <ResponsiveContainer>
-        <ComposedChart data={curve} margin={{ top: 8, right: 12, left: 4, bottom: 0 }}>
+        <ComposedChart data={curve} margin={{ top: 8, right: 12, left: 8, bottom: gran === "m" ? 4 : 12 }}>
           <CartesianGrid stroke="#EDEBE3" vertical={false} />
-          <XAxis dataKey="label" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} interval="preserveStartEnd" minTickGap={26} />
-          <YAxis yAxisId="cum" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} tickFormatter={(v) => moneyK(v)} width={54} />
-          <YAxis yAxisId="per" orientation="right" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} tickFormatter={(v) => moneyK(v)} width={54} />
-          <Tooltip formatter={(v, n) => [money(v), n === "netMove" ? "Net movement (period)" : n === "projected" ? "Cumulative — re-forecast" : n === "actual" ? "Cumulative — actual" : "Cumulative — planned"]} labelStyle={{ fontFamily: "Roboto Mono", fontSize: 11 }} contentStyle={{ fontFamily: "Roboto Mono", fontSize: 12, borderRadius: 6 }} />
+          <XAxis dataKey="label" tick={<CalTick />} interval="preserveStartEnd" minTickGap={gran === "m" ? 18 : 34} height={gran === "m" ? 22 : 32} />
+          <YAxis yAxisId="cum" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} tickFormatter={(v) => moneyK(v)} width={58} tickCount={8}
+            label={{ value: "AED — cumulative", angle: -90, position: "insideLeft", style: { fontSize: 10, fontFamily: "Roboto", fill: "#5B6770" } }} />
+          <YAxis yAxisId="per" orientation="right" tick={{ fontSize: 10, fontFamily: "Roboto Mono" }} tickFormatter={(v) => moneyK(v)} width={58} tickCount={8}
+            label={{ value: "AED — " + (gran === "m" ? "monthly" : "weekly"), angle: 90, position: "insideRight", style: { fontSize: 10, fontFamily: "Roboto", fill: "#5B6770" } }} />
+          <Tooltip formatter={(v, n) => [money(v), ({ netPlan: "Planned net (period)", netAct: "Actual net (period)", projPlan: "Projects planned (period)", projAct: "Projects actual (period)", ohPlan: "OH planned (period)", ohAct: "OH actual (period)", projected: "Cumulative — re-forecast", actual: "Cumulative — actual", forecast: "Cumulative — planned" })[n] || n]} labelStyle={{ fontFamily: "Roboto Mono", fontSize: 11 }} contentStyle={{ fontFamily: "Roboto Mono", fontSize: 12, borderRadius: 6 }} />
           {zeroLine && <ReferenceLine yAxisId="cum" y={0} stroke="#C0392B" strokeDasharray="2 3" />}
+          {qLines.map((ql) => <ReferenceLine key={ql.label + ql.q} yAxisId="cum" x={ql.label} stroke="#B9C2CB" strokeDasharray="4 4" label={{ value: ql.q, fontSize: 9, fill: "#8A97A5", position: "insideTopLeft" }} />)}
           <ReferenceLine yAxisId="cum" x={fmtWk(CUR_WK)} stroke="#E89B00" strokeWidth={2} label={{ value: "now", fontSize: 10, fill: "#8A5C00", position: "top" }} />
-          <Bar yAxisId="per" dataKey="netMove" fill="#E8A33D" fillOpacity={0.45} name="netMove" />
-          <Line yAxisId="cum" type="monotone" dataKey="forecast" stroke="#1E5AA8" strokeDasharray="6 4" dot={false} strokeWidth={1.6} name="forecast" />
-          <Line yAxisId="cum" type="monotone" dataKey="projected" stroke="#8A97A5" strokeDasharray="3 3" dot={false} strokeWidth={1.4} name="projected" />
-          <Area yAxisId="cum" type="monotone" dataKey="actual" stroke="#0A235B" fill="#0A235B22" dot={false} strokeWidth={2.4} name="actual" connectNulls={false} />
+          {split ? (
+            <>
+              {showPlan && <Bar yAxisId="per" stackId="plan" dataKey="projPlan" fill="#1E5AA8" fillOpacity={0.35} name="projPlan" />}
+              {showPlan && <Bar yAxisId="per" stackId="plan" dataKey="ohPlan" fill="#8A97A5" fillOpacity={0.5} name="ohPlan" />}
+              {showAct && <Bar yAxisId="per" stackId="act" dataKey="projAct" fill="#E8A33D" fillOpacity={0.6} name="projAct" />}
+              {showAct && <Bar yAxisId="per" stackId="act" dataKey="ohAct" fill="#B3402E" fillOpacity={0.55} name="ohAct" />}
+            </>
+          ) : (
+            <>
+              {showPlan && <Bar yAxisId="per" dataKey="netPlan" fill="#1E5AA8" fillOpacity={0.35} name="netPlan" />}
+              {showAct && <Bar yAxisId="per" dataKey="netAct" fill="#E8A33D" fillOpacity={0.6} name="netAct" />}
+            </>
+          )}
+          {showPlan && <Line yAxisId="cum" type="monotone" dataKey="forecast" stroke="#1E5AA8" strokeDasharray="6 4" dot={false} strokeWidth={1.6} name="forecast" />}
+          {md === "both" && <Line yAxisId="cum" type="monotone" dataKey="projected" stroke="#8A97A5" strokeDasharray="3 3" dot={false} strokeWidth={1.4} name="projected" />}
+          {showAct && <Area yAxisId="cum" type="monotone" dataKey="actual" stroke="#0A235B" fill="#0A235B22" dot={false} strokeWidth={2.4} name="actual" connectNulls={false} />}
         </ComposedChart>
       </ResponsiveContainer>
     </div>
@@ -1171,6 +1238,8 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
   const [gran, setGran] = useState("w");
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
+  const [mode, setMode] = useState("both");
+  const [mDetail, setMDetail] = useState(null);
   const nowYr = new Date().getFullYear();
   const HZS = [[4, "1 mo"], [13, "3 mo"], [26, "6 mo"], [52, "12 mo"], ["ytd", "YTD"], [0, "All"]];
   const range = periodRange(yr, per) || (yr !== nowYr ? { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) }
@@ -1278,11 +1347,12 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
             <div className="seg"><button className={!per && hz === 0 && yr === nowYr ? "on" : ""} onClick={() => { setPer(null); setHz(0); setYr(nowYr); }}>Whole project</button></div>
             <YearPager yr={yr} setYr={setYr} />
             <PeriodSeg per={per} setPer={setPer} />
+            <ModeSeg mode={mode} setMode={setMode} />
             <GranSeg gran={gran} setGran={setGran} />
             {yr === nowYr && !per && <div className="seg">{HZS.filter(([w]) => w !== 0).map(([w, l]) => <button key={w} className={hz === w ? "on" : ""} onClick={() => setHz(w)}>{l}</button>)}</div>}
           </div>
         </div>
-        <CashChart curve={curveWin} zeroLine />
+        <CashChart curve={curveWin} zeroLine gran={gran} mode={mode} />
         <ChartLegend />
       </div>
 
@@ -1304,18 +1374,104 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
   );
 }
 
-function CompanyMarginStrip({ projects, overheads, ohRate, yr }) {
-  const s = aggSummaries(projects, ohRate);
-  const Y = String(yr);
-  const inYr = (k) => k.slice(0, 4) === Y;
-  const ytd = (k) => inYr(k) && k <= CUR_WK;
-  const sumW = (m, f) => Object.entries(m || {}).reduce((a2, [k, v]) => a2 + (f(k) ? v : 0), 0);
+function Section({ title, children, defaultOpen = true }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <button onClick={() => setOpen(!open)} style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: "2px 0 8px", width: "100%" }}>
+        <span style={{ fontFamily: "var(--disp)", fontWeight: 700, fontSize: 17, color: "var(--ink)" }}>{title}</span>
+        <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink2)" }}>{open ? "▾" : "▸ show"}</span>
+        <span style={{ flex: 1, borderBottom: "1px solid var(--line)" }} />
+      </button>
+      {open && children}
+    </div>
+  );
+}
+function invoiceSplit(projects) {
+  const now = new Date(CUR_WK);
+  const ageOf = (i) => Math.floor((now - new Date(i.date)) / 86400000);
+  const ar = { invoiced: 0, paid: 0, pendDue: 0, pendOver: 0 };
+  const ap = { invoiced: 0, paid: 0, pendDue: 0, pendOver: 0 };
+  projects.forEach((p) => {
+    const terms = p.paymentTerms || 45;
+    (p.clientInvoices || []).forEach((i) => {
+      ar.invoiced += i.amount;
+      if (i.status === "paid") ar.paid += i.amount;
+      else if (ageOf(i) > terms) ar.pendOver += i.amount;
+      else ar.pendDue += i.amount;
+    });
+    p.packages.forEach((pk) => (pk.invoices || []).forEach((i) => {
+      ap.invoiced += i.amount;
+      if (i.status === "paid") ap.paid += i.amount;
+      else if (ageOf(i) > 30) ap.pendOver += i.amount;
+      else ap.pendDue += i.amount;
+    }));
+  });
+  return { ar, ap };
+}
+function InvoicingPanel({ projects }) {
+  const [openAR, setOpenAR] = useState(false);
+  const [openAP, setOpenAP] = useState(false);
+  const { ar, ap } = invoiceSplit(projects);
+  const Row = ({ label, open, setOpen, t }) => (
+    <div style={{ borderBottom: "1px solid var(--line)", padding: "6px 0" }}>
+      <button onClick={() => setOpen(!open)} style={{ display: "flex", justifyContent: "space-between", width: "100%", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+        <span style={{ fontSize: 13, fontWeight: 600 }}>{open ? "▾ " : "▸ "}{label} — invoiced to date</span>
+        <span className="mono" style={{ fontSize: 14, fontWeight: 700 }}>{money(t.invoiced)}</span>
+      </button>
+      {open && (
+        <div style={{ padding: "6px 0 2px 16px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}><span style={{ fontSize: 12 }}>Paid</span><span className="mono" style={{ fontSize: 12, color: "var(--green)" }}>{money(t.paid)}</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}><span style={{ fontSize: 12 }}>Pending — within terms</span><span className="mono" style={{ fontSize: 12 }}>{money(t.pendDue)}</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}><span style={{ fontSize: 12 }}>Pending — overdue</span><span className="mono" style={{ fontSize: 12, color: "var(--red)" }}>{money(t.pendOver)}</span></div>
+        </div>
+      )}
+    </div>
+  );
+  return (
+    <div className="panel">
+      <h2>Invoicing</h2>
+      <Row label="Receivables (client)" open={openAR} setOpen={setOpenAR} t={ar} />
+      <Row label="Payables (subcontractors & suppliers)" open={openAP} setOpen={setOpenAP} t={ap} />
+      <p className="note">Overdue = unpaid beyond terms (client terms per project; vendors 30 days). Corporate OH payments have no invoice register — actuals are recorded on the Overheads tab.</p>
+    </div>
+  );
+}
+function MarginDetailModal({ projects, title, onClose }) {
+  const { ar, ap } = invoiceSplit(projects);
+  const recd = projects.reduce((a, p) => a + p.cashIn.reduce((x, l) => x + sumMap(l.ac), 0), 0);
+  const paid = projects.reduce((a, p) => a + p.packages.filter((pk) => !isInternalPkg(pk)).reduce((x, pk) => x + pk.lines.reduce((y, l) => y + sumMap(l.ac), 0), 0), 0);
+  const CR = ({ l, v, c }) => <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid var(--line)" }}><span style={{ fontSize: 13 }}>{l}</span><span className="mono" style={{ fontSize: 13, color: c }}>{money(v)}</span></div>;
+  return (
+    <Modal title={title} onClose={onClose}>
+      <h2 style={{ fontSize: 13, marginBottom: 4 }}>Cash in — clients</h2>
+      <CR l="Invoiced to date" v={ar.invoiced} />
+      <CR l="Received (paid)" v={ar.paid} c="var(--green)" />
+      <CR l="Pending — within terms" v={ar.pendDue} />
+      <CR l="Pending — overdue" v={ar.pendOver} c="var(--red)" />
+      <CR l="Cash received per sheets" v={recd} />
+      <div style={{ height: 10 }} />
+      <h2 style={{ fontSize: 13, marginBottom: 4 }}>Cash out — external costs</h2>
+      <CR l="Vendor invoices logged" v={ap.invoiced} />
+      <CR l="Paid" v={ap.paid} c="var(--green)" />
+      <CR l="Pending — within terms" v={ap.pendDue} />
+      <CR l="Pending — overdue" v={ap.pendOver} c="var(--red)" />
+      <CR l="Cash paid per sheets" v={paid} />
+      <div className="mfoot"><button className="btn" onClick={onClose}>Close</button></div>
+    </Modal>
+  );
+}
+function CompanyMarginStrip({ projects, overheads, ohRate, yr, per, onDetail }) {
+  const win = periodRange(yr, per) || { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) };
+  const inWin = (k) => k >= win.from && k <= win.to;
+  const ytd = (k) => inWin(k) && k <= CUR_WK;
+  const sumW = (m2, f) => Object.entries(m2 || {}).reduce((a2, [k, v]) => a2 + (f(k) ? v : 0), 0);
   let revPlan = 0, costPlan = 0, recdYtd = 0, paidYtd = 0;
   projects.forEach((p) => {
-    p.cashIn.forEach((l) => { if ((l.voStatus || "approved") !== "rejected") { revPlan += sumW(l.fc, inYr); recdYtd += sumW(l.ac, ytd); } });
-    p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => { costPlan += sumW(l.fc, inYr); paidYtd += sumW(l.ac, ytd); }));
+    p.cashIn.forEach((l) => { if ((l.voStatus || "approved") !== "rejected") { revPlan += sumW(l.fc, inWin); recdYtd += sumW(l.ac, ytd); } });
+    p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => { costPlan += sumW(l.fc, inWin); paidYtd += sumW(l.ac, ytd); }));
   });
-  const ohBudget = overheads.reduce((a2, l) => a2 + sumW(l.fc, inYr), 0);
+  const ohBudget = overheads.reduce((a2, l) => a2 + sumW(l.fc, inWin), 0);
   const ohActYtd = overheads.reduce((a2, l) => a2 + sumW(l.ac, ytd), 0);
   const alloc = recdYtd * ohRate;
   const recovery = alloc - ohActYtd;
@@ -1323,46 +1479,28 @@ function CompanyMarginStrip({ projects, overheads, ohRate, yr }) {
   const liveNet = recdYtd - paidYtd - ohActYtd;
   const pcn = (amt, base) => (base ? (amt / base) * 100 : null);
   const fmt = (p) => (p === null ? "—" : p.toFixed(1) + "%");
-  const contractP = pcn(s.marginOrig, s.head.base);
-  const afaP = pcn(s.marginAFA, s.head.anticipated);
-  const drift = contractP !== null && afaP !== null ? afaP - contractP : null;
   const planNetP = pcn(planNet, revPlan);
   const liveNetP = pcn(liveNet, recdYtd);
+  const perLabel = per ? per + " " + yr : "FY" + yr;
   return (
     <div className="mstrip">
-      <div className="mtile">
-        <div className="mk">Contracted margin · portfolio</div>
-        <div className="mp">{fmt(contractP)}</div>
-        <div className="mv">{money(s.marginOrig)}</div>
-        <div className="ma">gross · in {moneyK(s.head.base)} / out {moneyK(s.sub.base)}</div>
-      </div>
-      <div className="mtile">
-        <div className="mk">Anticipated margin · incl VO's</div>
-        <div className="mp">{fmt(afaP)}
-          {drift !== null && Math.abs(drift) >= 0.05 && (
-            <span className="mdelta" style={{ background: drift >= 0 ? "#1F7A5C" : "#B3402E", color: "#fff" }}>{(drift >= 0 ? "+" : "") + drift.toFixed(1) + "pt"}</span>
-          )}
-        </div>
-        <div className="mv">{money(s.marginAFA)}</div>
-        <div className="ma">gross · in {moneyK(s.head.anticipated)} / out {moneyK(s.sub.anticipated)}</div>
-      </div>
-      <div className={"mtile hero"}>
-        <div className="mk">Planned company margin · FY{yr}</div>
+      <div className="mtile hero" style={{ cursor: "pointer" }} onClick={() => onDetail("Current contracted margin — " + perLabel)}>
+        <div className="mk">Current contracted margin · {perLabel}</div>
         <div className="mp">{fmt(planNetP)}</div>
         <div className="mv">{money(planNet)}</div>
-        <div className="ma">rev {moneyK(revPlan)} − costs {moneyK(costPlan)} − OH budget {moneyK(ohBudget)}</div>
+        <div className="ma">contracted works & known costs incl forecast · rev {moneyK(revPlan)} − costs {moneyK(costPlan)} − OH {moneyK(ohBudget)} · tap for invoiced/paid detail</div>
       </div>
-      <div className={"mtile" + (liveNetP !== null && liveNetP < (planNetP ?? 0) ? " bad" : " good")}>
-        <div className="mk">Live company margin · YTD cash</div>
+      <div className={"mtile" + (liveNetP !== null && liveNetP < (planNetP ?? 0) ? " bad" : " good")} style={{ cursor: "pointer" }} onClick={() => onDetail("Current live margin — cash to date")}>
+        <div className="mk">Current live margin · cash to date</div>
         <div className="mp">{fmt(liveNetP)}</div>
         <div className="mv">{money(liveNet)}</div>
-        <div className="ma">recd {moneyK(recdYtd)} − paid {moneyK(paidYtd)} − actual OH {moneyK(ohActYtd)}</div>
+        <div className="ma">actual cash · recd {moneyK(recdYtd)} − paid {moneyK(paidYtd)} − actual OH {moneyK(ohActYtd)} · tap for invoiced/paid detail</div>
       </div>
-      <div className={"mtile"} style={{ borderTopColor: recovery >= 0 ? "var(--green)" : "var(--red)" }}>
-        <div className="mk">OH recovery · YTD</div>
+      <div className="mtile" style={{ borderTopColor: recovery >= 0 ? "var(--green)" : "var(--red)" }}>
+        <div className="mk">OH recovery · to date</div>
         <div className="mp" style={{ color: recovery >= 0 ? "var(--green)" : "var(--red)" }}>{(recovery >= 0 ? "+" : "") + moneyK(recovery)}</div>
         <div className="mv" style={{ fontSize: 16 }}>allocated {money(alloc)}</div>
-        <div className="ma">{(ohRate * 100).toFixed(0)}% on cash recd vs actual OH spent {moneyK(ohActYtd)} · FY budget {moneyK(ohBudget)}</div>
+        <div className="ma">{(ohRate * 100).toFixed(0)}% on cash recd vs actual OH {moneyK(ohActYtd)} · budget {moneyK(ohBudget)}</div>
       </div>
     </div>
   );
@@ -2029,6 +2167,45 @@ function ExcelImport({ projects, onImport, onClose }) {
   );
 }
 
+function ProjectsRollup({ projects, ohRate }) {
+  const [gran, setGran] = useState("w");
+  const [mode, setMode] = useState("both");
+  const [yr, setYr] = useState(new Date().getFullYear());
+  const [per, setPer] = useState(null);
+  const [all, setAll] = useState(true);
+  const nowYr = new Date().getFullYear();
+  const agg = {};
+  projects.forEach((p) => {
+    const s = projectSeries(p, CUR_WK);
+    Object.entries(s).forEach(([k, a2]) => {
+      const t = (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0 });
+      t.fcIn += a2.fcIn; t.fcOut += a2.fcOut; t.acIn += a2.acIn; t.acOut += a2.acOut; t.prIn += a2.prIn; t.prOut += a2.prOut;
+    });
+  });
+  const curve = seriesToCurve(agg);
+  const range = all ? null : (periodRange(yr, per) || { from: wkKey(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) });
+  const curveW = range ? curve.filter((c) => c.wk >= range.from && c.wk <= range.to) : curve;
+  const curveWin = gran === "m" ? toMonthly(curveW) : curveW;
+  return (
+    <Section title="All projects — rolled up">
+      <MarginStrip summary={aggSummaries(projects, ohRate)} ohRate={ohRate} />
+      <div className="panel">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+          <h2>Cashflow — all projects, planned vs actual (excl corporate OH)</h2>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div className="seg"><button className={all ? "on" : ""} onClick={() => { setAll(true); setPer(null); setYr(nowYr); }}>All time</button></div>
+            <YearPager yr={yr} setYr={(y) => { setYr(y); setAll(false); }} />
+            <PeriodSeg per={per} setPer={(p) => { setPer(p); setAll(false); }} />
+            <ModeSeg mode={mode} setMode={setMode} />
+            <GranSeg gran={gran} setGran={setGran} />
+          </div>
+        </div>
+        <CashChart curve={curveWin} zeroLine height={260} gran={gran} mode={mode} />
+        <ChartLegend />
+      </div>
+    </Section>
+  );
+}
 function ProjectsList({ projects, users, openProject, canCreate, canImport, onCreate, onImport, data, onWizardSubmit, isMgmt, role }) {
   const [imp, setImp] = useState(false);
   const [modal, setModal] = useState(false);
@@ -2042,6 +2219,7 @@ function ProjectsList({ projects, users, openProject, canCreate, canImport, onCr
         </div>
       </div>
       {imp && <ExcelImport projects={projects} onImport={onImport} onClose={() => setImp(false)} />}
+      <ProjectsRollup projects={projects} ohRate={data.settings.ohRate ?? 0.12} />
       <div className="panel" style={{ padding: 0 }}>
         <table className="tbl">
           <thead><tr><th>Code</th><th>Project</th><th>Client</th><th className="mono">Value in</th><th className="mono">Cash to date</th><th className="mono">Proj. final</th><th>Vs plan</th><th>Team</th></tr></thead>
@@ -2087,7 +2265,7 @@ function overheadsCurve(overheads) {
     cf += fcv; cp += prv;
     let actual = null;
     if (k <= CUR_WK) { ca += acv; actual = ca; }
-    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netMove: prv };
+    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual, netMove: prv, netPlan: fcv, netAct: k <= CUR_WK ? acv : null };
   });
 }
 function OverheadsView({ data, setData, ohRateBtn }) {
@@ -2096,6 +2274,7 @@ function OverheadsView({ data, setData, ohRateBtn }) {
   const [cw, setCw] = useState("out");
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
+  const [mode, setMode] = useState("both");
   const nowYr = new Date().getFullYear();
   const curve = overheadsCurve(data.overheads);
   let winFrom, winTo;
@@ -2140,11 +2319,12 @@ function OverheadsView({ data, setData, ohRateBtn }) {
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <YearPager yr={yr} setYr={setYr} />
             <PeriodSeg per={per} setPer={setPer} />
+            <ModeSeg mode={mode} setMode={setMode} />
             {yr === nowYr && !per && <div className="seg">{[["out", "Outlook"], ["ytd", "YTD"]].map(([v, l]) => <button key={v} className={cw === v ? "on" : ""} onClick={() => setCw(v)}>{l}</button>)}</div>}
             <GranSeg gran={gran} setGran={setGran} />
           </div>
         </div>
-        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} height={260} />
+        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} height={260} gran={gran} mode={mode} />
         <ChartLegend />
       </div>
       <div className="gridwrap">
@@ -2204,6 +2384,7 @@ function CorporateView({ data, setData, me, canProfit }) {
   const [cw, setCw] = useState("out");
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
+  const [mode, setMode] = useState("both");
   const nowYr = new Date().getFullYear();
   const curve = corporateCurve(data, CUR_WK);
   let winFrom, winTo;
@@ -2250,16 +2431,17 @@ function CorporateView({ data, setData, me, canProfit }) {
       </div>
       <div className="panel">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-          <h2>Bank position — planned baseline vs actual{per ? " · " + per + " " + yr : yr !== nowYr ? " · FY" + yr : cw === "ytd" ? " · year to date" : ""}</h2>
+          <h2>Cashflow — planned baseline vs actual{per ? " · " + per + " " + yr : yr !== nowYr ? " · FY" + yr : cw === "ytd" ? " · year to date" : ""}</h2>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <YearPager yr={yr} setYr={setYr} />
             <PeriodSeg per={per} setPer={setPer} />
+            <ModeSeg mode={mode} setMode={setMode} />
             {yr === nowYr && !per && <div className="seg">{[["out", "Outlook"], ["ytd", "YTD"]].map(([v, l]) => <button key={v} className={cw === v ? "on" : ""} onClick={() => setCw(v)}>{l}</button>)}</div>}
             <GranSeg gran={gran} setGran={setGran} />
           </div>
         </div>
-        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} zeroLine height={260} />
-        <ChartLegend />
+        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} zeroLine height={260} gran={gran} mode={mode} />
+        <ChartLegend split />
       </div>
       <div className="gridwrap">
         <table className="cg">
@@ -2287,7 +2469,7 @@ function CorporateView({ data, setData, me, canProfit }) {
               </tr>
             ))}
             <tr className="tot">
-              <td className="rowname">Bank balance (projected)</td>
+              <td className="rowname">Cash balance (projected)</td>
               {wks.map((k) => <td key={k} className={"num" + (k === CUR_WK ? " cur" : "")} style={balByWk[k] < 0 ? { color: "var(--red)" } : null}>{moneyK(balByWk[k])}</td>)}
             </tr>
           </tbody>
@@ -2382,6 +2564,7 @@ function Dashboard({ data, projects, openProject, scope }) {
   const [yr, setYr] = useState(new Date().getFullYear());
   const [per, setPer] = useState(null);
   const [agedMin, setAgedMin] = useState(0);
+  const [mode, setMode] = useState("both");
   const nowYr = new Date().getFullYear();
   const isYtd = hz === "ytd";
   const hzLabel = HZS.find(([w]) => w === hz)[1];
@@ -2415,11 +2598,15 @@ function Dashboard({ data, projects, openProject, scope }) {
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <YearPager yr={yr} setYr={setYr} />
           <PeriodSeg per={per} setPer={setPer} />
+          <ModeSeg mode={mode} setMode={setMode} />
           <GranSeg gran={gran} setGran={setGran} />
           {yr === nowYr && !per && <div className="seg">{HZS.map(([w, l]) => <button key={w} className={hz === w ? "on" : ""} onClick={() => setHz(w)}>{l}</button>)}</div>}
         </div>
       </div>
-      <CompanyMarginStrip projects={projects} overheads={data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} />
+      <Section title="Margin">
+        <CompanyMarginStrip projects={projects} overheads={data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} per={per} onDetail={(t) => setMDetail(t)} />
+      </Section>
+      <Section title="Payments">
       {(() => {
         const unpaidAR = projects.flatMap((p) => (p.clientInvoices || []).filter((i) => i.status !== "paid"));
         const unpaidAP = projects.flatMap((p) => p.packages.flatMap((pk) => (pk.invoices || []).filter((i) => i.status !== "paid")));
@@ -2449,6 +2636,10 @@ function Dashboard({ data, projects, openProject, scope }) {
           </div>
         );
       })()}
+      <InvoicingPanel projects={projects} />
+      </Section>
+      {mDetail && <MarginDetailModal projects={projects} title={mDetail} onClose={() => setMDetail(null)} />}
+      <Section title="Forecast">
       <div className="cards">
         <div className="card"><div className="k">Still to bill</div><div className="v">{(() => { const s2 = aggSummaries(projects, data.settings.ohRate ?? 0.12); return moneyK(s2.head.anticipated - s2.invIn); })()}</div><div className="d">anticipated final accounts − invoiced to date</div></div>
         <div className="card"><div className="k">Invoiced, awaiting receipt</div><div className="v pos">{money(projects.reduce((a, p) => a + clientUnpaid(p), 0))}</div><div className="d">{(() => { const b = projects.reduce((a, p) => addBuckets(a, ageBuckets(p.clientInvoices)), { ...ZERO_B }); return <>30/60/90+: {moneyK(b.b30)} / {moneyK(b.b60)} / <span style={{ color: b.b90 > 0 ? "var(--red)" : undefined }}>{moneyK(b.b90)}</span></>; })()}</div></div>
@@ -2459,10 +2650,11 @@ function Dashboard({ data, projects, openProject, scope }) {
         <div className="card"><div className="k">{isYtd ? "YTD trough" : hzLabel + " trough"}</div><div className={"v " + (trough >= 0 ? "pos" : "neg")}>{trough === Infinity ? "—" : money(trough)}</div><div className="d">{troughPt ? "w/c " + troughPt.label : ""}</div></div>
       </div>
       <div className="panel">
-        <h2>{scope === "my" ? "My projects net position" : projOnly ? "Projects net position" : "Bank position"} — {per ? per + " " + yr : yr !== nowYr ? "FY" + yr : isYtd ? "year to date" : "next " + hzLabel + " (+8 wks history)"}</h2>
-        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} zeroLine height={260} />
-        <ChartLegend />
+        <h2>{scope === "my" ? "My projects net position" : projOnly ? "Projects net position" : "Cashflow"} — {per ? per + " " + yr : yr !== nowYr ? "FY" + yr : isYtd ? "year to date" : "next " + hzLabel + " (+8 wks history)"}</h2>
+        <CashChart curve={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} zeroLine height={260} gran={gran} mode={mode} />
+        <ChartLegend split={!projOnly} />
       </div>
+      </Section>
       <div className="panel" style={{ padding: 0 }}>
         <h2 style={{ padding: "14px 16px 0" }}>Invoiced vs paid — by project</h2>
         <div className="gridwrap">
