@@ -40,20 +40,19 @@
 })();
 </script>
 <script type="text/babel" data-presets="react">
-const { useState, useEffect, useMemo } = React;
-const {
+import { useState, useEffect, useMemo } from "react";
+import * as XLSX from "xlsx";
+import {
   ComposedChart, Line, Area, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ReferenceArea,
   ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell,
-} = Recharts;
-/* XLSX provided by xlsx.full.min.js global */
-
+} from "recharts";
 
 /* ============================================================
    NORTHFLOW — project & corporate cashflow for fit-out contractors
    Prototype v1.0 — shared storage, role-gated UI
    ============================================================ */
 
-const APP_VERSION = "2.49";
+const APP_VERSION = "2.50";
 const STORE_KEY = "flowline:data:v1"; // key kept for data continuity
 const NF_MARK = "data:image/png;base64,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";
 
@@ -77,6 +76,7 @@ const CUR_WK = wkKey(new Date());
 
 /* ---------------- money ---------------- */
 const CUR = "AED";
+let ACTUALS_THROUGH = null; // finance cutoff, set in App each render
 let VAT_F = 1; // display factor: 1 (excl) or 1+vatRate (incl); set in App each render
 function money(v) {
   if (v === undefined || v === null || isNaN(v)) return "—";
@@ -157,47 +157,143 @@ const sumMap = (m) => Object.values(m || {}).reduce((a, b) => a + b, 0);
 // Re-forecast a finite line: actualised weeks keep actuals; the unspent
 // balance (value − actuals to date) is re-spread over remaining forecast
 // weeks pro-rata to the original profile. Slipped weeks roll forward.
-function lineProj(line, curWk) {
-  const fc = line.fc || {}, ac = line.ac || {};
+function lineProj(line, curWk = CUR_WK) {
+  // Projection per approved brief §4: closed weeks = actual only (0 if missing);
+  // current open week = actual + remaining current forecast; future = current forecast.
+  // NO automatic redistribution, scaling, or balancing. Ever.
+  const fcC = line.currentFc || {}, ac = line.ac || {};
   const proj = {};
-  const allWks = new Set([...Object.keys(fc), ...Object.keys(ac)]);
-  if (line.recurring) {
-    allWks.forEach((k) => {
-      proj[k] = k < curWk ? (ac[k] !== undefined ? ac[k] : (fc[k] || 0)) : (ac[k] !== undefined ? ac[k] : (fc[k] || 0));
+  const wks = new Set([...Object.keys(fcC), ...Object.keys(ac), ...Object.keys(line.baselineFc || {})]);
+  wks.forEach((k) => {
+    if (line.inactive) { proj[k] = k <= curWk && ac[k] !== undefined ? ac[k] : 0; return; }
+    if (k < curWk) proj[k] = ac[k] !== undefined ? ac[k] : 0;
+    else if (k === curWk) proj[k] = (ac[k] !== undefined ? ac[k] : 0) + (fcC[k] || 0);
+    else proj[k] = fcC[k] || 0;
+  });
+  return { proj };
+}
+const RECON_TOL = 0.5;
+function lineStatus(line, curWk = CUR_WK) {
+  if (line.recurring) return { unallocated: null, status: null };
+  const ac = line.ac || {}, fcC = line.inactive ? {} : (line.currentFc || {});
+  const acSum = Object.values(ac).reduce((a, v) => a + v, 0);
+  const fcFwd = Object.entries(fcC).reduce((a, [k, v]) => a + (k >= curWk ? v : 0), 0);
+  const unallocated = (line.value || 0) - acSum - fcFwd;
+  const status = Math.abs(unallocated) <= RECON_TOL ? "reconciled" : unallocated > 0 ? "unallocated" : "overallocated";
+  return { unallocated, status, acSum, fcFwd };
+}
+function lineExceptions(line, curWk = CUR_WK, actualsThrough = null) {
+  const fcC = line.currentFc || {}, bl = line.baselineFc || {}, ac = line.ac || {};
+  const slipped = [], confirmedZero = [], actualMissing = [];
+  const wks = new Set([...Object.keys(fcC), ...Object.keys(bl)]);
+  wks.forEach((k) => {
+    if (k >= curWk) return;
+    const expected = (fcC[k] || 0) !== 0 || (bl[k] || 0) !== 0 || line.recurring;
+    if (ac[k] === 0) { if (expected) confirmedZero.push(k); return; }
+    if (ac[k] === undefined && expected) {
+      slipped.push(k);
+      if (actualsThrough && k <= actualsThrough) actualMissing.push(k);
+    }
+  });
+  const cwAc = ac[curWk], cwFc = fcC[curWk];
+  const signConflict = cwAc !== undefined && cwAc !== 0 && (cwFc || 0) !== 0 && Math.sign(cwAc) !== Math.sign(cwFc);
+  return { slipped, confirmedZero, actualMissing, signConflict };
+}
+function projectExceptions(p, curWk = CUR_WK, actualsThrough = null) {
+  let slipped = 0, missing = 0, unrec = 0, over = 0, conflicts = 0;
+  const scan = (l) => {
+    if (l.inactive) return;
+    const ex = lineExceptions(l, curWk, actualsThrough);
+    slipped += ex.slipped.length; missing += ex.actualMissing.length; if (ex.signConflict) conflicts++;
+    const st = lineStatus(l, curWk);
+    if (st.status === "unallocated") unrec++; if (st.status === "overallocated") over++;
+  };
+  p.cashIn.forEach(scan);
+  p.packages.forEach((pk) => pk.lines.forEach(scan));
+  return { slipped, missing, unrec, over, conflicts, total: slipped + missing + unrec + over + conflicts };
+}
+function ohRateFor(settings, yr) {
+  const map = settings.ohRatesByFY || {};
+  const y = String(yr);
+  if (map[y] !== undefined) return map[y];
+  const earlier = Object.keys(map).filter((k) => k <= y).sort().pop();
+  if (earlier) return map[earlier];
+  return settings.ohRate ?? 0.12;
+}
+function invoiceStatus(inv, today = new Date()) {
+  const t = new Date(today); t.setHours(12, 0, 0, 0);
+  const due = new Date((inv.dueDate || inv.date) + "T12:00:00");
+  const daysOverdue = Math.floor((t - due) / DAY);
+  if (inv.status === "paid") return { daysOverdue, bucket: "paid" };
+  const bucket = daysOverdue <= 0 ? "notdue" : daysOverdue <= 30 ? "od30" : daysOverdue <= 60 ? "od60" : daysOverdue <= 90 ? "od90" : "od90p";
+  return { daysOverdue, bucket };
+}
+function overdueBuckets(invoices, today = new Date()) {
+  const out = { notdue: 0, od30: 0, od60: 0, od90: 0, od90p: 0 };
+  (invoices || []).forEach((i) => {
+    if (i.status === "paid" || !i.amount) return;
+    out[invoiceStatus(i, today).bucket] += i.amount;
+  });
+  return out;
+}
+function addDaysISO(dateStr, days) {
+  const d = new Date(dateStr + "T12:00:00"); d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+function migrateV2(d) {
+  const cloneMap = (m) => JSON.parse(JSON.stringify(m || {}));
+  const migLine = (l) => {
+    if (l.baselineFc === undefined) l.baselineFc = cloneMap(l.fc);
+    if (l.currentFc === undefined) l.currentFc = cloneMap(l.fc);
+    if ("fc" in l) delete l.fc;
+    l.ac = l.ac || {};
+    if (l.inactive === undefined) l.inactive = false;
+  };
+  d.projects.forEach((p) => {
+    p.cashIn.forEach(migLine);
+    p.packages.forEach((pk) => {
+      pk.lines.forEach(migLine);
+      (pk.invoices || []).forEach((i) => {
+        if (!i.dueDate) i.dueDate = addDaysISO(i.date, 30);
+        if (!i.expectedCashDate) i.expectedCashDate = i.dueDate;
+      });
     });
-    return { proj, remaining: null };
-  }
-  const isActualised = (k) => k < curWk || ac[k] !== undefined;
-  let acSum = 0;
-  Object.keys(ac).forEach((k) => { acSum += ac[k]; });
-  const remaining = (line.value || 0) - acSum;
-  const futureWks = [...allWks].filter((k) => !isActualised(k));
-  const futureFcSum = futureWks.reduce((a, k) => a + (fc[k] || 0), 0);
-  allWks.forEach((k) => { if (isActualised(k)) proj[k] = ac[k] !== undefined ? ac[k] : 0; });
-  if (futureFcSum > 0.5) {
-    const scale = remaining / futureFcSum;
-    futureWks.forEach((k) => { proj[k] = Math.round((fc[k] || 0) * scale); });
-  } else if (Math.abs(remaining) > 0.5) {
-    proj[curWk] = (proj[curWk] || 0) + Math.round(remaining); // nothing left in plan: land balance now
-  }
-  return { proj, remaining };
+    (p.clientInvoices || []).forEach((i) => {
+      if (!i.dueDate) i.dueDate = addDaysISO(i.date, p.paymentTerms || 45);
+      if (!i.expectedCashDate) i.expectedCashDate = i.dueDate;
+    });
+    if (p.forecastUpdatedAt === undefined) p.forecastUpdatedAt = null;
+    if (p.actualsUpdatedThrough === undefined) p.actualsUpdatedThrough = null;
+    if (p.lastReviewedAt === undefined) p.lastReviewedAt = null;
+  });
+  (d.overheads || []).forEach((l) => { migLine(l); l.recurring = true; });
+  const s = d.settings;
+  if (!s.ohRatesByFY) s.ohRatesByFY = { [String(new Date().getFullYear())]: s.ohRate ?? 0.12 };
+  if (s.actualsThrough === undefined) s.actualsThrough = null;
+  s.schemaVersion = 2;
+  return d;
 }
 
-function projectLines(p) {
+function projectLines(p, opts = {}) {
+  const cashOnly = opts.cashOnly !== false; // default: exclude notional internal OH from cash
   const inn = p.cashIn.map((l) => ({ ...l, dir: "in", group: "Cash in" }));
   const out = [];
-  p.packages.forEach((pkg) => pkg.lines.forEach((l) => out.push({ ...l, dir: "out", group: pkg.name, pkgId: pkg.id })));
+  p.packages.forEach((pkg) => {
+    if (cashOnly && isInternalPkg(pkg)) return; // notional OH allocation is not project cash (brief §10)
+    pkg.lines.forEach((l) => out.push({ ...l, dir: "out", group: pkg.name, pkgId: pkg.id, isInternal: isInternalPkg(pkg) }));
+  });
   return { inn, out, all: [...inn, ...out] };
 }
 
 // per-week aggregates for a project
-function projectSeries(p, curWk) {
-  const { inn, out } = projectLines(p);
-  const agg = {}; // wk -> {fcIn, fcOut, acIn, acOut, prIn, prOut}
-  const touch = (k) => (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0, ohFc: 0, ohAc: 0 });
+function projectSeries(p, curWk = CUR_WK) {
+  const { inn, out } = projectLines(p); // cashOnly: internal notional OH excluded
+  const agg = {}; // wk -> {blIn, blOut, fcIn, fcOut, acIn, acOut, prIn, prOut}
+  const touch = (k) => (agg[k] = agg[k] || { blIn: 0, blOut: 0, fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0, ohFc: 0, ohAc: 0 });
   const roll = (lines, dir) => lines.forEach((l) => {
     const { proj } = lineProj(l, curWk);
-    Object.entries(l.fc || {}).forEach(([k, v]) => { touch(k)[dir === "in" ? "fcIn" : "fcOut"] += v; });
+    Object.entries(l.baselineFc || {}).forEach(([k, v]) => { touch(k)[dir === "in" ? "blIn" : "blOut"] += v; });
+    Object.entries((l.inactive ? {} : l.currentFc) || {}).forEach(([k, v]) => { if (!l.inactive || k < curWk) touch(k)[dir === "in" ? "fcIn" : "fcOut"] += v; });
     Object.entries(l.ac || {}).forEach(([k, v]) => { touch(k)[dir === "in" ? "acIn" : "acOut"] += v; });
     Object.entries(proj).forEach(([k, v]) => { touch(k)[dir === "in" ? "prIn" : "prOut"] += v; });
   });
@@ -205,17 +301,18 @@ function projectSeries(p, curWk) {
   return agg;
 }
 
-function seriesToCurve(agg) {
+function seriesToCurve(agg, curWk = CUR_WK) {
   const wks = Object.keys(agg).sort();
-  let cf = 0, cp = 0, ca = 0;
+  let co = 0, cf = 0, cp = 0, ca = 0;
   return wks.map((k) => {
     const a = agg[k];
+    co += (a.blIn || 0) - (a.blOut || 0);
     cf += a.fcIn - a.fcOut; cp += a.prIn - a.prOut;
     let actual = null;
-    if (k <= CUR_WK) { ca += a.acIn - a.acOut; actual = ca; }
-    return { wk: k, label: fmtWk(k), forecast: cf, projected: cp, actual,
-      inPlan: a.fcIn, outPlan: -a.fcOut, inAct: k <= CUR_WK ? a.acIn : null, outAct: k <= CUR_WK ? -a.acOut : null,
-      netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null, netMove: a.prIn - a.prOut, netProj: a.prIn - a.prOut };
+    if (k <= curWk) { ca += a.acIn - a.acOut; actual = ca; }
+    return { wk: k, label: fmtWk(k), original: co, forecast: cf, projected: cp, actual,
+      inPlan: a.fcIn, outPlan: -a.fcOut, inAct: k <= curWk ? a.acIn : null, outAct: k <= curWk ? -a.acOut : null,
+      netPlan: a.fcIn - a.fcOut, netAct: k <= curWk ? a.acIn - a.acOut : null, netMove: a.prIn - a.prOut, netProj: a.prIn - a.prOut };
   });
 }
 
@@ -375,37 +472,39 @@ const ACCESS = {
 const accessOf = (role) => ACCESS[role] || ACCESS.qs;
 function corporateAgg(data, curWk, includeOverheads = true) {
   const agg = {}; // wk -> {fcIn, fcOut, acIn, acOut, prIn, prOut}
-  const touch = (k) => (agg[k] = agg[k] || { fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0, ohFc: 0, ohAc: 0 });
+  const touch = (k) => (agg[k] = agg[k] || { blIn: 0, blOut: 0, fcIn: 0, fcOut: 0, acIn: 0, acOut: 0, prIn: 0, prOut: 0, ohFc: 0, ohAc: 0 });
   data.projects.forEach((p) => {
     const s = projectSeries(p, curWk);
     Object.entries(s).forEach(([k, a]) => {
       const t = touch(k);
+      t.blIn += a.blIn || 0; t.blOut += a.blOut || 0;
       t.fcIn += a.fcIn; t.fcOut += a.fcOut; t.acIn += a.acIn; t.acOut += a.acOut; t.prIn += a.prIn; t.prOut += a.prOut;
     });
   });
   if (includeOverheads) data.overheads.forEach((l) => {
     const { proj } = lineProj(l, curWk);
-    Object.entries(l.fc || {}).forEach(([k, v]) => { const t = touch(k); t.fcOut += v; t.ohFc += v; });
+    Object.entries(l.baselineFc || {}).forEach(([k, v]) => { touch(k).blOut += v; });
+    Object.entries(l.currentFc || {}).forEach(([k, v]) => { const t = touch(k); t.fcOut += v; t.ohFc += v; });
     Object.entries(l.ac || {}).forEach(([k, v]) => { const t = touch(k); t.acOut += v; t.ohAc += v; });
     Object.entries(proj).forEach(([k, v]) => { touch(k).prOut += v; });
   });
   return agg;
 }
-function corporateCurve(data, curWk, scope = "corporate") {
+function corporateCurve(data, curWk = CUR_WK, scope = "corporate") {
   const projOnly = scope === "projects";
   const agg = corporateAgg(data, curWk, !projOnly);
   const wks = Object.keys(agg).sort();
   const open = projOnly ? 0 : data.settings.openingBalance;
-  let bal = open, fbal = open, abal = open;
+  let bal = open, fbal = open, obal = open, abal = open;
   return wks.map((k) => {
     const a = agg[k];
-    bal += a.prIn - a.prOut; fbal += a.fcIn - a.fcOut;
+    bal += a.prIn - a.prOut; fbal += a.fcIn - a.fcOut; obal += (a.blIn || 0) - (a.blOut || 0);
     let actual = null;
-    if (k <= CUR_WK) { abal += a.acIn - a.acOut; actual = abal; }
-    return { wk: k, label: fmtWk(k), projected: bal, forecast: fbal, actual, netMove: a.prIn - a.prOut,
+    if (k <= curWk) { abal += a.acIn - a.acOut; actual = abal; }
+    return { wk: k, label: fmtWk(k), original: obal, projected: bal, forecast: fbal, actual, netMove: a.prIn - a.prOut,
       inPlan: a.fcIn, outPlan: -(a.fcOut - a.ohFc), ohOutPlan: -a.ohFc,
-      inAct: k <= CUR_WK ? a.acIn : null, outAct: k <= CUR_WK ? -(a.acOut - a.ohAc) : null, ohOutAct: k <= CUR_WK ? -a.ohAc : null,
-      netPlan: a.fcIn - a.fcOut, netAct: k <= CUR_WK ? a.acIn - a.acOut : null };
+      inAct: k <= curWk ? a.acIn : null, outAct: k <= curWk ? -(a.acOut - a.ohAc) : null, ohOutAct: k <= curWk ? -a.ohAc : null,
+      netPlan: a.fcIn - a.fcOut, netAct: k <= curWk ? a.acIn - a.acOut : null };
   });
 }
 
@@ -631,21 +730,22 @@ function GranSeg({ gran, setGran }) {
 function ChartLegend({ split }) {
   return (
     <div className="legend" style={{ marginTop: 4, fontFamily: "var(--body)" }}>
-      <span><i style={{ background: "#0A235B" }} />Actual cumulative</span>{" "}
-      <span><i style={{ background: "#1E5AA8" }} />Planned baseline</span>{" "}
-      <span><i style={{ background: "#8A97A5" }} />Re-forecast</span>{" "}
-      <span><i style={{ background: "#1E5AA8", opacity: 0.45 }} />In planned</span>{" "}
-      <span><i style={{ background: "#5B6770", opacity: 0.45 }} />Out planned</span>{" "}
-      <span><i style={{ background: "#1F7A5C" }} />In actual</span>{" "}
-      <span><i style={{ background: "#E8A33D" }} />Out actual</span>
-      {split && <>{" "}<span><i style={{ background: "#8A97A5" }} />OH planned</span>{" "}<span><i style={{ background: "#B3402E" }} />OH actual</span></>}
+      <span><i style={{ background: "#8A97A5" }} />Original cashflow forecast</span>{" "}
+      <span><i style={{ background: "#1E5AA8" }} />Current cashflow forecast</span>{" "}
+      <span><i style={{ background: "#0A235B" }} />Actual cashflow</span>{" "}
+      <span><i style={{ background: "#5B6770" }} />Projected cashflow</span>{" "}
+      <span><i style={{ background: "#1E5AA8", opacity: 0.45 }} />In forecast (bar)</span>{" "}
+      <span><i style={{ background: "#5B6770", opacity: 0.45 }} />Out forecast (bar)</span>{" "}
+      <span><i style={{ background: "#1F7A5C" }} />In actual (bar)</span>{" "}
+      <span><i style={{ background: "#E8A33D" }} />Out actual (bar)</span>
+      {split && <>{" "}<span><i style={{ background: "#8A97A5" }} />OH forecast</span>{" "}<span><i style={{ background: "#B3402E" }} />OH actual</span></>}
     </div>
   );
 }
 function ModeSeg({ mode, setMode }) {
   return (
     <div className="seg">
-      {[["plan", "Planned"], ["act", "Actual"], ["both", "Planned v actual"]].map(([v, l]) => (
+      {[["plan", "Forecast"], ["act", "Actual"], ["both", "Forecast v actual"]].map(([v, l]) => (
         <button key={v} className={mode === v ? "on" : ""} onClick={() => setMode(v)}>{l}</button>
       ))}
     </div>
@@ -697,9 +797,9 @@ function CashChart({ curve, height, zeroLine, gran, mode }) {
     const q = d.getFullYear() + "-Q" + (Math.floor(d.getMonth() / 3) + 1);
     if (q !== lastQ) { if (lastQ !== null) qLines.push({ label: p.label, q: "Q" + (Math.floor(d.getMonth() / 3) + 1) + " '" + String(d.getFullYear()).slice(2) }); lastQ = q; }
   });
-  const NAME = { inPlan: "Cash in — planned", outPlan: hasOH ? "Project costs — planned" : "Cash out — planned", ohOutPlan: "OH costs — planned",
+  const NAME = { inPlan: "Cash in — current forecast", outPlan: hasOH ? "Project costs — current forecast" : "Cash out — current forecast", ohOutPlan: "OH costs — current forecast",
     inAct: "Cash in — actual", outAct: hasOH ? "Project costs — actual" : "Cash out — actual", ohOutAct: "OH costs — actual",
-    forecast: "Cumulative — planned", projected: "Cumulative — re-forecast", actual: "Cumulative — actual" };
+    original: "Original cashflow forecast", forecast: "Current cashflow forecast", projected: "Projected cashflow", actual: "Actual cashflow" };
   return (
     <div style={{ width: "100%", height: height || 260 }}>
       <ResponsiveContainer>
@@ -721,8 +821,9 @@ function CashChart({ curve, height, zeroLine, gran, mode }) {
           {hasProj && showAct && <Bar yAxisId="per" stackId="act" dataKey="inAct" fill="#1F7A5C" fillOpacity={0.7} name="inAct" />}
           {hasProj && showAct && <Bar yAxisId="per" stackId="act" dataKey="outAct" fill="#E8A33D" fillOpacity={0.75} name="outAct" />}
           {hasOH && showAct && <Bar yAxisId="per" stackId="act" dataKey="ohOutAct" fill="#B3402E" fillOpacity={0.7} name="ohOutAct" />}
+          {showPlan && <Line yAxisId="cum" type="monotone" dataKey="original" stroke="#8A97A5" strokeDasharray="7 4" dot={false} strokeWidth={1.3} name="original" />}
           {showPlan && <Line yAxisId="cum" type="monotone" dataKey="forecast" stroke="#1E5AA8" strokeDasharray="6 4" dot={false} strokeWidth={1.6} name="forecast" />}
-          {md === "both" && <Line yAxisId="cum" type="monotone" dataKey="projected" stroke="#8A97A5" strokeDasharray="3 3" dot={false} strokeWidth={1.4} name="projected" />}
+          {md === "both" && <Line yAxisId="cum" type="monotone" dataKey="projected" stroke="#5B6770" strokeDasharray="3 3" dot={false} strokeWidth={1.6} name="projected" />}
           {showAct && <Area yAxisId="cum" type="monotone" dataKey="actual" stroke="#0A235B" fill="#0A235B22" dot={false} strokeWidth={2.4} name="actual" connectNulls={false} />}
         </ComposedChart>
       </ResponsiveContainer>
@@ -731,8 +832,8 @@ function CashChart({ curve, height, zeroLine, gran, mode }) {
 }
 
 /* ---------------- spread editor (forecast per week) ---------------- */
-function SpreadEditor({ line, projStart, onSave, onClose, allowValue }) {
-  const [fc, setFc] = useState({ ...(line.fc || {}) });
+function SpreadEditor({ line, projStart, onSave, onClose, allowValue, onDeactivate, canDelete, onDelete }) {
+  const [fc, setFc] = useState({ ...(line.currentFc || {}) });
   const [value, setValue] = useState(line.value || 0);
   const [qTotal, setQTotal] = useState(line.value || 0);
   const [qFrom, setQFrom] = useState(0);
@@ -747,14 +848,68 @@ function SpreadEditor({ line, projStart, onSave, onClose, allowValue }) {
     return Array.from({ length: n }, (_, i) => addW(startK, i));
   }, [fc, projStart]);
   const total = sumMap(fc);
+  const blTotal = sumMap(line.baselineFc || {});
+  const acSum = sumMap(line.ac || {});
+  const cwRemaining = fc[CUR_WK] || 0;
+  const futTotal = Object.entries(fc).reduce((a, [k, v]) => a + (k > CUR_WK ? v : 0), 0);
+  const unalloc = line.recurring ? null : (num(value) || 0) - acSum - cwRemaining - futTotal;
+  const recStatus = unalloc === null ? null : Math.abs(unalloc) <= 0.5 ? "reconciled" : unalloc > 0 ? "unallocated" : "overallocated";
+  const hasClosedData = Object.keys(line.ac || {}).length > 0 || Object.keys(fc).some((k) => k < CUR_WK);
+  const [preview, setPreview] = useState(null); // pending replace-future spread
+  const copyBaseline = () => { if (window.confirm("Replace the current forecast with the original forecast? Actuals are unaffected.")) setFc({ ...(line.baselineFc || {}) }); };
+  const clearFuture = () => { if (window.confirm("Clear the current forecast for this week and all future weeks?")) { const n = { ...fc }; Object.keys(n).forEach((k) => { if (k >= CUR_WK) delete n[k]; }); setFc(n); } };
+  const [mvFrom, setMvFrom] = useState(""); const [mvTo, setMvTo] = useState(""); const [mvAmt, setMvAmt] = useState("");
+  const moveAmt = () => {
+    const a = num(mvAmt); if (!mvFrom || !mvTo || !a) return;
+    const n = { ...fc };
+    n[mvFrom] = (n[mvFrom] || 0) - a; if (Math.abs(n[mvFrom]) < 0.5) delete n[mvFrom];
+    n[mvTo] = (n[mvTo] || 0) + a;
+    setFc(n); setMvAmt("");
+  };
   const applySpread = () => {
-    const next = qCycle === "1"
+    const gen = qCycle === "1"
       ? weeklyFc(projStart, num(qTotal), Number(qFrom), Number(qDur), qProfile)
       : cycleFc(projStart, num(qTotal), Number(qDur), qProfile, Number(qFrom), Number(qCycle));
-    setFc(next);
+    if (!hasClosedData) { setFc(gen); return; } // initial spread — first forecast creation
+    // Replace-future mode: closed weeks are never modified; requires preview + confirmation.
+    const next = { ...fc };
+    Object.keys(next).forEach((k) => { if (k >= CUR_WK) delete next[k]; });
+    Object.entries(gen).forEach(([k, v]) => { if (k >= CUR_WK) next[k] = v; });
+    setPreview({ next, beforeFut: Object.entries(fc).reduce((a, [k, v]) => a + (k >= CUR_WK ? v : 0), 0), afterFut: Object.entries(next).reduce((a, [k, v]) => a + (k >= CUR_WK ? v : 0), 0) });
   };
   return (
     <Modal title={"Forecast — " + line.name} onClose={onClose} wide>
+      <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontSize: 12, fontFamily: "var(--body)", background: "var(--paper)", border: "1px solid var(--line)", borderRadius: 6, padding: "8px 10px", marginBottom: 10 }}>
+        <span>Line value <b className="mono">{money(num(value) || 0)}</b></span>
+        <span>Original forecast <b className="mono">{money(blTotal)}</b></span>
+        <span>Current forecast <b className="mono">{money(total)}</b></span>
+        <span>Actual to date <b className="mono">{money(acSum)}</b></span>
+        <span>Remaining this week <b className="mono">{money(cwRemaining)}</b></span>
+        <span>Future forecast <b className="mono">{money(futTotal)}</b></span>
+        {recStatus && <span>Unallocated <b className="mono" style={{ color: recStatus === "reconciled" ? "var(--green)" : recStatus === "unallocated" ? "var(--hivis)" : "var(--red)" }}>{money(unalloc)} · {recStatus}</b></span>}
+        {line.forecastUpdatedAt && <span style={{ color: "var(--ink2)" }}>Forecast updated {new Date(line.forecastUpdatedAt).toLocaleDateString("en-GB")}</span>}
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+        <button className="btn ghost" onClick={copyBaseline}>Copy original → current</button>
+        <button className="btn ghost" onClick={clearFuture}>Clear future forecast</button>
+        <span style={{ display: "inline-flex", gap: 4, alignItems: "center", fontSize: 12 }}>
+          Move <input value={mvAmt} onChange={(e) => setMvAmt(e.target.value)} placeholder="amount" style={{ width: 70 }} inputMode="numeric" />
+          from <select value={mvFrom} onChange={(e) => setMvFrom(e.target.value)}><option value="">week…</option>{Object.keys(fc).sort().map((k) => <option key={k} value={k}>{fmtWk(k)}</option>)}</select>
+          to <select value={mvTo} onChange={(e) => setMvTo(e.target.value)}><option value="">week…</option>{wks.map((k) => <option key={k} value={k}>{fmtWk(k)}</option>)}</select>
+          <button className="btn ghost" onClick={moveAmt}>Move</button>
+        </span>
+        {onDeactivate && sumMap(line.ac || {}) !== 0 && !line.inactive && <button className="btn ghost" style={{ color: "var(--red)" }} onClick={() => { if (window.confirm("Deactivate this line? Historical actuals remain in reporting; future forecast is excluded.")) onDeactivate(true); }}>Deactivate line</button>}
+        {onDeactivate && line.inactive && <button className="btn ghost" onClick={() => onDeactivate(false)}>Reactivate line</button>}
+        {canDelete && onDelete && Object.keys(line.ac || {}).length === 0 && <button className="btn ghost" style={{ color: "var(--red)" }} onClick={() => { if (window.confirm("Delete this line? It has no actuals.")) onDelete(); }}>Delete line</button>}
+      </div>
+      {preview && (
+        <div style={{ background: "var(--hivis-soft)", border: "1px solid var(--hivis)", borderRadius: 6, padding: "8px 10px", marginBottom: 10, fontSize: 12 }}>
+          <b>Replace future forecast with spread?</b> Closed weeks are not modified.
+          Current + future forecast: <b className="mono">{money(preview.beforeFut)}</b> → <b className="mono">{money(preview.afterFut)}</b>.{" "}
+          <button className="btn" onClick={() => { setFc(preview.next); setPreview(null); }}>Confirm replace</button>{" "}
+          <button className="btn ghost" onClick={() => setPreview(null)}>Cancel</button>
+        </div>
+      )}
       <div className="frow">
         {allowValue && (
           <Field label="Line value (AED)">
@@ -776,7 +931,7 @@ function SpreadEditor({ line, projStart, onSave, onClose, allowValue }) {
           </select>
         </Field>
         <div className="field" style={{ display: "flex", alignItems: "flex-end", minWidth: 90 }}>
-          <button className="btn ghost sm" onClick={applySpread}>Auto-spread</button>
+          <button className="btn ghost sm" onClick={applySpread}>{hasClosedData ? "Replace future forecast with spread" : "Initial spread"}</button>
         </div>
       </div>
       <div style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink2)" }}>
@@ -814,7 +969,7 @@ function SpreadEditor({ line, projStart, onSave, onClose, allowValue }) {
 function WeekUpdate({ project, onSave, onClose }) {
   const wks = useMemo(() => {
     const keys = new Set();
-    projectLines(project).all.forEach((l) => Object.keys(l.fc || {}).concat(Object.keys(l.ac || {})).forEach((k) => keys.add(k)));
+    projectLines(project, { cashOnly: false }).all.forEach((l) => Object.keys(l.currentFc || {}).concat(Object.keys(l.ac || {})).forEach((k) => keys.add(k)));
     return [...keys].sort();
   }, [project]);
   const defWk = wks.includes(addW(CUR_WK, -1)) ? addW(CUR_WK, -1) : (wks.filter((k) => k <= CUR_WK).pop() || wks[0]);
@@ -831,8 +986,10 @@ function WeekUpdate({ project, onSave, onClose }) {
   const [wkSel, setWkSel] = useState(defWk);
   const [amt, setAmt] = useState("");
   const [queue, setQueue] = useState({}); // lineId -> value string (for wkSel batch)
+  const futureBlocked = wkSel > CUR_WK;
+  const cwPrompt = wkSel === CUR_WK;
   const existing = line && line.ac && line.ac[wkSel] !== undefined ? line.ac[wkSel] : null;
-  const fcVal = line ? (line.fc || {})[wkSel] || 0 : 0;
+  const fcVal = line ? (line.currentFc || {})[wkSel] || 0 : 0;
   const add = () => {
     if (!line) return;
     setQueue({ ...queue, [line.id]: amt });
@@ -861,10 +1018,11 @@ function WeekUpdate({ project, onSave, onClose }) {
       </div>
       <div className="frow" style={{ alignItems: "flex-end" }}>
         <Field label="Week commencing">
-          <select value={wkSel} onChange={(e) => { setWkSel(e.target.value); setQueue({}); }}>
-            {wks.map((k) => <option key={k} value={k}>{fmtWk(k)}{k === CUR_WK ? " (this week)" : k > CUR_WK ? " (future)" : ""}</option>)}
+          <select value={wkSel} onChange={(e) => { setWkSel(e.target.value); setQueue({}); }}>{/* future-dated actuals are blocked (brief §4.2) */}
+            {wks.filter((k) => k <= CUR_WK).map((k) => <option key={k} value={k}>{fmtWk(k)}{k === CUR_WK ? " (this week — open)" : ""}</option>)}
           </select>
         </Field>
+        {cwPrompt && <p className="note" style={{ background: "var(--hivis-soft)", border: "1px solid var(--hivis)", borderRadius: 6, padding: "6px 8px" }}>An actual has been entered for this week. Review the remaining forecast for this week — the projection counts actual + remaining forecast. The forecast is never changed automatically.</p>}
         <Field label="Actual amount (AED)">
           <input inputMode="decimal" value={amt} placeholder={existing !== null ? "current: " + existing : "—"} onChange={(e) => setAmt(e.target.value)} onKeyDown={(e) => e.key === "Enter" && add()} />
         </Field>
@@ -895,7 +1053,7 @@ function WeekUpdate({ project, onSave, onClose }) {
 
 /* ---------------- project grid ---------------- */
 function ProjectGrid({ project, onEditLine, onInvoices, onClientInvoices, range }) {
-  const { inn, out } = projectLines(project);
+  const { inn, out } = projectLines(project, { cashOnly: false }); // internal rows shown tagged; totals (agg) exclude them
   const agg = projectSeries(project, CUR_WK);
   let wks = Object.keys(agg).sort();
   if (range) wks = wks.filter((k) => k >= range.from && k <= range.to);
@@ -906,7 +1064,7 @@ function ProjectGrid({ project, onEditLine, onInvoices, onClientInvoices, range 
   }, [project]);
 
   const cell = (l, k) => {
-    const fc = (l.fc || {})[k], ac = (l.ac || {})[k], pj = (projCache[l.id] || {})[k];
+    const fc = (l.currentFc || {})[k], ac = (l.ac || {})[k], pj = (projCache[l.id] || {})[k];
     const past = k < CUR_WK || ac !== undefined;
     const cls = "num" + (k === CUR_WK ? " cur" : "");
     if (past) {
@@ -992,7 +1150,7 @@ function ProjectGrid({ project, onEditLine, onInvoices, onClientInvoices, range 
               <FragmentRows key={pkg.id} pkg={pkg} lines={lines} lineRow={lineRow} wkCount={wks.length} onInvoices={onInvoices} />
             ))}
             {totRow("Total out", (k) => agg[k].prOut)}
-            {totRow("Net week", (k) => agg[k].prIn - agg[k].prOut)}
+            {totRow("Net week — projected (excl notional OH)", (k) => agg[k].prIn - agg[k].prOut)}
             {totRow("Cumulative (projected)", (k) => cumProjVals[k], true)}
             {totRow("Cumulative (orig. forecast)", (k) => cumFcVals[k])}
           </tbody>
@@ -1028,6 +1186,7 @@ const STAGE_LABEL = { tender: "Tender", loa: "LoA", subcontract: "Subcontract" }
 const STAGE_CLR = { tender: "var(--ink2)", loa: "var(--hivis)", subcontract: "var(--green)" };
 function ensureVendors(d) {
   if (!d.vendors) d.vendors = [];
+  if (!d.settings) d.settings = {};
   if (!d.clients) d.clients = [];
   if (!d.approvals) d.approvals = [];
   if (!d.profit) d.profit = { entries: [] };
@@ -1135,6 +1294,7 @@ function ensureVendors(d) {
     d.vendors = d.vendors.filter((v) => usedV.has(v.id));
     d.clients = d.clients.filter((c) => usedC.has(c.id));
   }
+  if (d.settings.schemaVersion !== 2) migrateV2(d);
   return d;
 }
 function vendorEngagements(d, vid) {
@@ -1144,7 +1304,7 @@ function vendorEngagements(d, vid) {
     let committed = 0, paid = 0, plan = 0;
     pk.lines.forEach((l) => {
       committed += l.value || 0; paid += sumMap(l.ac);
-      Object.entries(l.fc).forEach(([k, v]) => { if (k < CUR_WK) plan += v; });
+      Object.entries(l.currentFc || {}).forEach(([k, v]) => { if (k < CUR_WK) plan += v; });
     });
     out.push({ project: p, pkg: pk, committed, paid, plan, remaining: committed - paid,
       invoiced: invoicedOf(pk), unpaid: unpaidOf(pk) });
@@ -1202,41 +1362,34 @@ function clientEngagements(d, cid) {
     let value = 0, received = 0, plan = 0;
     p.cashIn.forEach((l) => {
       value += l.value || 0; received += sumMap(l.ac);
-      Object.entries(l.fc).forEach(([k, v]) => { if (k < CUR_WK) plan += v; });
+      Object.entries(l.currentFc || {}).forEach(([k, v]) => { if (k < CUR_WK) plan += v; });
     });
     out.push({ project: p, value, received, plan, remaining: value - received, invoiced: clientInvoiced(p), unpaid: clientUnpaid(p) });
   });
   return out;
 }
-const AGE_BANDS = [["b0", "0–30"], ["b30", "31–60"], ["b60", "61–90"], ["b90", "90+"]];
-const AGE_CLR = { b0: "var(--ink2)", b30: "var(--hivis)", b60: "#D4640A", b90: "var(--red)" };
+const AGE_BANDS = [["notdue", "Not yet due"], ["od30", "1–30 od"], ["od60", "31–60 od"], ["od90", "61–90 od"], ["od90p", "91+ od"]];
+const AGE_CLR = { notdue: "var(--ink2)", od30: "var(--hivis)", od60: "#D4640A", od90: "var(--red)", od90p: "var(--red)" };
 function ageBuckets(invoices) {
-  const out = { b0: 0, b30: 0, b60: 0, b90: 0 };
-  const today = new Date(); today.setHours(12, 0, 0, 0);
-  (invoices || []).forEach((i) => {
-    if (i.status === "paid" || !i.amount) return;
-    const d = new Date(i.date + "T12:00:00");
-    const days = isNaN(d) ? 0 : Math.max(0, Math.floor((today - d) / DAY));
-    out[days > 90 ? "b90" : days > 60 ? "b60" : days > 30 ? "b30" : "b0"] += i.amount;
-  });
-  return out;
+  // Days-overdue buckets from the contractual due date (brief §11). Raw invoice age is no longer used.
+  return overdueBuckets(invoices);
 }
-function addBuckets(a, b) { return { b0: a.b0 + b.b0, b30: a.b30 + b.b30, b60: a.b60 + b.b60, b90: a.b90 + b.b90 }; }
-const ZERO_B = { b0: 0, b30: 0, b60: 0, b90: 0 };
+function addBuckets(a, b) { return { notdue: a.notdue + b.notdue, od30: a.od30 + b.od30, od60: a.od60 + b.od60, od90: a.od90 + b.od90, od90p: a.od90p + b.od90p }; }
+const ZERO_B = { notdue: 0, od30: 0, od60: 0, od90: 0, od90p: 0 };
 function vendorInvoiceList(d, vid) {
   const out = [];
   d.projects.forEach((p) => p.packages.forEach((pk) => { if (pk.vendorId === vid) out.push(...(pk.invoices || [])); }));
   return out;
 }
 function AgeStrip({ buckets, label }) {
-  const total = buckets.b0 + buckets.b30 + buckets.b60 + buckets.b90;
+  const total = buckets.notdue + buckets.od30 + buckets.od60 + buckets.od90 + buckets.od90p;
   return (
     <div className="panel" style={{ padding: "12px 16px", display: "flex", gap: 20, flexWrap: "wrap", alignItems: "baseline" }}>
       <b style={{ fontFamily: "var(--disp)", textTransform: "uppercase", letterSpacing: ".04em", fontSize: 13 }}>{label}</b>
       {AGE_BANDS.map(([k, l]) => (
         <span key={k} style={{ fontFamily: "var(--mono)", fontSize: 13 }}>
-          <span style={{ fontSize: 10, color: "var(--ink2)" }}>{l}d </span>
-          <span style={{ color: buckets[k] > 0 ? AGE_CLR[k] : "var(--ink2)", fontWeight: k === "b90" && buckets[k] > 0 ? 700 : 400 }}>{moneyK(buckets[k])}</span>
+          <span style={{ fontSize: 10, color: "var(--ink2)" }}>{l} </span>
+          <span style={{ color: buckets[k] > 0 ? AGE_CLR[k] : "var(--ink2)", fontWeight: (k === "od90" || k === "od90p") && buckets[k] > 0 ? 700 : 400 }}>{moneyK(buckets[k])}</span>
         </span>
       ))}
       <span style={{ fontFamily: "var(--mono)", fontSize: 13, marginLeft: "auto" }}><span style={{ fontSize: 10, color: "var(--ink2)" }}>total </span>{moneyK(total)}</span>
@@ -1245,7 +1398,7 @@ function AgeStrip({ buckets, label }) {
 }
 function AgeCells({ buckets }) {
   return AGE_BANDS.map(([k]) => (
-    <td key={k} className="mono" style={{ color: buckets[k] > 0 ? AGE_CLR[k] : "var(--ink2)", fontWeight: k === "b90" && buckets[k] > 0 ? 700 : 400 }}>{moneyK(buckets[k])}</td>
+    <td key={k} className="mono" style={{ color: buckets[k] > 0 ? AGE_CLR[k] : "var(--ink2)", fontWeight: (k === "od90" || k === "od90p") && buckets[k] > 0 ? 700 : 400 }}>{moneyK(buckets[k])}</td>
   ));
 }
 
@@ -1279,9 +1432,20 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
     const applyTo = (arr) => arr.forEach((l) => { if (l.id === lineId) Object.assign(l, patch); });
     applyTo(p2.cashIn);
     p2.packages.forEach((pkg) => applyTo(pkg.lines));
+    if (patch.currentFc !== undefined) p2.forecastUpdatedAt = new Date().toISOString();
+    saveProject(p2);
+  };
+  const deleteLine = (lineId) => {
+    const p2 = JSON.parse(JSON.stringify(project));
+    const hasAc = (l) => Object.keys(l.ac || {}).length > 0;
+    let blocked = false;
+    p2.cashIn = p2.cashIn.filter((l) => { if (l.id !== lineId) return true; if (hasAc(l)) { blocked = true; return true; } return false; });
+    p2.packages.forEach((pkg) => { pkg.lines = pkg.lines.filter((l) => { if (l.id !== lineId) return true; if (hasAc(l)) { blocked = true; return true; } return false; }); });
+    if (blocked) { window.alert("This line has recorded actuals and cannot be hard-deleted. Use Deactivate instead — history is preserved."); return; }
     saveProject(p2);
   };
   const saveActuals = (wkSel, vals) => {
+    if (wkSel > CUR_WK) { window.alert("Future-dated actuals are not permitted. A post-dated payment is forecast cash — enter it in the current forecast instead."); return; }
     if (submitActuals) { submitActuals(wkSel, vals); setModal(null); return; }
     const p2 = JSON.parse(JSON.stringify(project));
     const applyTo = (l) => {
@@ -1297,9 +1461,10 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
   };
   const addVariation = (form) => {
     const p2 = JSON.parse(JSON.stringify(project));
-    const line = { id: uid(), name: form.ref + " " + form.name, type: "variation", value: num(form.value), voStatus: form.voStatus || "approved", fc: {}, ac: {} };
+    const line = { id: uid(), name: form.ref + " " + form.name, type: "variation", value: num(form.value), voStatus: form.voStatus || "approved", baselineFc: {}, currentFc: {}, ac: {}, inactive: false };
     const dur = Math.max(1, Number(form.dur) || 4);
-    line.fc = cycleFc(p2.start, num(form.value), dur, "linear", Number(form.from) || 0, 4);
+    line.baselineFc = cycleFc(p2.start, num(form.value), dur, "linear", Number(form.from) || 0, 4);
+    line.currentFc = JSON.parse(JSON.stringify(line.baselineFc));
     if (form.target === "in") p2.cashIn.push(line);
     else {
       const pkg = p2.packages.find((x) => x.id === form.target);
@@ -1311,7 +1476,7 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
     mutate((d) => {
       const pr = d.projects.find((x) => x.id === project.id);
       const dur = Math.max(1, Number(form.dur) || 8);
-      const mkLine = () => ({ id: uid(), name: form.kind === "sub" ? "Base package" : form.name, type: "base", value: num(form.value), fc: cycleFc(pr.start, num(form.value), dur, "scurve", Number(form.from) || 6, 4), ac: {} });
+      const mkLine = () => { const f0 = cycleFc(pr.start, num(form.value), dur, "scurve", Number(form.from) || 6, 4); return { id: uid(), name: form.kind === "sub" ? "Base package" : form.name, type: "base", value: num(form.value), baselineFc: f0, currentFc: JSON.parse(JSON.stringify(f0)), ac: {}, inactive: false }; };
       if (form.kind === "prelim" || form.kind === "ohint" || form.kind === "precon") {
         const pname = form.kind === "prelim" ? "Prelims & general requirements" : form.kind === "precon" ? "Pre-contract costs" : "Project overheads";
         const vend = form.kind === "prelim" ? "Northern (internal)" : form.kind === "precon" ? "Pre-contract" : "Internal";
@@ -1341,8 +1506,8 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
     <div>
       <div className="pagehead">
         <div>
-          <h1>{project.code} — {project.name}</h1>
-          <div className="sub">{project.client} · {project.weeks}-week programme · start w/c {fmtWk(project.start)}</div>
+          <h1>{project.code} — {project.name}</h1>{(() => { const ex = projectExceptions(project, CUR_WK, ACTUALS_THROUGH); return ex.total > 0 ? <span style={{ fontFamily: "var(--body)", fontSize: 12, fontWeight: 700, color: "#fff", background: "var(--red)", borderRadius: 10, padding: "2px 9px", marginLeft: 10, verticalAlign: "middle" }} title={"Slipped " + ex.slipped + " · missing actuals " + ex.missing + " · unallocated " + ex.unrec + " · overallocated " + ex.over + " · sign conflicts " + ex.conflicts}>{ex.total} exception{ex.total === 1 ? "" : "s"}</span> : null; })()}
+          <div className="sub">{project.client} · {project.weeks}-week programme · start w/c {fmtWk(project.start)}{project.forecastUpdatedAt ? "forecast updated " + new Date(project.forecastUpdatedAt).toLocaleDateString("en-GB") + " · " : "forecast never updated · "}</div>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button className="btn ghost" onClick={onBack}>← Projects</button>
@@ -1383,8 +1548,10 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
       {modal?.type === "spread" && (
         <SpreadEditor
           line={modal.line} projStart={project.start} allowValue
-          onSave={(fc, value) => { updateLine(modal.line.id, { fc, ...(value !== undefined ? { value } : {}) }); setModal(null); }}
+          onSave={(fc, value) => { updateLine(modal.line.id, { currentFc: fc, ...(Object.keys(modal.line.baselineFc || {}).length ? {} : { baselineFc: JSON.parse(JSON.stringify(fc)) }), ...(value !== undefined ? { value } : {}), forecastUpdatedAt: new Date().toISOString() }); setModal(null); }}
           onClose={() => setModal(null)}
+          onDeactivate={(v) => { updateLine(modal.line.id, { inactive: v }); setModal(null); }}
+          canDelete onDelete={() => { deleteLine(modal.line.id); setModal(null); }}
         />
       )}
       {modal?.type === "vo" && <VariationModal project={project} onSave={addVariation} onClose={() => setModal(null)} />}
@@ -1411,22 +1578,22 @@ function AgedDebtTile({ projects, range, rangeLabel }) {
   const [agedMin, setAgedMin] = useState(0);
   const unpaidAR = projects.flatMap((p) => filterInvs(p.clientInvoices, range).filter((i) => i.status !== "paid"));
   const unpaidAP = projects.flatMap((p) => p.packages.flatMap((pk) => filterInvs(pk.invoices, range).filter((i) => i.status !== "paid")));
-  const ageOf = (i) => Math.floor((new Date(CUR_WK) - new Date(i.date)) / 86400000);
-  const arSum = unpaidAR.filter((i) => ageOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
-  const apSum = unpaidAP.filter((i) => ageOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
+  const odOf = (i) => invoiceStatus(i).daysOverdue;
+  const arSum = unpaidAR.filter((i) => agedMin === 0 ? true : odOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
+  const apSum = unpaidAP.filter((i) => agedMin === 0 ? true : odOf(i) >= agedMin).reduce((a, i) => a + i.amount, 0);
   return (
     <div className="mtile" style={{ borderTopColor: arSum - apSum >= 0 ? "var(--green)" : "var(--red)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
         <div className="mk">Aged debt{rangeLabel ? " · " + rangeLabel : ""}</div>
         <div className="seg" style={{ transform: "scale(.85)", transformOrigin: "right center" }}>
-          {[[0, "Total"], [30, "1m+"], [60, "2m+"], [90, "3m+"], [180, "6m+"]].map(([d, l]) => (
+          {[[0, "Total"], [1, "Overdue"], [31, "1m+ od"], [61, "2m+ od"], [91, "3m+ od"]].map(([d, l]) => (
             <button key={d} className={agedMin === d ? "on" : ""} onClick={() => setAgedMin(d)}>{l}</button>
           ))}
         </div>
       </div>
       <div className="mv" style={{ color: "var(--green)" }}>{money(arSum)} <span className="ma" style={{ fontSize: 12 }}>due to us</span></div>
       <div className="mv" style={{ color: "var(--red)", fontSize: 18 }}>{money(apSum)} <span className="ma" style={{ fontSize: 12 }}>due by us</span></div>
-      <div className="ma">unpaid invoices{agedMin ? " outstanding " + agedMin + "+ days" : ""} · net {moneyK(arSum - apSum)}</div>
+      <div className="ma">unpaid invoices{agedMin ? " " + agedMin + "+ days past due date" : ""} · net {moneyK(arSum - apSum)}</div>
     </div>
   );
 }
@@ -1438,24 +1605,17 @@ function filterInvs(invs, range) {
   });
 }
 function invoiceSplit(projects, range) {
-  const now = new Date(CUR_WK);
-  const ageOf = (i) => Math.floor((now - new Date(i.date)) / 86400000);
+  // Shared classifier: overdue = past the contractual due date (invoiceStatus), never raw age.
   const ar = { invoiced: 0, paid: 0, pendDue: 0, pendOver: 0 };
   const ap = { invoiced: 0, paid: 0, pendDue: 0, pendOver: 0 };
+  const add = (t, i) => {
+    t.invoiced += i.amount;
+    if (i.status === "paid") { t.paid += i.amount; return; }
+    if (invoiceStatus(i).daysOverdue > 0) t.pendOver += i.amount; else t.pendDue += i.amount;
+  };
   projects.forEach((p) => {
-    const terms = p.paymentTerms || 45;
-    filterInvs(p.clientInvoices, range).forEach((i) => {
-      ar.invoiced += i.amount;
-      if (i.status === "paid") ar.paid += i.amount;
-      else if (ageOf(i) > terms) ar.pendOver += i.amount;
-      else ar.pendDue += i.amount;
-    });
-    p.packages.forEach((pk) => filterInvs(pk.invoices, range).forEach((i) => {
-      ap.invoiced += i.amount;
-      if (i.status === "paid") ap.paid += i.amount;
-      else if (ageOf(i) > 30) ap.pendOver += i.amount;
-      else ap.pendDue += i.amount;
-    }));
+    filterInvs(p.clientInvoices, range).forEach((i) => add(ar, i));
+    p.packages.forEach((pk) => filterInvs(pk.invoices, range).forEach((i) => add(ap, i)));
   });
   return { ar, ap };
 }
@@ -1532,11 +1692,11 @@ function CompanyMarginStrip({ projects, overheads, ohRate, yr, per, onDetail }) 
   const sumW = (m2, f) => Object.entries(m2 || {}).reduce((a2, [k, v]) => a2 + (f(k) ? v : 0), 0);
   let revPlan = 0, costPlan = 0, recdYtd = 0, paidYtd = 0;
   projects.forEach((p) => {
-    p.cashIn.forEach((l) => { if ((l.voStatus || "approved") !== "rejected") { revPlan += sumW(l.fc, inWin); recdYtd += sumW(l.ac, ytd); } });
-    p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => { costPlan += sumW(l.fc, inWin); paidYtd += sumW(l.ac, ytd); }));
+    p.cashIn.forEach((l) => { if ((l.voStatus || "approved") !== "rejected") { revPlan += sumW(l.currentFc, inWin); recdYtd += sumW(l.ac, ytd); } });
+    p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => { costPlan += sumW(l.currentFc, inWin); paidYtd += sumW(l.ac, ytd); }));
   });
   const hasOH = !!overheads;
-  const ohBudget = hasOH ? overheads.reduce((a2, l) => a2 + sumW(l.fc, inWin), 0) : 0;
+  const ohBudget = hasOH ? overheads.reduce((a2, l) => a2 + sumW(l.currentFc, inWin), 0) : 0;
   const ohActYtd = hasOH ? overheads.reduce((a2, l) => a2 + sumW(l.ac, ytd), 0) : 0;
   const alloc = recdYtd * ohRate;
   const recovery = alloc - ohActYtd;
@@ -1596,7 +1756,7 @@ function StandardTop({ projects, overheads, ohRate, yr, per, onDetail, cashLabel
           <div className="mtile hero">
             <div className="mk">{cashLabel}</div>
             <div className="mv" style={{ fontSize: 30 }}>{money(cashValue)}</div>
-            <div className="ma">{cashSub}</div>
+            <div className="ma">{cashSub}{ACTUALS_THROUGH ? " · actuals complete through " + fmtWk(ACTUALS_THROUGH) : " · no finance cutoff set"}</div>
           </div>
           <AgedDebtTile projects={projects} range={range} rangeLabel={rangeLabel} />
         </div>
@@ -1640,14 +1800,14 @@ function windowedSummary(projects, ohRate, range) {
     p.cashIn.forEach((l) => {
       const st = l.voStatus || "approved";
       if (st === "rejected") return;
-      const f = sumW(l.fc, inW);
+      const f = sumW(l.currentFc, inW);
       inA += f; if (l.type !== "variation" || st === "approved") inC += f;
       recd += sumW(l.ac, ytd);
     });
     p.packages.filter((pk) => !isInternalPkg(pk)).forEach((pk) => pk.lines.forEach((l) => {
       const st = l.voStatus || "approved";
       if (l.type === "variation" && st === "rejected") return;
-      const f = sumW(l.fc, inW);
+      const f = sumW(l.currentFc, inW);
       outA += f; if (l.type !== "variation" || st === "approved") outC += f;
       paid += sumW(l.ac, ytd);
     }));
@@ -1681,7 +1841,7 @@ function MarginStrip({ project, ohRate, summary, range, rangeLabel }) {
         <div className="mp">{fmt(contractP)}</div>
         <div className="mv">{money(s.marginOrig)}</div>
         <div className="ma">in {moneyK(s.head.base)} / out {moneyK(s.sub.base)}</div>
-        <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% OH → <b>profit {fmt(netCP)}</b> ({moneyK(s.netOrig)})</div>
+        <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% notional OH allocation → <b>contribution after OH allocation {fmt(netCP)}</b> ({moneyK(s.netOrig)})</div>
       </div>
       <div className="mtile hero">
         <div className="mk">Anticipated margin · incl VO's{rangeLabel ? " · " + rangeLabel : ""}</div>
@@ -1692,14 +1852,14 @@ function MarginStrip({ project, ohRate, summary, range, rangeLabel }) {
         </div>
         <div className="mv">{money(s.marginAFA)}</div>
         <div className="ma">in {moneyK(s.head.anticipated)} / out {moneyK(s.sub.anticipated)}</div>
-        <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% OH → <b style={{ color: "#fff" }}>profit {fmt(netAP)}</b> ({moneyK(s.netAFA)})</div>
+        <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% notional OH allocation → <b style={{ color: "#fff" }}>contribution after OH allocation {fmt(netAP)}</b> ({moneyK(s.netAFA)})</div>
       </div>
       <div className={"mtile" + liveTone}>
         <div className="mk">Live margin · cash to date{rangeLabel ? " (" + rangeLabel + ")" : ""}</div>
         <div className="mp">{fmt(liveP)}</div>
         <div className="mv">{money(s.marginCash)}</div>
         <div className="ma">recd {moneyK(s.recd)} / paid {moneyK(s.paidOut)}</div>
-        <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% OH → <b>profit {fmt(netLP)}</b> ({moneyK(s.netCash)})</div>
+        <div className="ma" style={{ marginTop: 3 }}>less {ohPct}% notional OH allocation → <b>contribution after OH allocation {fmt(netLP)}</b> ({moneyK(s.netCash)})</div>
       </div>
       <div className="mtile" style={{ borderTopColor: "var(--hivis)" }}>
         <div className="mk">OH allocation{rangeLabel ? " · " + rangeLabel : ""}</div>
@@ -1848,7 +2008,10 @@ function InvoicesModal({ project, pkgId, mutate, onClose }) {
   });
   const listOf = (t) => (clientMode ? t.clientInvoices : t.invoices);
   const add = () => {
-    upd((t) => listOf(t).push({ id: uid(), ref: f.ref.trim() || "INV", date: f.date, amount: num(f.amount), status: "unpaid" }));
+    upd((t) => listOf(t).push({ id: uid(), ref: f.ref.trim() || "INV", date: f.date,
+      dueDate: f.dueDate || addDaysISO(f.date, isClient ? (project.paymentTerms || 45) : 30),
+      expectedCashDate: f.expectedCashDate || f.dueDate || addDaysISO(f.date, isClient ? (project.paymentTerms || 45) : 30),
+      amount: num(f.amount), status: "unpaid" }));
     setF({ ref: "", date: f.date, amount: "" });
   };
   const invs = [...(clientMode ? project.clientInvoices : pkg.invoices)].sort((a, b) => (a.date < b.date ? -1 : 1));
@@ -1872,7 +2035,7 @@ function InvoicesModal({ project, pkgId, mutate, onClose }) {
             {invs.map((i) => (
               <tr key={i.id}>
                 <td className="mono">{i.ref}</td>
-                <td className="mono">{i.date}</td>
+                    <td className="mono">{i.date}{i.dueDate ? " · due " + i.dueDate : ""}{(() => { const st = invoiceStatus(i); return st.bucket !== "paid" && st.daysOverdue > 0 ? <span style={{ color: "var(--red)", fontWeight: 700 }}> · {st.daysOverdue}d overdue</span> : null; })()}</td>
                 <td className="mono">{moneyK(i.amount)}</td>
                 <td>
                   <button className="btn ghost sm" style={{ color: i.status === "paid" ? "var(--green)" : "var(--red)" }}
@@ -2212,7 +2375,7 @@ function parseWorkbook(wb, filename) {
     const item = {
       id: uid(), name: L.lineName,
       type: L.sec === "IN" ? (L.type.startsWith("v") ? "variation" : "contract") : (L.type.startsWith("v") ? "variation" : "base"),
-      value: Math.round(sumMap(L.fc)), fc: L.fc, ac: L.ac,
+      value: Math.round(sumMap(L.fc)), baselineFc: L.fc, currentFc: JSON.parse(JSON.stringify(L.fc)), ac: L.ac, inactive: false,
     };
     if (L.sec === "IN") cashIn.push(item);
     else {
@@ -2319,7 +2482,7 @@ function ProjectsList({ projects, users, openProject, canCreate, canImport, onCr
   const [per, setPer] = useState(null);
   const [all, setAll] = useState(true);
   const nowYr = new Date().getFullYear();
-  const ohRate = data.settings.ohRate ?? 0.12;
+  const ohRate = ohRateFor(data.settings, yr);
   const agg = {};
   projects.forEach((p) => {
     const s = projectSeries(p, CUR_WK);
@@ -2392,12 +2555,12 @@ function ProjectsList({ projects, users, openProject, canCreate, canImport, onCr
 /* ---------------- corporate view ---------------- */
 function overheadsCurve(overheads) {
   const wkset = new Set();
-  overheads.forEach((l) => { Object.keys(l.fc || {}).concat(Object.keys(l.ac || {})).forEach((k) => wkset.add(k)); });
+  overheads.forEach((l) => { Object.keys(l.currentFc || {}).concat(Object.keys(l.ac || {})).forEach((k) => wkset.add(k)); });
   const wks = [...wkset].sort();
   let cf = 0, cp = 0, ca = 0;
   return wks.map((k) => {
     let fcv = 0, acv = 0;
-    overheads.forEach((l) => { fcv += (l.fc || {})[k] || 0; acv += (l.ac || {})[k] || 0; });
+    overheads.forEach((l) => { fcv += (l.currentFc || {})[k] || 0; acv += (l.ac || {})[k] || 0; });
     const prv = k <= CUR_WK ? acv : fcv; // re-forecast: actuals to date, plan forward
     cf += fcv; cp += prv;
     let actual = null;
@@ -2422,11 +2585,11 @@ function OverheadsView({ data, setData, ohRateBtn }) {
   else { winFrom = addW(CUR_WK, -8); winTo = addW(CUR_WK, 26); }
   const wks = curve.map((c) => c.wk).filter((k) => k >= winFrom && k <= winTo);
   const ohProj = data.overheads.map((l) => ({ l, proj: lineProj(l, CUR_WK).proj }));
-  const planYr = data.overheads.reduce((a, l) => a + Object.entries(l.fc || {}).filter(([k]) => k.slice(0, 4) === String(yr)).reduce((x, [, v]) => x + v, 0), 0);
+  const planYr = data.overheads.reduce((a, l) => a + Object.entries(l.currentFc || {}).filter(([k]) => k.slice(0, 4) === String(yr)).reduce((x, [, v]) => x + v, 0), 0);
   const acYr = data.overheads.reduce((a, l) => a + Object.entries(l.ac || {}).filter(([k]) => k.slice(0, 4) === String(yr)).reduce((x, [, v]) => x + v, 0), 0);
   const saveOhLine = (lineId, fc) => {
     const d2 = JSON.parse(JSON.stringify(data));
-    d2.overheads.forEach((l) => { if (l.id === lineId) l.fc = fc; });
+    d2.overheads.forEach((l) => { if (l.id === lineId) { l.currentFc = fc; if (!Object.keys(l.baselineFc || {}).length) l.baselineFc = JSON.parse(JSON.stringify(fc)); l.forecastUpdatedAt = new Date().toISOString(); } });
     setData(d2);
   };
   const saveOhActuals = (wkSel, vals) => {
@@ -2439,16 +2602,16 @@ function OverheadsView({ data, setData, ohRateBtn }) {
   };
   const addOh = (name) => {
     const d2 = JSON.parse(JSON.stringify(data));
-    d2.overheads.push({ id: uid(), name, recurring: true, fc: {}, ac: {} });
+    d2.overheads.push({ id: uid(), name, recurring: true, baselineFc: {}, currentFc: {}, ac: {}, inactive: false });
     setData(d2);
   };
   return (
     <div>
       <div className="pagehead">
-        <div><h1>Overheads</h1><div className="sub">FY{yr} plan {money(planYr)} · actuals {money(acYr)} · project OH allocation {((data.settings.ohRate ?? 0.12) * 100).toFixed(0)}%</div></div>
+        <div><h1>Overheads</h1><div className="sub">FY{yr} plan {money(planYr)} · actuals {money(acYr)} · project OH allocation {((ohRateFor(data.settings, new Date().getFullYear())) * 100).toFixed(0)}%</div></div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <button className="btn ghost" onClick={() => setModal({ type: "ohrate" })}>OH rate: {((data.settings.ohRate ?? 0.12) * 100).toFixed(0)}%</button>
+            <button className="btn ghost" onClick={() => setModal({ type: "ohrate" })}>OH rate: {((ohRateFor(data.settings, new Date().getFullYear())) * 100).toFixed(0)}%</button>
             <button className="btn ghost" onClick={downloadOhTemplate}>Download template</button>
             <button className="btn" onClick={() => setModal({ type: "ohimport" })}>Import overheads</button>
             <button className="btn ghost" onClick={() => setModal({ type: "addoh" })}>+ Overhead line</button>
@@ -2482,10 +2645,10 @@ function OverheadsView({ data, setData, ohRateBtn }) {
           <tbody>
             {ohProj.map(({ l, proj }) => (
               <tr key={l.id}>
-                <td className="rowname">{l.name}{" "}
+                <td className="rowname">{l.name}{l.inactive && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · inactive</span>}{l.isInternal && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · analytical — excluded from cash</span>}{(() => { if (l.recurring || l.inactive) return null; const st = lineStatus(l); const ex = lineExceptions(l, CUR_WK, ACTUALS_THROUGH); const bits = []; if (st.status !== "reconciled") bits.push(<span key="u" style={{ fontSize: 10, fontWeight: 700, color: st.status === "unallocated" ? "var(--hivis)" : "var(--red)", marginLeft: 6 }}>{st.status} {moneyK(st.unallocated)}</span>); if (ex.slipped.length) bits.push(<span key="s" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>slipped ×{ex.slipped.length}</span>); if (ex.signConflict) bits.push(<span key="c" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>sign conflict</span>); return bits; })()}{" "}
                   <button className="btn ghost sm" style={{ padding: "1px 6px", fontSize: 10 }} onClick={() => setModal({ type: "ohspread", line: l })}>fc</button>
                 </td>
-                <td className="num">{moneyK(Object.entries(l.fc || {}).filter(([k]) => k.slice(0, 4) === String(yr)).reduce((a, [, v]) => a + v, 0))}</td>
+                <td className="num">{moneyK(Object.entries(l.currentFc || {}).filter(([k]) => k.slice(0, 4) === String(yr)).reduce((a, [, v]) => a + v, 0))}</td>
                 {wks.map((k) => <td key={k} className={"num" + (k === CUR_WK ? " cur" : "")}>{proj[k] ? "(" + moneyK(proj[k]) + ")" : "—"}</td>)}
               </tr>
             ))}
@@ -2514,9 +2677,22 @@ function OverheadsView({ data, setData, ohRateBtn }) {
       )}
       {modal?.type === "ohimport" && <OhImport data={data} setData={setData} onClose={() => setModal(null)} />}
       {modal?.type === "ohrate" && (
-        <TextModal title="Project OH allocation rate (%)" label="Percent of revenue" initial={String((data.settings.ohRate ?? 0.12) * 100)}
-          onSave={(v) => { const r = num(v) / 100; if (r >= 0 && r < 1) setData({ ...data, settings: { ...data.settings, ohRate: r } }); setModal(null); }}
-          onClose={() => setModal(null)} />
+        <Modal title="OH allocation rate by financial year" onClose={() => setModal(null)}>
+          <p className="note">The notional allocation each project contributes toward company overhead. Set per financial year — changing a future year never alters prior-year reporting.</p>
+          {[0, 1].map((off) => { const y = String(new Date().getFullYear() + off); return (
+            <Field key={y} label={"FY" + y + " rate (%)"}>
+              <input id={"nf-ohr-" + y} defaultValue={(ohRateFor(data.settings, y) * 100).toFixed(1)} inputMode="decimal" />
+            </Field>
+          ); })}
+          <div className="mfoot">
+            <button className="btn ghost" onClick={() => setModal(null)}>Cancel</button>
+            <button className="btn amber" onClick={() => {
+              const rates = { ...(data.settings.ohRatesByFY || {}) };
+              [0, 1].forEach((off) => { const y = String(new Date().getFullYear() + off); const v = num(document.getElementById("nf-ohr-" + y).value); if (v > 0) rates[y] = v / 100; });
+              setData({ ...data, settings: { ...data.settings, ohRatesByFY: rates } }); setModal(null);
+            }}>Save</button>
+          </div>
+        </Modal>
       )}
     </div>
   );
@@ -2547,7 +2723,7 @@ function CorporateView({ data, setData, me, canProfit }) {
 
   const saveOhLine = (lineId, fc) => {
     const d2 = JSON.parse(JSON.stringify(data));
-    d2.overheads.forEach((l) => { if (l.id === lineId) l.fc = fc; });
+    d2.overheads.forEach((l) => { if (l.id === lineId) { l.currentFc = fc; if (!Object.keys(l.baselineFc || {}).length) l.baselineFc = JSON.parse(JSON.stringify(fc)); l.forecastUpdatedAt = new Date().toISOString(); } });
     setData(d2);
   };
   const saveOhActuals = (wkSel, vals) => {
@@ -2560,7 +2736,7 @@ function CorporateView({ data, setData, me, canProfit }) {
   };
   const addOh = (name) => {
     const d2 = JSON.parse(JSON.stringify(data));
-    d2.overheads.push({ id: uid(), name, recurring: true, fc: {}, ac: {} });
+    d2.overheads.push({ id: uid(), name, recurring: true, baselineFc: {}, currentFc: {}, ac: {}, inactive: false });
     setData(d2);
   };
 
@@ -2571,6 +2747,7 @@ function CorporateView({ data, setData, me, canProfit }) {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <button className="btn ghost" onClick={() => setModal({ type: "opening" })}>Opening balance</button>
+            <button className="btn ghost" onClick={() => setModal({ type: "cutoff" })}>Actuals cutoff{data.settings.actualsThrough ? ": " + fmtWk(data.settings.actualsThrough) : ""}</button>
             <button className="btn ghost" onClick={() => setModal({ type: "ohweek" })}>Record OH actuals</button>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
@@ -2582,8 +2759,8 @@ function CorporateView({ data, setData, me, canProfit }) {
           </div>
         </div>
       </div>
-      <StandardTop projects={data.projects} overheads={data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
-        cashLabel="Current cash position" cashValue={curve.find((c) => c.wk === CUR_WK)?.projected} cashSub="opening balance + actuals to date"
+      <StandardTop projects={data.projects} overheads={data.overheads} ohRate={ohRateFor(data.settings, yr)} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
+        cashLabel="Modelled cash position" cashValue={curve.find((c) => c.wk === CUR_WK)?.projected} cashSub="opening balance + actuals to date"
         range={(per ? periodRange(yr, per) : yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) } : null)} rangeLabel={(per ? per + " " + yr : yr !== nowYr ? "FY" + yr : cw === "ytd" ? "YTD" : null)}
         curveWin={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} gran={gran} mode={mode} split
         chartNote="incl corporate OH & opening balance" />
@@ -2607,7 +2784,7 @@ function CorporateView({ data, setData, me, canProfit }) {
             <tr className="grp"><td className="rowname">Overheads</td><td colSpan={wks.length}></td></tr>
             {ohProj.map(({ l, proj }) => (
               <tr key={l.id}>
-                <td className="rowname">{l.name}{" "}
+                <td className="rowname">{l.name}{l.inactive && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · inactive</span>}{l.isInternal && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · analytical — excluded from cash</span>}{(() => { if (l.recurring || l.inactive) return null; const st = lineStatus(l); const ex = lineExceptions(l, CUR_WK, ACTUALS_THROUGH); const bits = []; if (st.status !== "reconciled") bits.push(<span key="u" style={{ fontSize: 10, fontWeight: 700, color: st.status === "unallocated" ? "var(--hivis)" : "var(--red)", marginLeft: 6 }}>{st.status} {moneyK(st.unallocated)}</span>); if (ex.slipped.length) bits.push(<span key="s" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>slipped ×{ex.slipped.length}</span>); if (ex.signConflict) bits.push(<span key="c" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>sign conflict</span>); return bits; })()}{" "}
                   <button className="btn ghost sm" style={{ padding: "1px 6px", fontSize: 10 }} onClick={() => setModal({ type: "ohspread", line: l })}>fc</button>
                 </td>
                 {wks.map((k) => <td key={k} className={"num" + (k === CUR_WK ? " cur" : "")}>{proj[k] ? "(" + moneyK(proj[k]) + ")" : "—"}</td>)}
@@ -2632,6 +2809,21 @@ function CorporateView({ data, setData, me, canProfit }) {
           onSave={(v) => { setData({ ...data, settings: { ...data.settings, openingBalance: num(v) } }); setModal(null); }}
           onClose={() => setModal(null)} />
       )}
+      {modal?.type === "cutoff" && (
+        <Modal title="Finance actuals cutoff" onClose={() => setModal(null)}>
+          <p className="note">The latest week through which finance confirms actual cash entry is complete. Later weeks are open — their actuals are not represented as complete. The current calendar week always remains open.</p>
+          <Field label="Actuals complete through (week commencing)">
+            <select defaultValue={data.settings.actualsThrough || ""} id="nf-cutoff-sel">
+              <option value="">Not set</option>
+              {Array.from({ length: 26 }, (_, i) => addW(CUR_WK, -i)).map((k) => <option key={k} value={k}>{fmtWk(k)}</option>)}
+            </select>
+          </Field>
+          <div className="mfoot">
+            <button className="btn ghost" onClick={() => setModal(null)}>Cancel</button>
+            <button className="btn amber" onClick={() => { const v = document.getElementById("nf-cutoff-sel").value || null; setData({ ...data, settings: { ...data.settings, actualsThrough: v } }); setModal(null); }}>Save</button>
+          </div>
+        </Modal>
+      )}
       {modal?.type === "addoh" && (
         <TextModal title="New overhead line" label="Name" initial=""
           onSave={(v) => { if (v.trim()) addOh(v.trim()); setModal(null); }}
@@ -2639,7 +2831,7 @@ function CorporateView({ data, setData, me, canProfit }) {
       )}
       {modal?.type === "ohimport" && <OhImport data={data} setData={setData} onClose={() => setModal(null)} />}
       {modal?.type === "ohrate" && (
-        <TextModal title="Project OH allocation rate (%)" label="Percent of revenue" initial={String((data.settings.ohRate ?? 0.12) * 100)}
+        <TextModal title="Project OH allocation rate (%)" label="Percent of revenue" initial={String((ohRateFor(data.settings, new Date().getFullYear())) * 100)}
           onSave={(v) => { const r = num(v) / 100; if (r >= 0 && r < 1) setData({ ...data, settings: { ...data.settings, ohRate: r } }); setModal(null); }}
           onClose={() => setModal(null)} />
       )}
@@ -2662,7 +2854,7 @@ function TextModal({ title, label, initial, onSave, onClose }) {
 function OhWeekUpdate({ overheads, onSave, onClose }) {
   const wks = useMemo(() => {
     const s = new Set();
-    overheads.forEach((l) => Object.keys(l.fc || {}).concat(Object.keys(l.ac || {})).forEach((k) => s.add(k)));
+    overheads.forEach((l) => Object.keys(l.currentFc || {}).concat(Object.keys(l.ac || {})).forEach((k) => { if (k <= CUR_WK) s.add(k); }));
     return [...s].sort();
   }, [overheads]);
   const defWk = wks.filter((k) => k <= CUR_WK).pop() || wks[0];
@@ -2684,7 +2876,7 @@ function OhWeekUpdate({ overheads, onSave, onClose }) {
       </div>
       {overheads.map((l) => (
         <div className="uline" key={l.id}>
-          <div className="nm"><b>{l.name}</b><span>forecast {money((l.fc || {})[wkSel] || 0)}</span></div>
+          <div className="nm"><b>{l.name}</b><span>forecast {money((l.currentFc || {})[wkSel] || 0)}</span></div>
           <input inputMode="decimal" placeholder="—" value={vals[l.id] ?? ""} onChange={(e) => setVals({ ...vals, [l.id]: e.target.value })} />
         </div>
       ))}
@@ -2727,7 +2919,7 @@ function Dashboard({ data, projects, openProject, scope }) {
   projects.forEach((p) => {
     projectLines(p).all.forEach((l) => {
       let fcTD = 0, acTD = 0;
-      Object.entries(l.fc || {}).forEach(([k, v]) => { if (k < CUR_WK) fcTD += v; });
+      Object.entries(l.currentFc || {}).forEach(([k, v]) => { if (k < CUR_WK) fcTD += v; });
       Object.entries(l.ac || {}).forEach(([k, v]) => { if (k < CUR_WK) acTD += v; });
       const dv = acTD - fcTD;
       const material = Math.abs(dv) > Math.max(10000, 0.1 * (l.value || 0));
@@ -2748,8 +2940,8 @@ function Dashboard({ data, projects, openProject, scope }) {
           {yr === nowYr && !per && <div className="seg">{HZS.map(([w, l]) => <button key={w} className={hz === w ? "on" : ""} onClick={() => setHz(w)}>{l}</button>)}</div>}
         </div>
       </div>
-      <StandardTop projects={projects} overheads={projOnly ? null : data.overheads} ohRate={data.settings.ohRate ?? 0.12} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
-        cashLabel={scope === "my" ? "My projects — net cash to date" : projOnly ? "Projects — net cash to date" : "Current cash position"}
+      <StandardTop projects={projects} overheads={projOnly ? null : data.overheads} ohRate={ohRateFor(data.settings, yr)} yr={yr} per={per} onDetail={(t) => setMDetail(t)}
+        cashLabel={scope === "my" ? "My projects — net cash to date" : projOnly ? "Projects — net cash to date" : "Modelled cash position"}
         cashValue={nowPt?.projected} cashSub={projOnly ? "cash in − cash out, actuals to date" : "opening balance + actuals to date"}
         range={(per ? periodRange(yr, per) : yr !== nowYr ? { from: ceilMonday(new Date(yr, 0, 1)), to: wkKey(new Date(yr, 11, 31)) } : null)} rangeLabel={(per ? per + " " + yr : yr !== nowYr ? "FY" + yr : hzLabel)}
         curveWin={(gran === "m" ? toMonthly : (x) => x)(curve.filter((c) => c.wk >= winFrom && c.wk <= winTo))} gran={gran} mode={mode} split={!projOnly}
@@ -2763,7 +2955,7 @@ function Dashboard({ data, projects, openProject, scope }) {
             <thead><tr><th>Project</th><th className="r">Invoiced in</th><th className="r">Received</th><th className="r">Due from client</th><th className="r">Paid out</th><th className="r">Due to vendors</th><th className="r">Net due</th></tr></thead>
             <tbody>
               {projects.filter((p) => clientInvoiced(p) || projectUnpaid(p) || p.cashIn.some((l) => sumMap(l.ac))).map((p) => {
-                const s = commercialSummary(p, data.settings.ohRate ?? 0.12);
+                const s = commercialSummary(p, ohRateFor(data.settings, new Date().getFullYear()));
                 const net = s.invInDue - s.invOutDue;
                 return (
                   <tr key={p.id} style={{ cursor: "pointer" }} onClick={() => openProject(p.id)}>
@@ -2779,7 +2971,7 @@ function Dashboard({ data, projects, openProject, scope }) {
               })}
               {(() => {
                 const t = projects.reduce((a, p) => {
-                  const s = commercialSummary(p, data.settings.ohRate ?? 0.12);
+                  const s = commercialSummary(p, ohRateFor(data.settings, new Date().getFullYear()));
                   return { ii: a.ii + s.invIn, r: a.r + s.recd, di: a.di + s.invInDue, po: a.po + s.paidOut, doo: a.doo + s.invOutDue };
                 }, { ii: 0, r: 0, di: 0, po: 0, doo: 0 });
                 return (
@@ -2966,7 +3158,7 @@ function buildProjectIntoData(d, form, createdBy) {
   rows.forEach((row) => {
     if (!row.name || !num(row.value)) return;
     const fc = row.fc ? toFc(row.fc) : cycleFc(start, num(row.value), Math.max(1, Number(row.dur) || 8), "scurve", Number(row.from) || 6, 4);
-    const line = { id: uid(), name: row.name, type: "base", value: num(row.value), fc, ac: {} };
+    const line = { id: uid(), name: row.name, type: "base", value: num(row.value), baselineFc: fc, currentFc: JSON.parse(JSON.stringify(fc)), ac: {}, inactive: false };
     if (row.kind === "invo") {
       project.cashIn.push({ ...line, type: "variation", voStatus: "approved" });
     } else if (row.kind === "prelim") {
@@ -3126,8 +3318,11 @@ function OhImport({ data, setData, onClose }) {
     const d = JSON.parse(JSON.stringify(data));
     preview.arr.forEach((l) => {
       const ex = d.overheads.find((o) => o.name.toLowerCase() === l.name.toLowerCase());
-      if (ex) { Object.assign(ex.fc = ex.fc || {}, l.fc); Object.assign(ex.ac = ex.ac || {}, l.ac); }
-      else d.overheads.push({ id: uid(), name: l.name, fc: l.fc, ac: l.ac });
+      if (ex) {
+        Object.assign(ex.currentFc = ex.currentFc || {}, l.fc);
+        if (!Object.keys(ex.baselineFc || {}).length) ex.baselineFc = JSON.parse(JSON.stringify(ex.currentFc));
+        Object.assign(ex.ac = ex.ac || {}, l.ac);
+      } else d.overheads.push({ id: uid(), name: l.name, recurring: true, baselineFc: JSON.parse(JSON.stringify(l.fc)), currentFc: l.fc, ac: l.ac, inactive: false });
     });
     setData(d); onClose();
   };
@@ -3704,7 +3899,7 @@ function SignIn({ users, onAuth, setPassword, loginRequired }) {
 }
 
 /* ---------------- app ---------------- */
-function App() {
+export default function App() {
   const [data, setDataState] = useState(null);
   const [loadErr, setLoadErr] = useState(null);
   const [memMode, setMemMode] = useState(false);
@@ -3717,13 +3912,25 @@ function App() {
     const hasApi = typeof window !== "undefined" && window.storage && typeof window.storage.get === "function";
     if (!hasApi) { setMemMode(true); setDataState(ensureVendors(seedData())); return; }
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const parseAndMigrate = async (raw) => {
+      try { return ensureVendors(JSON.parse(raw)); }
+      catch (e) {
+        // Brief §3: never silently discard data on migration failure — preserve + report.
+        const bk = STORE_KEY + ":backup-" + Date.now();
+        try { await window.storage.set(bk, raw, true); } catch (_) {}
+        window.__nfBackupRaw = raw;
+        const err = new Error("Schema migration failed: " + (e.message || e) + ". Your existing data was preserved (backup key " + bk + ") and can be downloaded below. Nothing has been overwritten.");
+        err.isMigration = true;
+        throw err;
+      }
+    };
     let lastErr = null;
     for (let i = 0; i < 3; i++) {
       try {
         const r = await window.storage.get(STORE_KEY, true);
-        setDataState(ensureVendors(JSON.parse(r.value)));
+        setDataState(await parseAndMigrate(r.value));
         return;
-      } catch (e) { lastErr = e; if (i < 2) await sleep(600 * (i + 1)); }
+      } catch (e) { lastErr = e; if (e.isMigration) { setLoadErr(String(e.message)); return; } if (i < 2) await sleep(600 * (i + 1)); }
     }
     // get failed 3x — either storage is down, or the key doesn't exist yet.
     // Probe storage health; only seed if storage is up (key genuinely absent).
@@ -3731,8 +3938,9 @@ function App() {
       await window.storage.set("flowline:probe", String(Date.now()), true);
       try {
         const r = await window.storage.get(STORE_KEY, true);
-        setDataState(ensureVendors(JSON.parse(r.value)));
+        setDataState(await parseAndMigrate(r.value));
       } catch (e) {
+        if (e.isMigration) { setLoadErr(String(e.message)); return; }
         const fresh = ensureVendors(seedData());
         await window.storage.set(STORE_KEY, JSON.stringify(fresh), true);
         setDataState(fresh);
@@ -3764,6 +3972,7 @@ function App() {
       <div style={{ marginBottom: 8 }}>Couldn't reach storage. Saved data is untouched — retry, or continue without saving to look around.</div>
       <div style={{ marginBottom: 14, fontFamily: "monospace", fontSize: 11, opacity: 0.6 }}>Detail: {loadErr}</div>
       <button className="btn" onClick={load} style={{ marginRight: 10 }}>Retry</button>
+      {window.__nfBackupRaw && <button className="btn" onClick={() => { const b = new Blob([window.__nfBackupRaw], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "northflow-backup.json"; a.click(); }}>Download data backup</button>}{" "}
       <button className="btn" onClick={() => { setLoadErr(null); setMemMode(true); setDataState(ensureVendors(seedData())); }}>Continue without saving</button>
     </div>
   );
@@ -3778,6 +3987,7 @@ function App() {
   const isMgmt = isMgmtRole(user.role);
   const acc = accessOf(user.role);
   VAT_F = data.settings.vatIncl ? 1 + (data.settings.vatRate ?? 0.05) : 1;
+  ACTUALS_THROUGH = data.settings.actualsThrough || null;
   const myProjects = data.projects.filter((p) => acc.allProjects || user.projects.includes(p.id));
   const openProject = (id) => { setProjectId(id); setTab("project"); };
   const activeProject = data.projects.find((p) => p.id === projectId);
@@ -3838,7 +4048,7 @@ function App() {
               }} />
           )}
           {tab === "project" && canSeeActive && (
-            <ProjectView project={activeProject} saveProject={saveProject} vendors={data.vendors} mutate={mutate} isMgmt={isMgmt} ohRate={data.settings.ohRate ?? 0.12} submitActuals={(wk, vals) => { const d = JSON.parse(JSON.stringify(data)); const ap = makeApproval(d, "actuals", user.id, { projectId: activeProject.id, wk, vals }, activeProject.code + " w/c " + fmtWk(wk)); if (ap) { d.approvals.push(ap); setData(d); return true; } applyApproval(d, { type: "actuals", payload: { projectId: activeProject.id, wk, vals } }); setData(d); return false; }} onBack={() => { setTab("projects"); setProjectId(null); }} canEdit={true} />
+            <ProjectView project={activeProject} saveProject={saveProject} vendors={data.vendors} mutate={mutate} isMgmt={isMgmt} ohRate={ohRateFor(data.settings, new Date().getFullYear())} submitActuals={(wk, vals) => { const d = JSON.parse(JSON.stringify(data)); const ap = makeApproval(d, "actuals", user.id, { projectId: activeProject.id, wk, vals }, activeProject.code + " w/c " + fmtWk(wk)); if (ap) { d.approvals.push(ap); setData(d); return true; } applyApproval(d, { type: "actuals", payload: { projectId: activeProject.id, wk, vals } }); setData(d); return false; }} onBack={() => { setTab("projects"); setProjectId(null); }} canEdit={true} />
           )}
           {tab === "project" && !canSeeActive && <div className="panel">You don't have access to this project. Ask management to assign it to you in Team & access.</div>}
           {tab === "corporate" && acc.corporate && <CorporateView data={data} setData={setData} me={user} canProfit={acc.profit} />}
@@ -3853,8 +4063,6 @@ function App() {
   );
 }
 
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
 </html>
