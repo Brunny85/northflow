@@ -53,8 +53,8 @@ const {
    Prototype v1.0 — shared storage, role-gated UI
    ============================================================ */
 
-const BUILD_STAMP = "b0806.1119"; // unique per rebuild
-const APP_VERSION = "2.50.3";
+const BUILD_STAMP = "b0807.1333"; // unique per rebuild
+const APP_VERSION = "2.51";
 const STORE_KEY = "flowline:data:v1"; // key kept for data continuity
 const NF_MARK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAMsUlEQVR42u2deYxddRXHP+ctnZm20AaKQGFwaQEpiQYQxAUjEbBsKQ0FAlpCREGBKkhQ/kBRiUYEUYS4gNQUQWPqwhZIoVIJshQREGlBU3ZoKRS00mk7M+/d4x+/8+P9cpmZd+9b76Xvl7x0m777u/f7+579nCuqqkAV2AxsBNYDLwBrgNXAk8AaEXkdW6paBiYBYv9X6fwqiMhmVb0LOMz2USRnq2S/FoHt7LM7cEDwM1VgraquBh4E7gMeFZENBkYJ6At+tlNLunDNtgHw1uEOPv4mi8CgfT5tf/+Kqt4L3Ar8WUTWGhj99p2dZMVQngEojHGqCvbQi8G/ezFVASJgF+AE4HrgH6q6RFWPACIR2WQ/WwpOaTsZ8L9gj7kHYKKbLdpDLQSAVIEZwKnAMuB+VT0TmGxARGOwrNVrwzuJAaQEpBiAEZnu+DnwsKqeC/QZEIUmrlVvrd0WARgLjIKBUAVmAT8CHlLVhcAWEdncYjZ4kfNCTCRtcwDEv68YALG36Yk7VXV/Y4O06LoegOfs98UeAOMDcZjph4uAUWBLC9igZgK/CLyRV0Vc6MD3Fw2EPuAS4C5glrGh1CQDyqaE19jfRT0Axl5eWVeATwIPqOqxBkKxCfldFJEIeKTHgGTKuhSYrreo6vkiMmT/1owSfSCvirjQhWt63RABl6vqFWYhNfIAI1UtACuB4YBpPQASXFdMJJ2nqteKyJYGQIhMtzwNPJ5HPVDo4rW9SBoFPq+qvzQQ0oqjoohUgTvyqAcKGdhD2UA4XVV/bOIozb4iVRVcYDDKmz9QyMg+PAhfUdULTDEnNVEjoB94DHiUWo6iB0DKVTKd8ANVnZfSTyiKSAW4IW9iSCwjlpUV2QneCBwEPGNKtp5iFWPQu3BZvO3zYpYWMrifCJiOiyF5s7Leg1Sg3xJDv82TGCpkcE9FE0UHA98wyyiJYo1UtQhcDYxQy1v0AGgQhCpwoaoehEs71gMhMhasAn5n95Z5FmRNB4TLVzmsBD5ulpImOFDDwF64+NCkFoQ5tkkGhCz4MHC6iaJSAhYMiMiTuMxc5lmQZQaEVtE64APAm9SP93gFPM3CEzvbzxd6DGhsf1VgJnC2iIwk0AUKTBKR14CvGSBRjwHNs+AVYA6ugi9J1LMoIkOqegtwLBmtnMs6A0LfYFdgYUIWgEtZloGzgFeD7+kxoAkWvGC6YDihnV8SkU2qOg+4yfyLZjJw2yQDQha8GzhHRIYTsqCiqlNF5Gbge9TiTT0GNLB8zeqbwAdxBVllksWJxCqp/wQcZyCUegxIeVgMgGnApSIymlCUqCmEPmAh8FCWmJAnAELn7CRVPS5F3sAnarYC84CnsgJCnkRQXCGvBfbDha5LCS2copmxewDLgdndFkfe0YmCj5LtKKJXyLsBPzWzNKlVU8VVbj+Pq9Zb3W0m+Mq1QvCRQN76noBKAE5WRFEFWKCq55goKicFQVWnmEn7KVxNUddAEFVdics69QNTcG1KUycw86JADBS6aFMrtdrTQ0XkflWdmuJBep3QDywGTgzEWKGTAITNF3328Kfj0nuDuFLz9+Mqnd9nAI0FSIHOK3V/3RdxCZxX7R6qKSRARURGVPVi4Fvef+iUXhBVHYifKKuzifv1ZVxQbB9ciPhjuIaMHWIPRDvMDB/jecBEird4koYdQj/haOBndvCqtK6UfkIA+mObIdADEoBTBUZDcFR1poFxJHA48J7Yg5EOscKf2D+KyPGxQ5V0+bDFTOBy4OTgu9sWvogDkOS0+NMdASNWDoKqTsNlrk4AjgF2jLGi2CEQrhWRM1R1cgMWXQnYKiIVVT3Rwhez2glEWgAmAmTETEJUdTdgPnAatZ5jpf2Vax6EK0Xk3AZBEFwT+JCq7gCcBywyD7zlQDQLwFhgAAzbKZqE6y0+m1qPcbstjTgIAzSWlCn5Q6Wqs4Fzcd2g2wUilmb1XSsBiINRNAtjq7HiUOAC0xf+BtqlrD0I14jImRYHKpE+P+zvY7OIRKq6J3A68FlzBMPrNWSWtwuAuL2tvgdAVY8CvmnKO7Ri2gXCUju5o8BAgw6XN7E9EDvhsmynAIfgqi/G8pPixkxXAHgbEGbSfgG42PyNdrHBg3AvcJKIrFPV7QwMmgBi2KKxqOocYK59DjQfaix/ZUxdJOY9juVlhv9BWwxEJCJbVHUQuDQw+drBBg/CM8ApIrLS7rmZeRYS3MfmwCzfHdjfnMIDcPVJM2MMedsXje/ru/afMrW5D9rCmFAJ18BdVdVTgSvt9LTDC/XAbgEWich1ZiCUab5uqBAECIdjftL2uFz2IG4KzUxcf9w0C/sURVWvt00MAf/FtX2uA14GXgLWB+1D4XgaCeRdM5sXM/n2sZjMwW0SSVFgeV0HnC8iG1vAhon8pIo5rzqRDpjowkMGwlPAw7gywcdFZH3AkIGYnGuIDeaF9gNXAF8KRGArzdXQF1mFqzW6pwkrKVGYYxxFrB6A0TpIxterBsTtwHIRWWNgTDJZ1+hpKlocaquqngX8JIjptNpn8GIuAi4Dvisib1qYGjpYzliPARr7xCOeQ8AK4DfA7UbporGiESAEV1C1SVXn4mr9p7dJOYem4irgQhG5zQ7T5ECMaDcBmIjGxB7KM8ASYImIPN8kEGU7kfsBNwfRyXb6CwB/MA/6XgOij1rlRZQVAOqB8YYpuatE5MUm5KsHYZaJu73aCEIUk9PLgWuAO6xXzbOiQIvHsbUyKe9PiT9NG3Azg64K5GtaSnvlPAjciUsMtbPGM259/dvE61IRWW1AFHFZtJZMjGxHVYTPHXggVpt8vTUYd1ltEIS7cZUM7S60jecyhu3aS4E7ReTlwArsp1YmmVpntLMsJQ7EYuDrIrIhZe42BGE28BcLhLXDOqrHai9iVwC3AfeIyLOBj1Q2nVEYw4DpOADhTXin62ngDBG5uwGR5EE4wB7AVDrXeDGe4bHJ/KMVFm96wvoSiDmuJcbJIXSyMCu0vS8UkctMQafJ33rFfKxZRxGdr8wYDwxwU4efAP6O69z/l0UU3vDBu24CELc2lgBnUpumVU0JwleBH9LdyrZQ7o+XJQtDO+vtzxtNr1S7UZoY6oYVwAKLQQ2kAMF3v/walxzJSrVzCIgkMRS6WRs6agrrUeBoOx1JQfCR2TJunvWcDinlRkEZVxl3uzjXn9xVwBEGQn9CEDwLDgT+Sq3EMldjy7p9YnxN5r7m7U6nNmagrq1u3S9/A76dUplnZmWlPD1MHR4REzP1RJEYaPfhJqzk6j0CWZGZfnTZIcBiq6RIsjcNQgKLAudOewCkX35q1smqelGK7pcqMEVEHgKuzZsoylqHTGiizhWRZeYx11PKfgLjDOCf1AqGewOb0h6III6yWFV3NlYUEgDXJyLrcJk0yQsLChndk58PcXWKFqSqBcN+AbxOb2BTS8zTBap6YkJ94FmwHlfjn4uxZVnukvRxo5dwjdmbE5xq/9C3N12Q6VE1WWZAKIoGcdHTJOMJ/KiaDcB3EvoSPQYkiKNsNRY8h8uoJRlPUAHuBz6UZecs653y3pqZbCyoJNxzwQBYFOgB7QHQ2PLDmT6jqnvj6jvr7ds7Zw/icgbFrCrkPADgFWs/cJYVvyYN1g3gSuAfoT2lh+94HUBMfPwHF/t/nWRjLH1F9BxcG6uveOsNbGpQF+wAHG+6IIlS9bMhngC+SAbHWOZtXI0CC604KumD9FOzbgS+Ty3y2hNBDQIQ4VqBHsOlMKOEDPLd8Dfiert8SrTHgBTL2/PHWNNDIQVwav0Hp+Fed1LOAhPyBoBXnkdaWWCUkj0+Z7wA90K5roOQNwD8fvcD3msecqr3zVAL9M3DlReW6fLAprwxwPsEB9lb9FK/eyzwCeYDvwr+HPUASO4TfDQmlhoBoSQin8M1jhe7YabmEQD/wPe3YVONntrIrMDJInKJseE1auPQtAfAxHveEzcSZ4TGPVvFvfpkqojchGuRXUatL7raA2B8BswABs0rbja0ULGehedww0S+bGGP8JXtPQBi/oDgZklDa2I7FVPuAyJylTl7NxCMJWgHEHkFwMvnPVoIgNcLkbHhWRFZiHv/8TJqIz5ppY7IKwB+zWzT91aAflWdIiL3iMhcXMnkLdTqlryOaKpRL+8A7NTG746wIa9mKd0lIvNwc46uxI3KLFJrzPCzIVIBksfZ0f6EloDfi8gJCavnml3xwVM74sZkzjcxtcs4IPr6VRlLXOYVAB+Uu0NEjuoQAKHUiA9tmoGbD/QJ4CO4BNDO72QGeACWi8jh1sXe6TBC2Ec8EjbhqequuEnD+9pnNm5e0E64mqW3Bjj9Hz+mfBNtN017AAAAAElFTkSuQmCC";
 
@@ -169,20 +169,41 @@ function lineProj(line, curWk = CUR_WK) {
   wks.forEach((k) => {
     if (line.inactive) { proj[k] = k <= curWk && ac[k] !== undefined ? ac[k] : 0; return; }
     if (k < curWk) proj[k] = ac[k] !== undefined ? ac[k] : 0;
-    else if (k === curWk) proj[k] = (ac[k] !== undefined ? ac[k] : 0) + (fcC[k] || 0);
+    else if (k === curWk) proj[k] = cwProjected(ac[k], fcC[k]);
     else proj[k] = fcC[k] || 0;
   });
   return { proj };
 }
+// Current-week rule (clarified governance model §9): reforecast is the TOTAL cash
+// expected in the week. Projected = max(actual, reforecast) by magnitude when signs
+// agree; on opposing signs the actual is the provisional truth (sign-conflict flagged,
+// user prompted) — the software never invents an interpretation.
+function cwProjected(a, f) {
+  const hasA = a !== undefined, hasF = f !== undefined && f !== 0;
+  if (!hasA && !hasF) return 0;
+  if (!hasA) return f || 0;
+  if (!hasF) return a;
+  if (Math.sign(a) !== 0 && Math.sign(f) !== 0 && Math.sign(a) !== Math.sign(f)) return a; // conflict: actual only
+  const s = Math.sign(f) || Math.sign(a) || 1;
+  return s * Math.max(Math.abs(a), Math.abs(f));
+}
+// Expected remaining current-week contribution beyond actuals already recorded.
+function cwRemainingExpected(a, f) { return cwProjected(a, f) - (a !== undefined ? a : 0); }
 const RECON_TOL = 0.5;
 function lineStatus(line, curWk = CUR_WK) {
+  // Reconciliation (§17 + clarified current-week rule):
+  //   outstanding   = value − Σ actuals (all weeks)
+  //   futureAlloc   = Σ reforecast strictly after curWk
+  //                 + expected remaining current-week contribution (max-rule, not double-counted)
+  //   unallocated   = outstanding − futureAlloc   (>tol ⇒ reforecast required; <−tol ⇒ overallocated)
   if (line.recurring) return { unallocated: null, status: null };
   const ac = line.ac || {}, fcC = line.inactive ? {} : (line.currentFc || {});
   const acSum = Object.values(ac).reduce((a, v) => a + v, 0);
-  const fcFwd = Object.entries(fcC).reduce((a, [k, v]) => a + (k >= curWk ? v : 0), 0);
-  const unallocated = (line.value || 0) - acSum - fcFwd;
+  const futFc = Object.entries(fcC).reduce((a, [k, v]) => a + (k > curWk ? v : 0), 0);
+  const cwExtra = cwRemainingExpected(ac[curWk], fcC[curWk]);
+  const unallocated = (line.value || 0) - acSum - futFc - cwExtra;
   const status = Math.abs(unallocated) <= RECON_TOL ? "reconciled" : unallocated > 0 ? "unallocated" : "overallocated";
-  return { unallocated, status, acSum, fcFwd };
+  return { unallocated, status, acSum, fcFwd: futFc + cwExtra };
 }
 function lineExceptions(line, curWk = CUR_WK, actualsThrough = null) {
   const fcC = line.currentFc || {}, bl = line.baselineFc || {}, ac = line.ac || {};
@@ -202,17 +223,26 @@ function lineExceptions(line, curWk = CUR_WK, actualsThrough = null) {
   return { slipped, confirmedZero, actualMissing, signConflict };
 }
 function projectExceptions(p, curWk = CUR_WK, actualsThrough = null) {
-  let slipped = 0, missing = 0, unrec = 0, over = 0, conflicts = 0;
-  const scan = (l) => {
+  // Actionable exceptions (clearable): reforecast required / overallocated / sign conflict / missing actuals.
+  // Historical information (permanent, not in the action count): reforecast misses (slipped weeks).
+  let slipped = 0, missing = 0, unrec = 0, over = 0, conflicts = 0, reforecastAmt = 0;
+  const reforecastLines = [];
+  const scan = (l, group) => {
     if (l.inactive) return;
     const ex = lineExceptions(l, curWk, actualsThrough);
     slipped += ex.slipped.length; missing += ex.actualMissing.length; if (ex.signConflict) conflicts++;
     const st = lineStatus(l, curWk);
-    if (st.status === "unallocated") unrec++; if (st.status === "overallocated") over++;
+    if (st.status === "unallocated") {
+      unrec++; reforecastAmt += st.unallocated;
+      const lastMiss = ex.slipped.length ? ex.slipped[ex.slipped.length - 1] : null;
+      reforecastLines.push({ id: l.id, name: l.name, group, expectedWk: lastMiss, toReforecast: st.unallocated, acToDate: st.acSum });
+    }
+    if (st.status === "overallocated") over++;
   };
-  p.cashIn.forEach(scan);
-  p.packages.forEach((pk) => pk.lines.forEach(scan));
-  return { slipped, missing, unrec, over, conflicts, total: slipped + missing + unrec + over + conflicts };
+  p.cashIn.forEach((l) => scan(l, "Cash in"));
+  p.packages.forEach((pk) => { if (!isInternalPkg(pk)) pk.lines.forEach((l) => scan(l, pk.name)); });
+  return { slipped, missing, unrec, over, conflicts, reforecastAmt, reforecastLines,
+    total: unrec + over + conflicts + missing, historical: slipped };
 }
 function ohRateFor(settings, yr) {
   const map = settings.ohRatesByFY || {};
@@ -854,8 +884,9 @@ function SpreadEditor({ line, projStart, onSave, onClose, allowValue, onDeactiva
   const acSum = sumMap(line.ac || {});
   const cwRemaining = fc[CUR_WK] || 0;
   const futTotal = Object.entries(fc).reduce((a, [k, v]) => a + (k > CUR_WK ? v : 0), 0);
-  const unalloc = line.recurring ? null : (num(value) || 0) - acSum - cwRemaining - futTotal;
-  const recStatus = unalloc === null ? null : Math.abs(unalloc) <= 0.5 ? "reconciled" : unalloc > 0 ? "unallocated" : "overallocated";
+  const liveStat = lineStatus({ ...line, currentFc: fc, value: num(value) || 0 });
+  const unalloc = liveStat.unallocated;
+  const recStatus = liveStat.status;
   const hasClosedData = Object.keys(line.ac || {}).length > 0 || Object.keys(fc).some((k) => k < CUR_WK);
   const [preview, setPreview] = useState(null); // pending replace-future spread
   const copyBaseline = () => { if (window.confirm("Replace the current forecast with the original forecast? Actuals are unaffected.")) setFc({ ...(line.baselineFc || {}) }); };
@@ -886,9 +917,9 @@ function SpreadEditor({ line, projStart, onSave, onClose, allowValue, onDeactiva
         <span>Original forecast <b className="mono">{money(blTotal)}</b></span>
         <span>Current forecast <b className="mono">{money(total)}</b></span>
         <span>Actual to date <b className="mono">{money(acSum)}</b></span>
-        <span>Remaining this week <b className="mono">{money(cwRemaining)}</b></span>
+        <span>This week — expected total <b className="mono">{money(cwRemaining)}</b>{(line.ac || {})[CUR_WK] !== undefined && <span style={{ color: "var(--ink2)" }}> (actual so far {money((line.ac || {})[CUR_WK])})</span>}</span>
         <span>Future forecast <b className="mono">{money(futTotal)}</b></span>
-        {recStatus && <span>Unallocated <b className="mono" style={{ color: recStatus === "reconciled" ? "var(--green)" : recStatus === "unallocated" ? "var(--hivis)" : "var(--red)" }}>{money(unalloc)} · {recStatus}</b></span>}
+        {recStatus && <span>{recStatus === "unallocated" ? "To reforecast" : "Unallocated"} <b className="mono" style={{ color: recStatus === "reconciled" ? "var(--green)" : recStatus === "unallocated" ? "var(--hivis)" : "var(--red)" }}>{money(unalloc)} · {recStatus}</b></span>}
         {line.forecastUpdatedAt && <span style={{ color: "var(--ink2)" }}>Forecast updated {new Date(line.forecastUpdatedAt).toLocaleDateString("en-GB")}</span>}
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
@@ -904,6 +935,9 @@ function SpreadEditor({ line, projStart, onSave, onClose, allowValue, onDeactiva
         {onDeactivate && line.inactive && <button className="btn ghost" onClick={() => onDeactivate(false)}>Reactivate line</button>}
         {canDelete && onDelete && Object.keys(line.ac || {}).length === 0 && <button className="btn ghost" style={{ color: "var(--red)" }} onClick={() => { if (window.confirm("Delete this line? It has no actuals.")) onDelete(); }}>Delete line</button>}
       </div>
+      {(() => { const a = (line.ac || {})[CUR_WK], f = fc[CUR_WK]; return a !== undefined && a !== 0 && (f || 0) !== 0 && Math.sign(a) !== Math.sign(f) ? (
+        <p className="note" style={{ background: "var(--red-soft, #fdecea)", border: "1px solid var(--red)", borderRadius: 6, padding: "6px 8px" }}>Actual and expected cash for this week have opposing signs. The projection uses the actual as the provisional movement — update this week's expected total to resume normal projection.</p>
+      ) : null; })()}
       {preview && (
         <div style={{ background: "var(--hivis-soft)", border: "1px solid var(--hivis)", borderRadius: 6, padding: "8px 10px", marginBottom: 10, fontSize: 12 }}>
           <b>Replace future forecast with spread?</b> Closed weeks are not modified.
@@ -1024,7 +1058,7 @@ function WeekUpdate({ project, onSave, onClose }) {
             {wks.filter((k) => k <= CUR_WK).map((k) => <option key={k} value={k}>{fmtWk(k)}{k === CUR_WK ? " (this week — open)" : ""}</option>)}
           </select>
         </Field>
-        {cwPrompt && <p className="note" style={{ background: "var(--hivis-soft)", border: "1px solid var(--hivis)", borderRadius: 6, padding: "6px 8px" }}>An actual has been entered for this week. Review the remaining forecast for this week — the projection counts actual + remaining forecast. The forecast is never changed automatically.</p>}
+        {cwPrompt && <p className="note" style={{ background: "var(--hivis-soft)", border: "1px solid var(--hivis)", borderRadius: 6, padding: "6px 8px" }}>An actual has been entered for this week. The weekly forecast is the TOTAL cash expected this week — the projection uses the larger of actual and expected. Review the weekly forecast if the total expectation has changed; it is never changed automatically.</p>}
         <Field label="Actual amount (AED)">
           <input inputMode="decimal" value={amt} placeholder={existing !== null ? "current: " + existing : "—"} onChange={(e) => setAmt(e.target.value)} onKeyDown={(e) => e.key === "Enter" && add()} />
         </Field>
@@ -1508,7 +1542,7 @@ function ProjectView({ project, saveProject, onBack, canEdit, vendors, mutate, i
     <div>
       <div className="pagehead">
         <div>
-          <h1>{project.code} — {project.name}</h1>{(() => { const ex = projectExceptions(project, CUR_WK, ACTUALS_THROUGH); return ex.total > 0 ? <span style={{ fontFamily: "var(--body)", fontSize: 12, fontWeight: 700, color: "#fff", background: "var(--red)", borderRadius: 10, padding: "2px 9px", marginLeft: 10, verticalAlign: "middle" }} title={"Slipped " + ex.slipped + " · missing actuals " + ex.missing + " · unallocated " + ex.unrec + " · overallocated " + ex.over + " · sign conflicts " + ex.conflicts}>{ex.total} exception{ex.total === 1 ? "" : "s"}</span> : null; })()}
+          <h1>{project.code} — {project.name}</h1>{(() => { const ex = projectExceptions(project, CUR_WK, ACTUALS_THROUGH); return ex.total > 0 ? <span style={{ fontFamily: "var(--body)", fontSize: 12, fontWeight: 700, color: "#fff", background: "var(--red)", borderRadius: 10, padding: "2px 9px", marginLeft: 10, verticalAlign: "middle" }} title={"Reforecast required " + ex.unrec + " (" + moneyK(ex.reforecastAmt) + ") · overallocated " + ex.over + " · missing actuals " + ex.missing + " · sign conflicts " + ex.conflicts + " · historical misses " + ex.historical}>{ex.unrec > 0 ? ex.unrec + " to reforecast · " + moneyK(ex.reforecastAmt) : ex.total + " exception" + (ex.total === 1 ? "" : "s")}</span> : null; })()}
           <div className="sub">{project.client} · {project.weeks}-week programme · start w/c {fmtWk(project.start)}{project.forecastUpdatedAt ? "forecast updated " + new Date(project.forecastUpdatedAt).toLocaleDateString("en-GB") + " · " : "forecast never updated · "}</div>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -2453,7 +2487,10 @@ function ExcelImport({ projects, onImport, onClose }) {
         </div>
         {busy && <div className="sub">Reading workbook…</div>}
         {err && <div style={{ color: "var(--red)", fontFamily: "var(--mono)", fontSize: 12, marginBottom: 10 }}>{err}</div>}
-        {preview && (
+        {(() => { const a = (line.ac || {})[CUR_WK], f = fc[CUR_WK]; return a !== undefined && a !== 0 && (f || 0) !== 0 && Math.sign(a) !== Math.sign(f) ? (
+        <p className="note" style={{ background: "var(--red-soft, #fdecea)", border: "1px solid var(--red)", borderRadius: 6, padding: "6px 8px" }}>Actual and expected cash for this week have opposing signs. The projection uses the actual as the provisional movement — update this week's expected total to resume normal projection.</p>
+      ) : null; })()}
+      {preview && (
           <div className="panel" style={{ marginBottom: 12 }}>
             <b>{preview.project.code} — {preview.project.name}</b>
             <div className="sub">{preview.project.client} · starts w/c {fmtWk(preview.project.start)} · {preview.project.weeks} weeks</div>
@@ -2647,7 +2684,7 @@ function OverheadsView({ data, setData, ohRateBtn }) {
           <tbody>
             {ohProj.map(({ l, proj }) => (
               <tr key={l.id}>
-                <td className="rowname">{l.name}{l.inactive && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · inactive</span>}{l.isInternal && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · analytical — excluded from cash</span>}{(() => { if (l.recurring || l.inactive) return null; const st = lineStatus(l); const ex = lineExceptions(l, CUR_WK, ACTUALS_THROUGH); const bits = []; if (st.status !== "reconciled") bits.push(<span key="u" style={{ fontSize: 10, fontWeight: 700, color: st.status === "unallocated" ? "var(--hivis)" : "var(--red)", marginLeft: 6 }}>{st.status} {moneyK(st.unallocated)}</span>); if (ex.slipped.length) bits.push(<span key="s" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>slipped ×{ex.slipped.length}</span>); if (ex.signConflict) bits.push(<span key="c" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>sign conflict</span>); return bits; })()}{" "}
+                <td className="rowname">{l.name}{l.inactive && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · inactive</span>}{l.isInternal && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · analytical — excluded from cash</span>}{(() => { if (l.recurring || l.inactive) return null; const st = lineStatus(l); const ex = lineExceptions(l, CUR_WK, ACTUALS_THROUGH); const bits = []; if (st.status !== "reconciled") bits.push(<span key="u" style={{ fontSize: 10, fontWeight: 700, color: st.status === "unallocated" ? "var(--hivis)" : "var(--red)", marginLeft: 6 }}>{st.status === "unallocated" ? "reforecast required" : "overallocated"} {moneyK(st.unallocated)}</span>); if (ex.slipped.length) bits.push(<span key="s" style={{ fontSize: 10, color: "var(--ink2)", marginLeft: 6 }}>missed ×{ex.slipped.length}</span>); if (ex.signConflict) bits.push(<span key="c" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>sign conflict</span>); return bits; })()}{" "}
                   <button className="btn ghost sm" style={{ padding: "1px 6px", fontSize: 10 }} onClick={() => setModal({ type: "ohspread", line: l })}>fc</button>
                 </td>
                 <td className="num">{moneyK(Object.entries(l.currentFc || {}).filter(([k]) => k.slice(0, 4) === String(yr)).reduce((a, [, v]) => a + v, 0))}</td>
@@ -2786,7 +2823,7 @@ function CorporateView({ data, setData, me, canProfit }) {
             <tr className="grp"><td className="rowname">Overheads</td><td colSpan={wks.length}></td></tr>
             {ohProj.map(({ l, proj }) => (
               <tr key={l.id}>
-                <td className="rowname">{l.name}{l.inactive && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · inactive</span>}{l.isInternal && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · analytical — excluded from cash</span>}{(() => { if (l.recurring || l.inactive) return null; const st = lineStatus(l); const ex = lineExceptions(l, CUR_WK, ACTUALS_THROUGH); const bits = []; if (st.status !== "reconciled") bits.push(<span key="u" style={{ fontSize: 10, fontWeight: 700, color: st.status === "unallocated" ? "var(--hivis)" : "var(--red)", marginLeft: 6 }}>{st.status} {moneyK(st.unallocated)}</span>); if (ex.slipped.length) bits.push(<span key="s" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>slipped ×{ex.slipped.length}</span>); if (ex.signConflict) bits.push(<span key="c" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>sign conflict</span>); return bits; })()}{" "}
+                <td className="rowname">{l.name}{l.inactive && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · inactive</span>}{l.isInternal && <span style={{ fontSize: 10, color: "var(--ink2)" }}> · analytical — excluded from cash</span>}{(() => { if (l.recurring || l.inactive) return null; const st = lineStatus(l); const ex = lineExceptions(l, CUR_WK, ACTUALS_THROUGH); const bits = []; if (st.status !== "reconciled") bits.push(<span key="u" style={{ fontSize: 10, fontWeight: 700, color: st.status === "unallocated" ? "var(--hivis)" : "var(--red)", marginLeft: 6 }}>{st.status === "unallocated" ? "reforecast required" : "overallocated"} {moneyK(st.unallocated)}</span>); if (ex.slipped.length) bits.push(<span key="s" style={{ fontSize: 10, color: "var(--ink2)", marginLeft: 6 }}>missed ×{ex.slipped.length}</span>); if (ex.signConflict) bits.push(<span key="c" style={{ fontSize: 10, color: "var(--red)", marginLeft: 6 }}>sign conflict</span>); return bits; })()}{" "}
                   <button className="btn ghost sm" style={{ padding: "1px 6px", fontSize: 10 }} onClick={() => setModal({ type: "ohspread", line: l })}>fc</button>
                 </td>
                 {wks.map((k) => <td key={k} className={"num" + (k === CUR_WK ? " cur" : "")}>{proj[k] ? "(" + moneyK(proj[k]) + ")" : "—"}</td>)}
@@ -3185,6 +3222,7 @@ function applyApproval(d, ap) {
   if (ap.type === "actuals") {
     const p = d.projects.find((x) => x.id === ap.payload.projectId);
     if (!p) return;
+    if (ap.payload.wk > CUR_WK) return; // future-dated actuals rejected at apply (P0 guard)
     const applyTo = (l) => {
       const raw = ap.payload.vals[l.id];
       if (raw === undefined) return;
@@ -3342,7 +3380,10 @@ function OhImport({ data, setData, onClose }) {
           </label>
         </div>
         {err && <div style={{ color: "var(--red)", fontFamily: "var(--mono)", fontSize: 12, marginBottom: 10 }}>{err}</div>}
-        {preview && (
+        {(() => { const a = (line.ac || {})[CUR_WK], f = fc[CUR_WK]; return a !== undefined && a !== 0 && (f || 0) !== 0 && Math.sign(a) !== Math.sign(f) ? (
+        <p className="note" style={{ background: "var(--red-soft, #fdecea)", border: "1px solid var(--red)", borderRadius: 6, padding: "6px 8px" }}>Actual and expected cash for this week have opposing signs. The projection uses the actual as the provisional movement — update this week's expected total to resume normal projection.</p>
+      ) : null; })()}
+      {preview && (
           <div className="panel" style={{ marginBottom: 12 }}>
             <div style={{ fontFamily: "var(--mono)", fontSize: 13 }}>
               {preview.arr.length} lines ({preview.added} new · {preview.existing} updated) · {preview.weeks} date columns<br />
@@ -3442,7 +3483,10 @@ function RegisterImport({ data, setData, onClose, defaultKind }) {
           </label>
         </div>
         {err && <div style={{ color: "var(--red)", fontFamily: "var(--mono)", fontSize: 12, marginBottom: 10 }}>{err}</div>}
-        {preview && (
+        {(() => { const a = (line.ac || {})[CUR_WK], f = fc[CUR_WK]; return a !== undefined && a !== 0 && (f || 0) !== 0 && Math.sign(a) !== Math.sign(f) ? (
+        <p className="note" style={{ background: "var(--red-soft, #fdecea)", border: "1px solid var(--red)", borderRadius: 6, padding: "6px 8px" }}>Actual and expected cash for this week have opposing signs. The projection uses the actual as the provisional movement — update this week's expected total to resume normal projection.</p>
+      ) : null; })()}
+      {preview && (
           <div className="panel" style={{ marginBottom: 12 }}>
             <div style={{ fontFamily: "var(--mono)", fontSize: 13 }}>
               Vendors: {count(preview.vendors, true)} new · {count(preview.vendors, false)} updated<br />
